@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SshDeployHost>192.168.0.18</SshDeployHost>
+    <SshDeployTargetPath>/Apps/Playground/</SshDeployTargetPath>
+    <SshDeployUsername>root</SshDeployUsername>
+    <SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
+    <SshDeployClean />
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <SshDeployExecutePermission>true</SshDeployExecutePermission>
+  </PropertyGroup>
+  <Target Condition="$(BuildingInsideSshDeploy) ==''" Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Message Text="Post Build Event - Push to Rpi" />
+    <Exec Command="cd $(ProjectDir)&#xD;&#xA;echo %25DATE%25 %25TIME%25 &gt;&gt; &quot;$(TargetDir)sshdeploy.ready&quot;&#xD;&#xA;" />
+    <Exec Command="dotnet-sshdeploy push -post &quot;dotnet run /Apps/Playground/ReSpeakerLEDs.dll&quot;" />
+    <Message Text="Post Build Event - Push to Rpi - Complete" />
+  </Target>
+  <ItemGroup>
+    <Compile Remove="pythonCS\adafruit_tpa2016.py.cs" />
+    <Compile Remove="pythonCS\cap1188.py.cs" />
+    <Compile Remove="pythonCS\cap1188_simpletest.py.cs" />
+    <Compile Remove="pythonCS\HT16K33.py.cs" />
+    <Compile Remove="pythonCS\i2c.py.cs" />
+    <Compile Remove="pythonCS\SevenSegment.py.cs" />
+    <Compile Remove="pythonCS\sevensegment_test.py.cs" />
+    <Compile Remove="pythonCS\spi.py.cs" />
+    <Compile Remove="pythonCS\tpa2016_simpletest.py.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="pythonCS\adafruit_tpa2016.py.cs" />
+    <None Include="pythonCS\cap1188.py.cs" />
+    <None Include="pythonCS\cap1188_simpletest.py.cs" />
+    <None Include="pythonCS\HT16K33.py.cs" />
+    <None Include="pythonCS\i2c.py.cs" />
+    <None Include="pythonCS\SevenSegment.py.cs" />
+    <None Include="pythonCS\sevensegment_test.py.cs" />
+    <None Include="pythonCS\spi.py.cs" />
+    <None Include="pythonCS\tpa2016_simpletest.py.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Iot.Device.Bindings" Version="1.3.0" />
+    <PackageReference Include="System.Device.Gpio" Version="1.3.0" />
+  </ItemGroup>
+</Project>
