@@ -117,5 +117,44 @@ namespace AlarmClock
             "10:10,00,00,00" + Environment.NewLine +
             "10:20,00,00,00" + Environment.NewLine +
             "loop";
+
+        public static string LEDTest=
+            "10:01,00,00,00" + Environment.NewLine +
+            "10:02,00,00,00" + Environment.NewLine +
+            "10:04,00,00,00" + Environment.NewLine +
+            "10:08,00,00,00" + Environment.NewLine +
+            "10:10,00,00,00" + Environment.NewLine +
+            "10:20,00,00,00" + Environment.NewLine +
+            "10:40,00,00,00" + Environment.NewLine +
+            "10:80,00,00,00" + Environment.NewLine +
+
+            "10:00,01,00,00" + Environment.NewLine +
+            "10:00,02,00,00" + Environment.NewLine +
+            "10:00,04,00,00" + Environment.NewLine +
+            "10:00,08,00,00" + Environment.NewLine +
+            "10:00,10,00,00" + Environment.NewLine +
+            "10:00,20,00,00" + Environment.NewLine +
+            "10:00,40,00,00" + Environment.NewLine +
+            "10:00,80,00,00" + Environment.NewLine +
+
+            "10:00,00,01,00" + Environment.NewLine +
+            "10:00,00,02,00" + Environment.NewLine +
+            "10:00,00,04,00" + Environment.NewLine +
+            "10:00,00,08,00" + Environment.NewLine +
+            "10:00,00,10,00" + Environment.NewLine +
+            "10:00,00,20,00" + Environment.NewLine +
+            "10:00,00,40,00" + Environment.NewLine +
+            "10:00,00,80,00" + Environment.NewLine +
+
+            "10:00,00,00,01" + Environment.NewLine +
+            "10:00,00,00,02" + Environment.NewLine +
+            "10:00,00,00,04" + Environment.NewLine +
+            "10:00,00,00,08" + Environment.NewLine +
+            "10:00,00,00,10" + Environment.NewLine +
+            "10:00,00,00,20" + Environment.NewLine +
+            "10:00,00,00,40" + Environment.NewLine +
+            "10:00,00,00,80" + Environment.NewLine +
+
+           "loop";
     }
 }

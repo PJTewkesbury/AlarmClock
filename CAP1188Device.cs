@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AlarmClockPi
 {
-    public class CAP1188DeviceI2C : CAP1188Device
+    public class CAP1188DeviceI2C : CAP1188Device, IDisposable
     {
         I2cDevice i2c;
 
@@ -45,6 +45,12 @@ namespace AlarmClockPi
         {
             Span<byte> d = data;
             i2c.Write(d);
+        }
+
+        public void Dispose()
+        {
+            i2c.Dispose();
+            i2c = null;
         }
     }
 
@@ -107,13 +113,6 @@ namespace AlarmClockPi
             return _channels[index];
         }
 
-        //public int touched_pins()
-        //{
-        //    // A tuple of touched state for all pins.//
-        //    byte touch = touched();
-        //    return tuple([bool(touch >> i & 0x01) for i in range(8)])
-        //}
-
         public byte touched()
         {
             // Return 8 bit value representing touch state of all pins.
@@ -124,21 +123,6 @@ namespace AlarmClockPi
             // return only currently touched pins
             return _read_register(_CAP1188_INPUT_STATUS);
         }
-
-        //public int sensitivity {
-        //    get {
-        //        return _SENSITIVITY[_read_register(_CAP1188_SENSITIVTY) >> 4 & 0x07];
-        //    }
-        //    set {
-
-        //        if (!_SENSITIVITY.Contains(value))
-        //            throw new ArgumentOutOfRangeException(nameof(sensitivity), value, "Sensitivty must be one of: {128,64,32,16,8,4,2,1}");
-
-        //        value = _SENSITIVITY.index(value) << 4;
-        //        int new_setting = _read_register(_CAP1188_SENSITIVTY) & 0x8F | value;
-        //        _write_register(_CAP1188_SENSITIVTY, new_setting);
-        //    }
-        //}
 
         public byte thresholds
         {
