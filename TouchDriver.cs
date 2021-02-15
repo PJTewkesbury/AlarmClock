@@ -12,10 +12,10 @@ namespace AlarmClockPi
         GpioController gpio;
         int TouchIRQPinNumber = -1;
 
-        public TouchDriver(I2cDevice i2cDevice, GpioController gpio, int IRQPinNumber=-1)
+        public TouchDriver(I2cDevice i2cDevice, GpioController gpio, int IRQPinNumber=-1, bool AllowMultiTouch=false)
         {
             this.touch = new CAP1188DeviceI2C(i2cDevice);
-            this.touch.InitDevice();
+            this.touch.InitDevice(AllowMultiTouch);
             this.gpio = gpio;
             this.TouchIRQPinNumber = IRQPinNumber;
             if (this.TouchIRQPinNumber > 0)

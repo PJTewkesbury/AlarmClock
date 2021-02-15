@@ -61,6 +61,7 @@ namespace AlarmClockPi
             I2cConnectionSettings LedDisplaySettings = new I2cConnectionSettings(1, 0x70);
             I2cDevice i2cDevice4x7Display = I2cDevice.Create(LedDisplaySettings);
             var clockDisplay = new ClockDisplayDriver(i2cDevice4x7Display);
+            clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
 
             var autoEvent = new AutoResetEvent(false);
             var stateTimer = new Timer(clockDisplay.CheckStatus, autoEvent, 250, 250); // 1000,1000
@@ -68,7 +69,7 @@ namespace AlarmClockPi
             // Init Touch Sensor - Use GPIO12 to detect IRQ from Touch Sensor to avoid polling.
             I2cConnectionSettings touchSettings = new I2cConnectionSettings(1, 0x29);
             I2cDevice touchI2CDevice = I2cDevice.Create(touchSettings);
-            TouchDriver touchDriver = new TouchDriver(touchI2CDevice, gpio,12);
+            TouchDriver touchDriver = new TouchDriver(touchI2CDevice, gpio,12, true);
 
             try
             {
@@ -89,10 +90,13 @@ namespace AlarmClockPi
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
-
-            clockDisplay.Dispose();
-            touchDriver.Dispose();
-            ledRing.Dispose();
+            finally
+            {
+                clockDisplay.Dispose();
+                touchDriver.Dispose();
+                ledRing.Dispose();
+                gpio.Dispose();
+            }
 
             Console.WriteLine("All Done. Press Enter to close");
         }

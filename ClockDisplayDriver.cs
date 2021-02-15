@@ -118,6 +118,7 @@ namespace AlarmClockPi
         public void Dispose()
         {
             display.Write("");
+            display.DisplayOn = false;
             display?.Dispose();
             display = null;
         }

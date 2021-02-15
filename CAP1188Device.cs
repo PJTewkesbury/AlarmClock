@@ -81,7 +81,7 @@ namespace AlarmClockPi
         {
         }
 
-        public void InitDevice()
+        public void InitDevice(bool AllowMultiTouch=false)
         {
             int mid = _read_register(_CAP1188_MANU_ID);
             if (mid != _CAP1188_MID)
@@ -92,7 +92,7 @@ namespace AlarmClockPi
                 throw new ApplicationException($"Failed to find CAP1188! Product ID: 0x{pid.ToString("x2")}");
 
             _write_register(_CAP1188_LED_LINKING, 0xFF); // # turn on LED linking
-            _write_register(_CAP1188_MULTI_TOUCH_CFG, 0x80);  // #  multi touch 0x00 = allow multiple touch, 0x80 - single touch
+            _write_register(_CAP1188_MULTI_TOUCH_CFG, (AllowMultiTouch?0x00:0x80) );  // #  multi touch 0x00 = allow multiple touch, 0x80 - single touch
             _write_register(0x2F, 0x10);  // # turn off input-1-sets-all-inputs feature
 
             // Enable Interrupt
