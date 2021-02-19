@@ -12,6 +12,8 @@ namespace AlarmClockPi
         GpioController gpio;
         int TouchIRQPinNumber = -1;
 
+        public event EventHandler<TouchEventArgs> OnTouched = null;
+
         public TouchDriver(I2cDevice i2cDevice, GpioController gpio, int IRQPinNumber=-1, bool AllowMultiTouch=false)
         {
             this.touch = new CAP1188DeviceI2C(i2cDevice);
@@ -30,8 +32,17 @@ namespace AlarmClockPi
 
         private void TouchIRQHandler(object sender, PinValueChangedEventArgs args)
         {
-            Console.WriteLine($"IRQ on GPIO {args.PinNumber} {args.ChangeType.ToString()}");
-            CheckStatus(null);
+            if (OnTouched != null)
+            {
+                TouchEventArgs touchArgs = new TouchEventArgs();
+                touchArgs.Touched = touch.touched();
+                OnTouched.Invoke(this, touchArgs);
+            }
+            else
+            {
+                Console.WriteLine($"IRQ on GPIO {args.PinNumber} {args.ChangeType.ToString()}");
+                CheckStatus(null);
+            }
         }
 
         public void Dispose()
@@ -52,6 +63,10 @@ namespace AlarmClockPi
             byte b = touch.touched();
             if (b == 0)
                 return;
+
+            PinValue gpio12 = gpio.Read(TouchIRQPinNumber);
+
+            Console.WriteLine($"Touch {b:d3} {(gpio12== PinValue.High?"High":"Low")} ");
 
             if ((b & 0x1) == 1)
             {
@@ -77,5 +92,13 @@ namespace AlarmClockPi
 
             Console.WriteLine($"Touch : {b}");
         }
+    }
+
+    public class TouchEventArgs : EventArgs
+    {
+        /// <summary>
+        /// int containing bit flags of which touch sensors have been pressed.
+        /// </summary>
+        public int Touched { get; set; } = 0;
     }
 }

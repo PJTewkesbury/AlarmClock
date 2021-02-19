@@ -61,7 +61,7 @@ namespace AlarmClockPi
             if (WhatToDisplay == enumShow.Time)
             {
                 DateTime dt = DateTime.Now;
-                Console.WriteLine($"Showing Time {dt.ToString("HH:mm")} ");
+                // Console.WriteLine($"Showing Time {dt.ToString("HH:mm")} ");
 
                 // This should change depending on time of day and daylight hours
                 // display.Brightness = (byte)(1 + ((byte)(dt.Second / 4)));
