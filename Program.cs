@@ -11,6 +11,7 @@ using Iot.Device.Display;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using AlarmClock;
 
 namespace AlarmClockPi
 {
@@ -73,8 +74,8 @@ namespace AlarmClockPi
             clockDisplay = new ClockDisplayDriver(i2cDevice4x7Display);
             clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
 
-            var autoEvent = new AutoResetEvent(false);
-            var stateTimer = new Timer(clockDisplay.CheckStatus, autoEvent, 250, 250); // 1000,1000
+            // var autoEvent = new AutoResetEvent(false);
+            // var stateTimer = new Timer(clockDisplay.CheckStatus, autoEvent, 250, 250); // 1000,1000
 
             // Init Touch Sensor - Use GPIO12 to detect IRQ from Touch Sensor to avoid polling.
             Console.WriteLine("Init Touch Sensor and IRQ on GPIO12");
@@ -118,17 +119,36 @@ namespace AlarmClockPi
             Console.WriteLine("All Done");
         }
 
+        static int aniCount = 0;
         private static void TouchDriver_OnTouched(object sender, TouchEventArgs e)
         {
             Console.WriteLine("Touch Event triggered on IRG");
             int t = e.Touched;
+
             if ((t & 1)==1)
             {
                 Console.WriteLine("Toggle Clock Display");
-                if (Program.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Scanning)
+
+                if (Program.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Animation)
                     Program.clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
                 else if (Program.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Time)
-                    Program.clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Scanning;
+                {
+                    switch (aniCount)
+                    {
+                        case 0:
+                            Program.clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.LEDTest));
+                            break;
+                        case 1:
+                            Program.clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.Scanning));
+                            break;
+                        case 2:
+                            Program.clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.Scanning2));
+                            break;
+                    }
+                    aniCount++;
+                    if (aniCount > 2)
+                        aniCount = 0;
+                }
             }
 
             if ((t & 128) == 128)

@@ -104,57 +104,70 @@ namespace AlarmClock
     public static class LED4x7SegAnimations
     {
         public static string Scanning =
-            "10:01,00,00,00" + Environment.NewLine +
-            "10:00,01,00,00" + Environment.NewLine +
-            "10:00,00,01,00" + Environment.NewLine +
-            "10:00,00,00,01" + Environment.NewLine +
-            "10:00,00,00,02" + Environment.NewLine +
-            "10:00,00,00,04" + Environment.NewLine +
-            "10:00,00,00,08" + Environment.NewLine +
-            "10:00,00,08,00" + Environment.NewLine +
-            "10:00,08,00,00" + Environment.NewLine +
-            "10:08,00,00,00" + Environment.NewLine +
-            "10:10,00,00,00" + Environment.NewLine +
-            "10:20,00,00,00" + Environment.NewLine +
+            "100:30,00,00,00" + Environment.NewLine +
+            "100:06,00,00,00" + Environment.NewLine +
+            "100:00,30,00,00" + Environment.NewLine +
+            "100:00,06,00,00" + Environment.NewLine +
+            "100:00,00,30,00" + Environment.NewLine +
+            "100:00,00,06,00" + Environment.NewLine +
+            "100:00,00,00,30" + Environment.NewLine +
+            "100:00,00,00,06" + Environment.NewLine +
+            "100:00,00,00,30" + Environment.NewLine +
+            "100:00,00,06,00" + Environment.NewLine +
+            "100:00,00,30,00" + Environment.NewLine +
+            "100:00,06,00,00" + Environment.NewLine +
+            "100:00,30,00,00" + Environment.NewLine +
+            "100:06,00,00,00" + Environment.NewLine +
+            "loop";
+
+        public static string Scanning2 =
+            "100:01,00,00,00" + Environment.NewLine +
+            "100:00,01,00,00" + Environment.NewLine +
+            "100:00,00,01,00" + Environment.NewLine +
+            "100:00,00,00,01" + Environment.NewLine +
+            "100:00,00,00,02" + Environment.NewLine +
+            "100:00,00,00,04" + Environment.NewLine +
+            "100:00,00,00,08" + Environment.NewLine +
+            "100:00,00,08,00" + Environment.NewLine +
+            "100:00,08,00,00" + Environment.NewLine +
+            "100:08,00,00,00" + Environment.NewLine +
+            "100:10,00,00,00" + Environment.NewLine +
+            "100:20,00,00,00" + Environment.NewLine +
             "loop";
 
         public static string LEDTest=
-            "10:01,00,00,00" + Environment.NewLine +
-            "10:02,00,00,00" + Environment.NewLine +
-            "10:04,00,00,00" + Environment.NewLine +
-            "10:08,00,00,00" + Environment.NewLine +
-            "10:10,00,00,00" + Environment.NewLine +
-            "10:20,00,00,00" + Environment.NewLine +
-            "10:40,00,00,00" + Environment.NewLine +
-            "10:80,00,00,00" + Environment.NewLine +
-
-            "10:00,01,00,00" + Environment.NewLine +
-            "10:00,02,00,00" + Environment.NewLine +
-            "10:00,04,00,00" + Environment.NewLine +
-            "10:00,08,00,00" + Environment.NewLine +
-            "10:00,10,00,00" + Environment.NewLine +
-            "10:00,20,00,00" + Environment.NewLine +
-            "10:00,40,00,00" + Environment.NewLine +
-            "10:00,80,00,00" + Environment.NewLine +
-
-            "10:00,00,01,00" + Environment.NewLine +
-            "10:00,00,02,00" + Environment.NewLine +
-            "10:00,00,04,00" + Environment.NewLine +
-            "10:00,00,08,00" + Environment.NewLine +
-            "10:00,00,10,00" + Environment.NewLine +
-            "10:00,00,20,00" + Environment.NewLine +
-            "10:00,00,40,00" + Environment.NewLine +
-            "10:00,00,80,00" + Environment.NewLine +
-
-            "10:00,00,00,01" + Environment.NewLine +
-            "10:00,00,00,02" + Environment.NewLine +
-            "10:00,00,00,04" + Environment.NewLine +
-            "10:00,00,00,08" + Environment.NewLine +
-            "10:00,00,00,10" + Environment.NewLine +
-            "10:00,00,00,20" + Environment.NewLine +
-            "10:00,00,00,40" + Environment.NewLine +
-            "10:00,00,00,80" + Environment.NewLine +
-
-           "loop";
+            "100:01,00,00,00" + Environment.NewLine + // Digit 1
+            "100:02,00,00,00" + Environment.NewLine +
+            "100:04,00,00,00" + Environment.NewLine +
+            "100:08,00,00,00" + Environment.NewLine +
+            "100:10,00,00,00" + Environment.NewLine +
+            "100:20,00,00,00" + Environment.NewLine +
+            "100:40,00,00,00" + Environment.NewLine +
+            "100:80,00,00,00" + Environment.NewLine + // Digit 2
+            "100:00,01,00,00" + Environment.NewLine +
+            "100:00,02,00,00" + Environment.NewLine +
+            "100:00,04,00,00" + Environment.NewLine +
+            "100:00,08,00,00" + Environment.NewLine +
+            "100:00,10,00,00" + Environment.NewLine +
+            "100:00,20,00,00" + Environment.NewLine +
+            "100:00,40,00,00" + Environment.NewLine +
+            "100:00,80,00,00" + Environment.NewLine +
+            "100:00,00,01,00" + Environment.NewLine + // Digit 3
+            "100:00,00,02,00" + Environment.NewLine +
+            "100:00,00,04,00" + Environment.NewLine +
+            "100:00,00,08,00" + Environment.NewLine +
+            "100:00,00,10,00" + Environment.NewLine +
+            "100:00,00,20,00" + Environment.NewLine +
+            "100:00,00,40,00" + Environment.NewLine +
+            "100:00,00,80,00" + Environment.NewLine +
+            "100:00,00,00,01" + Environment.NewLine + // Digit 4
+            "100:00,00,00,02" + Environment.NewLine +
+            "100:00,00,00,04" + Environment.NewLine +
+            "100:00,00,00,08" + Environment.NewLine +
+            "100:00,00,00,10" + Environment.NewLine +
+            "100:00,00,00,20" + Environment.NewLine +
+            "100:00,00,00,40" + Environment.NewLine +
+            "100:00,00,00,80" + Environment.NewLine +
+            "loop";
     }
 }
