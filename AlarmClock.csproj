@@ -5,7 +5,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SshDeployHost>192.168.0.18</SshDeployHost>
-    <SshDeployTargetPath>/Apps/Playground/</SshDeployTargetPath>
+    <SshDeployTargetPath>/Apps/AlarmClock/</SshDeployTargetPath>
     <SshDeployUsername>root</SshDeployUsername>
     <SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
     <SshDeployClean />
@@ -15,7 +15,7 @@
   <Target Condition="$(BuildingInsideSshDeploy) ==''" Name="PostBuild" AfterTargets="PostBuildEvent">
     <Message Text="Post Build Event - Push to Rpi" />
     <Exec Command="cd $(ProjectDir)&#xD;&#xA;echo %25DATE%25 %25TIME%25 &gt;&gt; &quot;$(TargetDir)sshdeploy.ready&quot;&#xD;&#xA;" />
-    <Exec Command="dotnet-sshdeploy push -post &quot;dotnet run /Apps/Playground/ReSpeakerLEDs.dll&quot;" />
+    <Exec Command="dotnet-sshdeploy push" />
     <Message Text="Post Build Event - Push to Rpi - Complete" />
   </Target>
 

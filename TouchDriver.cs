@@ -13,6 +13,7 @@ namespace AlarmClockPi
         int TouchIRQPinNumber = -1;
 
         public event EventHandler<TouchEventArgs> OnTouched = null;
+        PinValue pv;
 
         public TouchDriver(I2cDevice i2cDevice, GpioController gpio, int IRQPinNumber=-1, bool AllowMultiTouch=false)
         {
@@ -24,10 +25,31 @@ namespace AlarmClockPi
             {
                 if (this.gpio.IsPinOpen(TouchIRQPinNumber))
                     this.gpio.ClosePin(TouchIRQPinNumber);
-                this.gpio.OpenPin(TouchIRQPinNumber, PinMode.Input);
-
+                this.gpio.OpenPin(TouchIRQPinNumber, PinMode.InputPullDown);
                 gpio.RegisterCallbackForPinValueChangedEvent(TouchIRQPinNumber, PinEventTypes.Falling, TouchIRQHandler);
             }
+
+            // Needed to make IRQ work correctly
+            byte t = touch.touched();
+            Console.WriteLine($"Touch : {t.ToString("D3")} ");
+            if (TouchIRQPinNumber > 0)
+            {
+                PinValue pvNew = this.gpio.Read(TouchIRQPinNumber);
+                Console.WriteLine($"GPIO12 Changed to : {(pvNew == PinValue.Low ? "Low" : "High")} ");
+            }
+
+            //Task.Run(()=> {
+            //    byte t = touch.touched();
+            //    Console.WriteLine($"Touch : {t.ToString("D3")} ");
+
+            //    PinValue pvNew = this.gpio.Read(TouchIRQPinNumber);
+            //    if (pvNew!=pv)
+            //    {
+            //        Console.WriteLine($"GPIO12 Changed to : {(pvNew==PinValue.Low?"Low":"High")} ");
+            //        pv = pvNew;
+            //    }
+            //    Thread.Sleep(10);
+            //});
         }
 
         private void TouchIRQHandler(object sender, PinValueChangedEventArgs args)
