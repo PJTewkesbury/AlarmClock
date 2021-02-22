@@ -122,7 +122,7 @@ namespace AlarmClockPi
         static int aniCount = 0;
         private static void TouchDriver_OnTouched(object sender, TouchEventArgs e)
         {
-            Console.WriteLine("Touch Event triggered on IRG");
+            Console.WriteLine("Touch Event triggered on IRQ");
             int t = e.Touched;
 
             if ((t & 1)==1)
