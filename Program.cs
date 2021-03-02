@@ -12,6 +12,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using AlarmClock;
+using System.Net;
+using Libmpc;
 
 namespace AlarmClockPi
 {
@@ -26,6 +28,7 @@ namespace AlarmClockPi
         public static LEDRingAnimation alexaEnd = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaEnd);
 
         public static ClockDisplayDriver clockDisplay;
+        public static Libmpc.Mpc mpc;
 
         static void Main(string[] args)
         {
@@ -86,6 +89,13 @@ namespace AlarmClockPi
             //var touchTimer = new Timer(touchDriver.CheckStatus, autoEvent2, 250, 250); // 1000,1000
             touchDriver.OnTouched += TouchDriver_OnTouched;
 
+            // Init the music player so we can play music when it is time for the alarm to go off.
+            var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
+            mpc= new Libmpc.Mpc();
+            mpc.OnConnected += Mpc_OnConnected;
+            mpc.OnDisconnected += Mpc_OnDisconnected;
+            mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
+
             try
             {
                 Console.WriteLine("Show Alexa wait and end");
@@ -119,11 +129,34 @@ namespace AlarmClockPi
             Console.WriteLine("All Done");
         }
 
+        private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void Mpc_OnConnected(Libmpc.Mpc connection)
+        {
+            // Remove old playb list
+            connection.Clear();
+
+            // Add UCB1
+            connection.Add("http://edge-audio-05-gos2.sharp-stream.com:80/ucbuk.mp3");
+        }
+
         static int aniCount = 0;
         private static void TouchDriver_OnTouched(object sender, TouchEventArgs e)
         {
             Console.WriteLine("Touch Event triggered on IRQ");
             int t = e.Touched;
+
+            if ((t & 129)==129)
+            {
+                if(mpc.Status().State== MpdState.Play)
+                    mpc.Stop();
+                else
+                    mpc.Play();
+                return;
+            }
 
             if ((t & 1)==1)
             {
