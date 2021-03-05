@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Device.Gpio;
 using System.Device.I2c;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,7 +18,11 @@ namespace AlarmClockPi
         public event EventHandler<TouchEventArgs> OnTouched = null;
         PinValue pv;
 
-        public TouchDriver(I2cDevice i2cDevice, GpioController gpio, int IRQPinNumber=-1, bool AllowMultiTouch=false)
+        public Subject<byte> rxTouchInternal { get; private set; } = null;
+
+        public IObservable<byte> rxTouch { get; private set; } = null;
+
+        public TouchDriver(I2cDevice i2cDevice, GpioController gpio, int IRQPinNumber = -1, bool AllowMultiTouch = false)
         {
             this.touch = new CAP1188DeviceI2C(i2cDevice);
             this.touch.InitDevice(AllowMultiTouch);
@@ -38,6 +45,11 @@ namespace AlarmClockPi
                 Console.WriteLine($"GPIO12 Changed to : {(pvNew == PinValue.Low ? "Low" : "High")} ");
             }
 
+            rxTouchInternal = new Subject<byte>();
+
+            // Debounce touch input
+            rxTouch = rxTouchInternal.Throttle(TimeSpan.FromMilliseconds(100));
+
             //Task.Run(()=> {
             //    byte t = touch.touched();
             //    Console.WriteLine($"Touch : {t.ToString("D3")} ");
@@ -50,21 +62,27 @@ namespace AlarmClockPi
             //    }
             //    Thread.Sleep(10);
             //});
+            //
         }
 
         private void TouchIRQHandler(object sender, PinValueChangedEventArgs args)
         {
+            // Send touch byte to Observerable
+            byte t = touch.touched();
+            Console.WriteLine($"IRQ on GPIO {args.PinNumber} {args.ChangeType.ToString()} : Touch Value : {t}");
+            rxTouchInternal.OnNext(t);
+
             if (OnTouched != null)
             {
                 TouchEventArgs touchArgs = new TouchEventArgs();
-                touchArgs.Touched = touch.touched();
+                touchArgs.Touched = t;
                 OnTouched.Invoke(this, touchArgs);
             }
-            else
-            {
-                Console.WriteLine($"IRQ on GPIO {args.PinNumber} {args.ChangeType.ToString()}");
-                CheckStatus(null);
-            }
+            //else
+            //{
+            //    Console.WriteLine($"IRQ on GPIO {args.PinNumber} {args.ChangeType.ToString()}");
+            //    CheckStatus(null);
+            //}
         }
 
         public void Dispose()

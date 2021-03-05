@@ -87,7 +87,13 @@ namespace AlarmClockPi
             TouchDriver touchDriver = new TouchDriver(touchI2CDevice, gpio,12, true);
             //var autoEvent2 = new AutoResetEvent(false);
             //var touchTimer = new Timer(touchDriver.CheckStatus, autoEvent2, 250, 250); // 1000,1000
-            touchDriver.OnTouched += TouchDriver_OnTouched;
+            // touchDriver.OnTouched += TouchDriver_OnTouched;
+            var x = touchDriver.rxTouch.Subscribe(r=>
+            {
+                Console.WriteLine($"Debounced Touch : {r}");
+                ProcessTouch(r);
+            });
+            x.Dispose();
 
             // Init the music player so we can play music when it is time for the alarm to go off.
             var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
@@ -95,6 +101,7 @@ namespace AlarmClockPi
             mpc.OnConnected += Mpc_OnConnected;
             mpc.OnDisconnected += Mpc_OnDisconnected;
             mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
+            mpc.Connection.AutoConnect = true;
 
             try
             {
@@ -131,11 +138,13 @@ namespace AlarmClockPi
 
         private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("MPC Disconnected");
         }
 
         private static void Mpc_OnConnected(Libmpc.Mpc connection)
         {
+            Console.WriteLine("MPC Connected");
+
             // Remove old playb list
             connection.Clear();
 
@@ -147,8 +156,12 @@ namespace AlarmClockPi
         private static void TouchDriver_OnTouched(object sender, TouchEventArgs e)
         {
             Console.WriteLine("Touch Event triggered on IRQ");
-            int t = e.Touched;
+        }
 
+        public static object RingLock = new object();
+        public static void ProcessTouch(byte t)
+        {
+            Console.WriteLine($"Process Touch : {t}");
             if ((t & 129)==129)
             {
                 if(mpc.Status().State== MpdState.Play)
@@ -188,8 +201,11 @@ namespace AlarmClockPi
             {
                 Console.WriteLine("Show Alexa Wake and End");
                 Task.Run(() => {
-                    Program.ledRing.PlayAnimation(Program.alexaWake);
-                    Program.ledRing.PlayAnimation(Program.alexaEnd);
+                    lock (RingLock)
+                    {
+                        Program.ledRing.PlayAnimation(Program.alexaWake);
+                        Program.ledRing.PlayAnimation(Program.alexaEnd);
+                    }
                 });
             }
         }
