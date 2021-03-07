@@ -88,12 +88,10 @@ namespace AlarmClockPi
             //var autoEvent2 = new AutoResetEvent(false);
             //var touchTimer = new Timer(touchDriver.CheckStatus, autoEvent2, 250, 250); // 1000,1000
             // touchDriver.OnTouched += TouchDriver_OnTouched;
-            var x = touchDriver.rxTouch.Subscribe(r=>
-            {
-                Console.WriteLine($"Debounced Touch : {r}");
+            var touchObservable = touchDriver.rxTouch.Subscribe(r=>
+            {               
                 ProcessTouch(r);
-            });
-            x.Dispose();
+            });           
 
             // Init the music player so we can play music when it is time for the alarm to go off.
             var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
@@ -131,6 +129,7 @@ namespace AlarmClockPi
                 touchDriver.Dispose();
                 ledRing.Dispose();
                 gpio.Dispose();
+                touchObservable.Dispose();
             }
 
             Console.WriteLine("All Done");
@@ -161,7 +160,7 @@ namespace AlarmClockPi
         public static object RingLock = new object();
         public static void ProcessTouch(byte t)
         {
-            Console.WriteLine($"Process Touch : {t}");
+            Console.WriteLine($"Debounced Touch : {t}");            
             if ((t & 129)==129)
             {
                 if(mpc.Status().State== MpdState.Play)
@@ -195,6 +194,7 @@ namespace AlarmClockPi
                     if (aniCount > 2)
                         aniCount = 0;
                 }
+                return;
             }
 
             if ((t & 128) == 128)
@@ -207,6 +207,7 @@ namespace AlarmClockPi
                         Program.ledRing.PlayAnimation(Program.alexaEnd);
                     }
                 });
+                return;
             }
         }
     }
