@@ -18,16 +18,23 @@ namespace AlarmClock
     /// </summary>
     public class AlexaConnector : IDisposable
     {
-        private MemoryMappedFile mmf;
-        private Stream stream;
+        FileStream fs;
+        MemoryMappedFile mmf;
+        MemoryMappedViewAccessor acc;
+        Stream stream;
+
         public Subject<AlexaMessage> MessageQueue { get; set; }
         private AutoResetEvent autoEvent;
         private Timer timer;    
 
         public AlexaConnector()
         {
-            mmf = MemoryMappedFile.CreateFromFile("/tmp/AlarmClock", FileMode.OpenOrCreate, "/tmp/AlarmClock");
-            stream = mmf.CreateViewStream();
+            string path = "/tmp/alarmclock";
+            byte[] buf = new byte[128];
+            File.WriteAllBytes(path,buf);
+            FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);            
+            mmf = MemoryMappedFile.CreateFromFile(fs, null, 128, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, true);
+            acc = mmf.CreateViewAccessor();
 
             MessageQueue = new Subject<AlexaMessage>();
 
@@ -37,11 +44,14 @@ namespace AlarmClock
 
         public void CheckStatus(Object stateInfo)
         {
-            // stream.Position = 0;
-            int data = stream.ReadByte();
+            Console.WriteLine($"Read Shared Memory");
+            int data = acc.ReadInt32(0);
             if (data == -1)
                 return;
+            if (data == 0)
+                return;
 
+            Console.WriteLine($"New Alexa Message : {data}");
             AlexaMessage msg = new AlexaMessage((byte)data);            
             MessageQueue.OnNext(msg);
         }
