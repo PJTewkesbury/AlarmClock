@@ -29,7 +29,7 @@ namespace AlarmClockPi
 
         public static ClockDisplayDriver clockDisplay;
         public static Libmpc.Mpc mpc;
-
+        public static AlexaConnector alexaConnector;
         static void Main(string[] args)
         {
             Console.WriteLine($"AlarmClock Test V1.3");
@@ -91,7 +91,25 @@ namespace AlarmClockPi
             var touchObservable = touchDriver.rxTouch.Subscribe(r=>
             {               
                 ProcessTouch(r);
-            });           
+            });
+
+            alexaConnector = new AlexaConnector();
+            alexaConnector.MessageQueue.Subscribe(r => {
+                switch(r.AlexaMessageType)
+                {
+                    case enumAlexaMessageId.Listening: ledRing.PlayAnimation(Program.alexaWake);
+                        break;
+                    case enumAlexaMessageId.Thinking:
+                        ledRing.PlayAnimation(Program.alexaThinking);
+                        break;
+                    case enumAlexaMessageId.Speaking:
+                        ledRing.PlayAnimation(Program.alexaTalking);
+                        break;
+                    case enumAlexaMessageId.Finished:
+                        ledRing.PlayAnimation(Program.alexaEnd);
+                        break;
+                }
+            });
 
             // Init the music player so we can play music when it is time for the alarm to go off.
             var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
