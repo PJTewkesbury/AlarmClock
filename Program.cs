@@ -29,6 +29,8 @@ namespace AlarmClockPi
 
         public static ClockDisplayDriver clockDisplay;
         public static Libmpc.Mpc mpc;
+        public static MQTT mqtt;
+
         // public static AlexaConnector alexaConnector;
         static void Main(string[] args)
         {
@@ -89,39 +91,49 @@ namespace AlarmClockPi
             //var touchTimer = new Timer(touchDriver.CheckStatus, autoEvent2, 250, 250); // 1000,1000
             // touchDriver.OnTouched += TouchDriver_OnTouched;
             var touchObservable = touchDriver.rxTouch.Subscribe(r=>
-            {               
+            {
                 ProcessTouch(r);
             });
 
-            MQTT mqtt = new MQTT();
-            Task.Run(async () => {
-                mqtt.Init();
-            });            
-            //alexaConnector = new AlexaConnector();
-            //alexaConnector.MessageQueue.Subscribe(r => {
-            //    switch(r.AlexaMessageType)
-            //    {
-            //        case enumAlexaMessageId.Listening: ledRing.PlayAnimation(Program.alexaWake);
-            //            break;
-            //        case enumAlexaMessageId.Thinking:
-            //            ledRing.PlayAnimation(Program.alexaThinking);
-            //            break;
-            //        case enumAlexaMessageId.Speaking:
-            //            ledRing.PlayAnimation(Program.alexaTalking);
-            //            break;
-            //        case enumAlexaMessageId.Finished:
-            //            ledRing.PlayAnimation(Program.alexaEnd);
-            //            break;
-            //    }
-            //});
-
             // Init the music player so we can play music when it is time for the alarm to go off.
             var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
-            mpc= new Libmpc.Mpc();
+            mpc = new Libmpc.Mpc();
             mpc.OnConnected += Mpc_OnConnected;
             mpc.OnDisconnected += Mpc_OnDisconnected;
             mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
             mpc.Connection.AutoConnect = true;
+
+            mqtt = new MQTT("192.168.0.18");
+            mqtt.MQTTMessagesRecevied.Subscribe((s)=> {
+                Console.WriteLine(s);
+                if (s.StartsWith("AlexaWakeup", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    ledRing.PlayAnimation(alexaWake);
+                }
+                if (s.StartsWith("AlexaEnd", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    ledRing.PlayAnimation(alexaEnd);
+                }
+
+                if (s.StartsWith("Play", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (mpc.Status().State != MpdState.Play)
+                        mpc.Play();
+                    return;
+                }
+                if (s.StartsWith("Pause", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (mpc.Status().State != MpdState.Pause)
+                        mpc.Pause(true);
+                    return;
+                }
+                if (s.StartsWith("Stop", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (mpc.Status().State != MpdState.Stop)
+                        mpc.Stop();
+                    return;
+                }
+            });
 
             try
             {
@@ -182,13 +194,13 @@ namespace AlarmClockPi
         public static object RingLock = new object();
         public static void ProcessTouch(byte t)
         {
-            Console.WriteLine($"Debounced Touch : {t}");            
+            Console.WriteLine($"Debounced Touch : {t}");
             if ((t & 129)==129)
             {
                 if(mpc.Status().State== MpdState.Play)
-                    mpc.Stop();
+                    mqtt.SendMessage("AlarmClock", "Stop");
                 else
-                    mpc.Play();
+                    mqtt.SendMessage("AlarmClock", "Play");
                 return;
             }
 

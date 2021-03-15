@@ -22,34 +22,18 @@ namespace AlarmClock
     /// </summary>
     public class MQTT
     {
-        /// <summary>
-        /// The managed publisher client.
-        /// </summary>
-        private IManagedMqttClient managedMqttClientPublisher;
+        private IManagedMqttClient mqttClient;
 
-        /// <summary>
-        /// The managed subscriber client.
-        /// </summary>
-        private IManagedMqttClient managedMqttClientSubscriber;
-
-        /// <summary>
-        /// The MQTT server.
-        /// </summary>
-        private IMqttServer mqttServer;
-
-        /// <summary>
-        /// The port.
-        /// </summary>
-        private string port = "1883";
+        private int port = 1883;
 
         public Subject<String> MQTTMessagesRecevied { get; set; } = null;
 
-        public MQTT()
-        {            
+        public MQTT(string Server="localhost", string Username="", string Password="")
+        {
+            Init(Server, port, Username, Password);
         }
 
-
-        public async void Init()
+        public void Init(string Server, int port, string Username, string Password)
         {
             var mqttFactory = new MqttFactory();
 
@@ -67,8 +51,8 @@ namespace AlarmClock
                 ProtocolVersion = MqttProtocolVersion.V311,
                 ChannelOptions = new MqttClientTcpOptions
                 {
-                    Server = "192.168.0.18",
-                    Port = 1883,
+                    Server = Server,
+                    Port = port,
                     TlsOptions = tlsOptions
                 }
             };
@@ -80,40 +64,28 @@ namespace AlarmClock
 
             options.Credentials = new MqttClientCredentials
             {
-                Username = "",
-                Password = Encoding.UTF8.GetBytes("")
+                Username = Username,
+                Password = Encoding.UTF8.GetBytes(Password)
             };
 
             options.CleanSession = true;
             options.KeepAlivePeriod = TimeSpan.FromSeconds(5);
-            this.managedMqttClientPublisher = mqttFactory.CreateManagedMqttClient();
-            this.managedMqttClientPublisher.UseApplicationMessageReceivedHandler(this.HandleReceivedApplicationMessage);
-            this.managedMqttClientPublisher.ConnectedHandler = new MqttClientConnectedHandlerDelegate(OnPublisherConnected);
-            this.managedMqttClientPublisher.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(OnPublisherDisconnected);
-
-            this.managedMqttClientSubscriber = mqttFactory.CreateManagedMqttClient();
-            this.managedMqttClientSubscriber.ConnectedHandler = new MqttClientConnectedHandlerDelegate(OnSubscriberConnected);
-            this.managedMqttClientSubscriber.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(OnSubscriberDisconnected);
-            this.managedMqttClientSubscriber.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(this.OnSubscriberMessageReceived);
+            this.mqttClient = mqttFactory.CreateManagedMqttClient();
+            this.mqttClient.UseApplicationMessageReceivedHandler(this.HandleReceivedApplicationMessage);
+            this.mqttClient.ConnectedHandler = new MqttClientConnectedHandlerDelegate(OnConnected);
+            this.mqttClient.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(OnDisconnected);
 
             MQTTMessagesRecevied = new Subject<string>();
 
-            await Task.Run(async () =>
+            Task.Run(async () =>
             {
-                await this.managedMqttClientPublisher.StartAsync(
-                    new ManagedMqttClientOptions
-                    {
-                        ClientOptions = options
-                    });
-
-                await this.managedMqttClientSubscriber.StartAsync(
+                await this.mqttClient.StartAsync(
                     new ManagedMqttClientOptions
                     {
                         ClientOptions = options
                     });
             });
         }
-
 
         public async void SendMessage(string Topic, string messageString)
         {
@@ -122,54 +94,35 @@ namespace AlarmClock
                 var payload = Encoding.UTF8.GetBytes(messageString);
                 var message = new MqttApplicationMessageBuilder().WithTopic(Topic.Trim()).WithPayload(payload).WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce).WithRetainFlag().Build();
 
-                if (this.managedMqttClientPublisher != null)
+                if (this.mqttClient != null)
                 {
-                    await this.managedMqttClientPublisher.PublishAsync(message);
+                    await this.mqttClient.PublishAsync(message);
                 }
             }
             catch (Exception ex)
             {
+                MQTTMessagesRecevied.OnNext($"Error Occurred : {ex.Message}");
                 Console.WriteLine($"Error Occurred : {ex.Message}");
             }
         }
 
-        private static void OnPublisherConnected(MqttClientConnectedEventArgs x)
+        private void OnConnected(MqttClientConnectedEventArgs x)
         {
-            Console.WriteLine($"OnPublisherConnected");
+            MQTTMessagesRecevied.OnNext("OnConnected");
+            mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("AlarmClock").Build());
         }
 
-        private static void OnPublisherDisconnected(MqttClientDisconnectedEventArgs x)
+        private void OnDisconnected(MqttClientDisconnectedEventArgs x)
         {
-            Console.WriteLine($"OnPublisherDisconnected");
-        }
-
-
-
-        private static void OnSubscriberConnected(MqttClientConnectedEventArgs x)
-        {
-            Console.WriteLine($"OnSubscriberConnected");
-        }
-
-
-        private static void OnSubscriberDisconnected(MqttClientDisconnectedEventArgs x)
-        {
-            Console.WriteLine($"OnSubscriberDisconnected");
+            MQTTMessagesRecevied.OnNext("OnDisconnected");
         }
 
         private void HandleReceivedApplicationMessage(MqttApplicationMessageReceivedEventArgs x)
         {
-            var item = $"Timestamp: {DateTime.Now:O} | Topic: {x.ApplicationMessage.Topic} | Payload: {x.ApplicationMessage.ConvertPayloadToString()} | QoS: {x.ApplicationMessage.QualityOfServiceLevel}";
-            Console.WriteLine($"HandleReceivedApplicationMessage {item}");
+            var item = $"HandleReceivedApplicationMessage Timestamp: {DateTime.Now:O} | Topic: {x.ApplicationMessage.Topic} | Payload: {x.ApplicationMessage.ConvertPayloadToString()} | QoS: {x.ApplicationMessage.QualityOfServiceLevel}";
+            Console.WriteLine(item);
 
-            MQTTMessagesRecevied.OnNext(item);
-        }
-
-        private void OnSubscriberMessageReceived(MqttApplicationMessageReceivedEventArgs x)
-        {
-            var item = $"Timestamp: {DateTime.Now:O} | Topic: {x.ApplicationMessage.Topic} | Payload: {x.ApplicationMessage.ConvertPayloadToString()} | QoS: {x.ApplicationMessage.QualityOfServiceLevel}";
-            Console.WriteLine($"OnSubscriberMessageReceived {item}");
-
-            MQTTMessagesRecevied.OnNext(item);
+            MQTTMessagesRecevied.OnNext(x.ApplicationMessage.ConvertPayloadToString());
         }
     }
 }
