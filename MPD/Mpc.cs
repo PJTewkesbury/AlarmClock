@@ -1,6 +1,6 @@
 /*
  * Copyright 2008 Matthias Sessler
- * 
+ *
  * This file is part of LibMpc.net.
  *
  * LibMpc.net is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@ namespace Libmpc
         public MpcConnection Connection
         {
             get { return this.connection; }
-            set 
+            set
             {
                 if (this.connection != null)
                 {
@@ -224,7 +224,7 @@ namespace Libmpc
         public int Update()
         {
             MpdResponse response = this.getConnection().Exec("update");
-            
+
             if( response.Message.Count != 1 )
                 throw new InvalidMpdResponseException("Respose message has more than one line.");
 
@@ -352,8 +352,8 @@ namespace Libmpc
                 throw new MpdResponseException(response.ErrorCode, response.ErrorMessage);
 
             return new MpdDirectoryListing(
-                MpdFile.buildList(response), 
-                response.getAttributeValueList("directory"), 
+                MpdFile.buildList(response),
+                response.getAttributeValueList("directory"),
                 response.getAttributeValueList("playlist"));
         }
         /// <summary>
@@ -616,7 +616,7 @@ namespace Libmpc
         /// </summary>
         /// <param name="version"></param>
         /// <returns>
-        /// The ids and positions of the changed tracks in the playlist since the given version as KeyValuePairs. 
+        /// The ids and positions of the changed tracks in the playlist since the given version as KeyValuePairs.
         /// The key is the index and the id is the value.
         /// </returns>
         public List<KeyValuePair<int, int>> PlChangesPosId( int version )
@@ -1024,7 +1024,7 @@ namespace Libmpc
             this.getConnection().Exec("clearerror");
         }
         /// <summary>
-        /// Returns which commands the current user has access to. 
+        /// Returns which commands the current user has access to.
         /// </summary>
         /// <returns>The commands the current user has access to.</returns>
         public List<string> Commands()
@@ -1037,7 +1037,7 @@ namespace Libmpc
             return response.getValueList();
         }
         /// <summary>
-        /// Returns which commands the current user does has access to. 
+        /// Returns which commands the current user does has access to.
         /// </summary>
         /// <returns>The commands the current user does has access to.</returns>
         public List<string> NotCommands()
@@ -1153,6 +1153,9 @@ namespace Libmpc
         public MpdStatus Status()
         {
             MpdResponse response = this.getConnection().Exec("status");
+
+            if (response==null)
+                throw new MpdResponseException(999, "No response received");
 
             if (response.IsError)
                 throw new MpdResponseException(response.ErrorCode, response.ErrorMessage);

@@ -1,6 +1,6 @@
 /*
  * Copyright 2008 Matthias Sessler
- * 
+ *
  * This file is part of LibMpc.net.
  *
  * LibMpc.net is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Libmpc
 {
@@ -132,10 +133,9 @@ namespace Libmpc
 					throw new AlreadyConnectedException();
 
 				this.tcpClient = new TcpClient(
-					this.ipEndPoint.Address.ToString(), 
+					this.ipEndPoint.Address.ToString(),
 					this.ipEndPoint.Port);
 				this.networkStream = this.tcpClient.GetStream();
-
 				this.reader = new StreamReader(this.networkStream, Encoding.UTF8);
 				this.writer = new StreamWriter(this.networkStream, new UTF8Encoding(false));
 				this.writer.NewLine = "\n";
@@ -188,22 +188,32 @@ namespace Libmpc
 				if (command.Contains("\n"))
 					throw new ArgumentException("command contains newline");
 
+				Console.WriteLine($"MPD Exec : Check Connection");
 				this.CheckConnected();
 
 				try
 				{
+					Console.WriteLine($"MPD Exec : Send Command : {command}");
 					this.writer.WriteLine(command);
 					this.writer.Flush();
 
-					return this.readResponse();
+					Console.WriteLine($"MPD Exec : Read Response");
+					var r = this.readResponse();
+
+					Console.WriteLine($"MPD Exec : Response : {r}");
+
+					return r;
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
+					Console.WriteLine($"MPD Exec {ex.Message}");
 					try { this.Disconnect(); }
-					catch (Exception) { }
+					catch (Exception ex2) {
+						Console.WriteLine($"MPD Exec 2 : {ex2.Message}");
+					}
 					throw;
 				}
-				
+
 			}
 		}
 		/// <summary>
@@ -256,7 +266,7 @@ namespace Libmpc
 			}
 		}
 
-		private void CheckConnected()
+		public void CheckConnected()
 		{
 			if (!this.Connected)
 			{
@@ -287,7 +297,20 @@ namespace Libmpc
 		private MpdResponse readResponse()
 		{
 			List<string> ret = new List<string>();
+
+			if (reader == null)
+				return null;
+
+			int cnt = 0;
+			while (reader.EndOfStream && cnt<10)
+            {
+				Thread.Sleep(10);
+				cnt++;
+            };
 			string line = this.reader.ReadLine();
+			if (String.IsNullOrWhiteSpace(line))
+				return null;
+
 			while (!(line.Equals(OK) || line.StartsWith(ACK)))
 			{
 				ret.Add(line);
@@ -312,7 +335,7 @@ namespace Libmpc
 			}
 		}
 
-		private void ClearConnectionFields() 
+		private void ClearConnectionFields()
 		{
 			this.tcpClient = null;
 			this.networkStream = null;
