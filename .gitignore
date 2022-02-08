@@ -3,3 +3,5 @@
 ################################################################################
 
 /AlarmClockWeb/bin/Debug/net5.0
+/pvrecorder/sdk/dotnet/PvRecorder/bin/Debug
+/rhino/binding/dotnet/Rhino/bin/Debug
