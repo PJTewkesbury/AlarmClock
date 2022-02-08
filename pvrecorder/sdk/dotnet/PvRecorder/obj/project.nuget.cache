@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "VrI2YVN/uB9n8C0Ba3+6ffI/NPFL/X5YqFiPCVJmgpnrcUdTNQ3tIZ2zgtWNWMFBcE1Jim884mj5b71tk1BdcA==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\Repos\\AlarmClock\\pvrecorder\\sdk\\dotnet\\PvRecorder\\PvRecorder.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\pjtew\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\pjtew\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,57 @@
+context:
+  expressions:
+    TurnAlarmOn:
+      - turn (the) alarm on
+      - set (the) alarm
+      - Alarm on
+    TurnAlarmOff:
+      - cancel (the) alarm
+      - turn (the) alarm off
+      - Alarm off
+      - Cancel alarm
+    Snooze:
+      - Snooze (alarm)
+    TurnRadioOn:
+      - play radio
+      - (turn) (the) radio on
+      - radio on
+      - play (the) radio
+    TurnRadioOff:
+      - cancel (the) radio
+      - turn radio off
+      - radio off
+      - turn (the) radio off
+      - stop (the) radio
+    DecreaseVolume:
+      - decrease volume
+      - decrease volume by $pv.SingleDigitInteger:volumeChange
+      - volume down
+      - turn the volume down
+      - please turn the volume down
+      - decrease the volume
+    IncreaseVolume:
+      - increase volume
+      - increase (the) volume by $pv.SingleDigitInteger:volumeChange
+      - volume up
+      - increase the volume
+      - turn the volume up
+    SetVolume:
+      - Set (the) volume to $pv.Percent:volumeChange
+      - volume (to) $pv.Percent:volumeChange
+    SetAlarmTime:
+      - Set alarm (time) [for,to] $pv.TwoDigitInteger:hour
+        $pv.TwoDigitInteger:minute
+    SetRadioStation:
+      - Set radio to $pv.Alphabetic:radioStation
+    WhatIsTheTime:
+      - time
+      - what is the time
+      - what time is it
+      - what's the time
+    WhatIsTheDate:
+      - what date is it
+      - date
+      - what is the date
+      - what is the current date
+  slots: {}
+  macros: {}

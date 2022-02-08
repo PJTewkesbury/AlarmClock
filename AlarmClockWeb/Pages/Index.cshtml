@@ -1,0 +1,46 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Settings";
+}
+<div class="container-fluid">
+    <div class="row">
+        <form method="post">
+            <div class="mb-3">
+                <label for="AlarmTime" class="form-label">Alarm Time</label>
+                <input type="time" asp-for="AlarmTime" class="form-control" id="AlarmTime" aria-describedby="AlarmTimeHelp">
+                <div id="AlarmTimeHelp" class="form-text">The time to turn on the selected radio station</div>
+            </div>
+            <div class="mb-3">
+                <label for="SnoozeDuration" class="form-label">Snooze Duration in minutes</label>
+                <input type="number" asp-for="SnoozeDuration" class="form-control" id="SnoozeDuration" aria-describedby="SnoozeHelp">
+                <div id="SnoozeHelp" class="form-text">The amount of time in minutes to turn the radio off when the snooze button is touched</div>
+            </div>
+            <div class="mb-3">
+                <label for="AlarmDuration" class="form-label">Alarm Duration in minutes</label>
+                <input type="number" asp-for="AlarmDuration" class="form-control" id="AlarmDuration" aria-describedby="AlarmDurationHelp">
+                <div id="AlarmDurationHelp" class="form-text">The amount of time the alarm will play for</div>
+            </div>
+            <div class="mb-3">
+                <label for="RadioStationUrl" class="form-label">Radio Station URL</label>
+                <input type="url" asp-for="RadioStationUrl" class="form-control" id="RadioStationUrl" aria-describedby="RadioStationUrlHelp">
+                <div id="RadioStationUrlHelp" class="form-text">The URL of the Internet radio station to play</div>
+            </div>
+            <div class="mb-3">
+                <h3>WiFi Settings</h3>
+            </div>
+            <div class="mb-3">
+                <label for="WifiSSID" class="form-label">WiFi SSID</label>
+                <input type="text" asp-for="WifiSSID" class="form-control" id="WifiSSID" aria-describedby="WifiSSIDHelp">
+                <div id="WifiSSIDHelp" class="form-text">The name of the WiFi network to connect to</div>
+            </div>
+            <div class="mb-3">
+                <label for="WifiPassword" class="form-label">Wifi Password</label>
+                <input type="text" asp-for="WifiPassword" class="form-control" id="RadioStationUrl" aria-describedby="WifiPasswordHelp">
+                <div id="WifiPasswordHelp" class="form-text">The Wifi Password</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

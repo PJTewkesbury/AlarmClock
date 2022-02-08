@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
+	  <Version>2.1.1</Version>
+	  <PackageIcon>pv_circle_512.png</PackageIcon>
+  </PropertyGroup>
+	<ItemGroup>		
+		<Content Include="Rhino.targets">
+			<PackagePath>
+				build/netstandard2.0;
+				build/netcoreapp3.1
+			</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\..\..\lib\windows\amd64\libpv_rhino.dll">
+			<PackagePath>
+				build/netstandard2.0/lib/windows/amd64/libpv_rhino.dll;
+				build/netcoreapp3.1/lib/windows/amd64/libpv_rhino.dll
+			</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\windows\amd64\libpv_rhino.dll</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\linux\x86_64\libpv_rhino.so">
+			<PackagePath>
+				build/netstandard2.0/lib/linux/x86_64/libpv_rhino.so;
+				build/netcoreapp3.1/lib/linux/x86_64/libpv_rhino.so
+			</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\linux\x86_64\libpv_rhino.so</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
+			<PackagePath>
+				build/netstandard2.0/lib/raspberry-pi;
+				build/netcoreapp3.1/lib/raspberry-pi
+			</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<Visible>false</Visible>
+		</Content>
+        <Content Include="..\..\..\lib\jetson\cortex-a57-aarch64\libpv_rhino.so">
+			<PackagePath>
+				build/netstandard2.0/lib/jetson/cortex-a57-aarch64/libpv_rhino.so;
+				build/netcoreapp3.1/lib/jetson/cortex-a57-aarch64/libpv_rhino.so
+			</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\jetson\cortex-a57-aarch64\libpv_rhino.so</Link>
+			<Visible>false</Visible>
+		</Content>
+        <Content Include="..\..\..\lib\beaglebone\libpv_rhino.so">
+			<PackagePath>
+				build/netstandard2.0/lib/beaglebone/libpv_rhino.so;
+				build/netcoreapp3.1/lib/beaglebone/libpv_rhino.so
+			</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\beaglebone\libpv_rhino.so</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\mac\x86_64\libpv_rhino.dylib">
+			<PackagePath>
+				build/netstandard2.0/lib/mac/x86_64/libpv_rhino.dylib;
+				build/netcoreapp3.1/lib/mac/x86_64/libpv_rhino.dylib;
+			</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\mac\x86_64\libpv_rhino.dylib</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\common\rhino_params.pv">
+			<PackagePath>
+				build/netstandard2.0/lib/common/rhino_params.pv;
+				build/netcoreapp3.1/lib/common/rhino_params.pv;
+			</PackagePath>
+			<Link>lib\common\rhino_params.pv</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Content\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Content\pv_circle_512.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+</Project>
