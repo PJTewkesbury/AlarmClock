@@ -15,7 +15,17 @@
       "ProjectGuid": "7e536e62-b1de-4f4f-aa70-193235dd1afd",
       "DisplayName": "AlarmClockWeb",
       "ColorIndex": 1
+    },
+    "b7591634-f2b7-4714-8972-aea833158c16": {
+      "ProjectGuid": "b7591634-f2b7-4714-8972-aea833158c16",
+      "DisplayName": "PvRecorder",
+      "ColorIndex": 2
+    },
+    "570565d1-9c62-4771-9f31-6ddaba2fa7ae": {
+      "ProjectGuid": "570565d1-9c62-4771-9f31-6ddaba2fa7ae",
+      "DisplayName": "Porcupine",
+      "ColorIndex": 3
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 4
 }

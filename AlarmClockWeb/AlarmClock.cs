@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AlarmClock;
 using System.Net;
 using Libmpc;
+using System.Collections.Generic;
 
 namespace AlarmClockPi
 {
@@ -31,7 +32,7 @@ namespace AlarmClockPi
         public void Run(string[] args)
         {
             // Init GPIO - We use Pin12 for Touch Sensor IRQ and pin 5 to power the LED Ring on Respeaker
-            Console.WriteLine("Init GPIO Controller");
+            Console.WriteLine("Init GPIO Controller");            
             gpio = new GpioController();
 
             // Init LED Ring
@@ -118,6 +119,36 @@ namespace AlarmClockPi
             var mpdStatus = AlarmClock.mpc.Status();
             Console.WriteLine($"{mpdStatus.ToString()}");
             AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "StillAlive");
+        }
+
+        internal static void ChangeVolume(int Direction, Dictionary<string, string> slots)
+        {
+            var volume = mpc.Status().Volume;
+            Console.WriteLine($"Changing Volume from {volume}");
+
+            int volumeChange = 10;
+
+            if (slots.ContainsKey("volumeChange"))
+            {                
+                volumeChange = Convert.ToInt32(slots["volumeChange"]);                
+            }
+            Console.WriteLine($"Change Volume by {volumeChange}");
+
+            if (Direction == 0)
+                volume = volumeChange;
+            if (Direction > 0)
+                volume += volumeChange;
+            if (Direction<0)
+                volume -= volumeChange;
+
+            if (volume < 0)
+                volume = 0;
+
+            if (volume >100)
+                volume = 100;
+
+            Console.WriteLine($"Changing Volume to {volume}");
+            mpc.SetVol(volume);
         }
 
         private static void Mpc_OnDisconnected(Libmpc.Mpc connection)

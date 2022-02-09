@@ -23,21 +23,20 @@ context:
       - turn (the) radio off
       - stop (the) radio
     DecreaseVolume:
-      - decrease volume
-      - decrease volume by $pv.SingleDigitInteger:volumeChange
+      - decrease (the) volume
+      - decrease (the) volume [by,to] $pv.Percent:volumeChange (percent)
       - volume down
-      - turn the volume down
-      - please turn the volume down
-      - decrease the volume
+      - turn (the) volume down
+      - (please) turn the volume down
     IncreaseVolume:
-      - increase volume
-      - increase (the) volume by $pv.SingleDigitInteger:volumeChange
+      - increase (the) volume
+      - increase (the) volume [by,to] $pv.Percent:volumeChange (percent)
       - volume up
       - increase the volume
       - turn the volume up
     SetVolume:
-      - Set (the) volume to $pv.Percent:volumeChange
-      - volume (to) $pv.Percent:volumeChange
+      - Set (the) volume to $pv.Percent:volumeChange (percent)
+      - volume (to) $pv.Percent:volumeChange (percent)
     SetAlarmTime:
       - Set alarm (time) [for,to] $pv.TwoDigitInteger:hour
         $pv.TwoDigitInteger:minute

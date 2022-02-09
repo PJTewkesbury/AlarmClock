@@ -87,10 +87,13 @@ namespace AlarmClockPi
             Console.WriteLine($"[wake word] : {(rc == 0 ? "Jarvis" : "Alexa")}");
             AlarmClock.MpcQuiteVolume();
             AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
+            AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking);
         }
 
         static void inferenceCallback(Inference inference)
         {
+            AlarmClock.MpcNormalVolume();
+
             if (inference.IsUnderstood)
             {
                 Console.WriteLine("{");
@@ -132,17 +135,17 @@ namespace AlarmClockPi
                         break;
                     case "decreasevolume":
                         {
-
+                            AlarmClock.ChangeVolume(-1, inference?.Slots);
                         }
                         break;
                     case "increasevolume":
                         {
-
+                            AlarmClock.ChangeVolume(1, inference?.Slots);
                         }
                         break;
                     case "setvolume":
                         {
-
+                            AlarmClock.ChangeVolume(0, inference?.Slots);
                         }
                         break;
 
@@ -173,8 +176,7 @@ namespace AlarmClockPi
             else
             {
                 Console.WriteLine("Didn't understand the command\n");
-            }
-            AlarmClock.MpcNormalVolume();
+            }            
             AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
         }
 
