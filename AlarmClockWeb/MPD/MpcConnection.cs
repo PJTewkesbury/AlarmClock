@@ -200,7 +200,7 @@ namespace Libmpc
 					Console.WriteLine($"MPD Exec : Read Response");
 					var r = this.readResponse();
 
-					Console.WriteLine($"MPD Exec : Response : {r}");
+					// Console.WriteLine($"MPD Exec : Response : {r}");
 
 					return r;
 				}

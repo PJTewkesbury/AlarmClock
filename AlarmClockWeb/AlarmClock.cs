@@ -117,8 +117,8 @@ namespace AlarmClockPi
         private static void KeepAliveCallback(object state)
         {
             var mpdStatus = AlarmClock.mpc.Status();
-            Console.WriteLine($"{mpdStatus.ToString()}");
-            AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "StillAlive");
+            // Console.WriteLine($"{mpdStatus.ToString()}");
+            AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
         }
 
         internal static void ChangeVolume(int Direction, Dictionary<string, string> slots)
