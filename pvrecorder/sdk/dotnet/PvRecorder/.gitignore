@@ -15,8 +15,11 @@
 
 # Mono auto generated files
 mono_crash.*
-
+*.cache
 # Build results
+[Oo]bj/*
+[Bb]in/*
+[Dd]ebug/net5.0/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -396,3 +399,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+./bin/*
+./obj/*
+
+/packages/
+!packages/repositories.config
+*.cache

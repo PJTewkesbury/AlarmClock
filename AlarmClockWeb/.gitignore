@@ -17,8 +17,8 @@
 mono_crash.*
 *.cache
 # Build results
-obj/
-bin/
+[Oo]bj/*
+[Bb]in/*
 [Dd]ebug/net5.0/
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -402,3 +402,7 @@ FodyWeavers.xsd
 
 ./bin/*
 ./obj/*
+
+/packages/
+!packages/repositories.config
+*.cache

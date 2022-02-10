@@ -13,7 +13,8 @@ namespace AlarmClockPi
         {
             Console.WriteLine("AlarmClockPI V1.2");
             Console.WriteLine("");
-            if (args.Length > 0 && args[0].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))
+
+            if (SystemdHelpers.IsSystemdService()==false && args.Length > 0 && args[0].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))
             {
                 DateTime dt = DateTime.Now;
                 Console.WriteLine("Waiting for debugger to attach or any key to continue");
@@ -75,6 +76,14 @@ namespace AlarmClockPi
                         }
                     }
                     while (quit == false);
+                }
+                else
+                {
+                    do
+                    {
+                        System.Threading.Thread.Yield();
+                    }
+                    while (true) ;
                 }
             });
 
