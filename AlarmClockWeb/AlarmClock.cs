@@ -8,11 +8,12 @@ using System.Net;
 using Libmpc;
 using System.Collections.Generic;
 using Alsa.Net;
+using System.Net.Http;
 
 namespace AlarmClockPi
 {
     public class AlarmClock
-    {        
+    {
         public static GpioController gpio { get; private set; } = null;
         public static LedRing ledRing { get; private set; } = null;
 
@@ -21,7 +22,7 @@ namespace AlarmClockPi
         public static LEDRingAnimation alexaSpeaking = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaSpeaking);
         public static LEDRingAnimation alexaEnd = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaEnd);
 
-        public static LEDRingAnimation JarvisWake= LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisWake);
+        public static LEDRingAnimation JarvisWake = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisWake);
         public static LEDRingAnimation JarvisEnd = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisEnd);
 
         public static ClockDisplayDriver clockDisplay;
@@ -29,23 +30,24 @@ namespace AlarmClockPi
         public static MQTT mqtt;
 
         public static ISoundDevice alsaDevice = null;
+        public static long CurrentVolume = 0;
         /// <summary>
         /// Volume as percentage
         /// </summary>
         public static long volume
         {
-            get 
+            get
             {
-                double v = Convert.ToDouble(alsaDevice.PlaybackVolume);
-                Console.WriteLine($"Vol 1 : {v}");
-                double m = 655.35;
-                v = v / m;
-                Console.WriteLine($"Vol 3 : {v}");
+                double v = Convert.ToDouble(alsaDevice.PlaybackVolume) / 655.35;
+                Console.WriteLine($"Current Volume = {v}% (Raw = {alsaDevice.PlaybackVolume})");
                 return Convert.ToInt64(v);
             }
             set
-            {                
+            {
+                double v = (long)((double)value * (double)655.35);
                 alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);
+                Console.WriteLine($"Set Current Volume to = {value}% {v} (Raw = {alsaDevice.PlaybackVolume})");
+                Console.WriteLine($"Current Volume = {value}%");
             }
         }
 
@@ -54,12 +56,13 @@ namespace AlarmClockPi
         public void Run(string[] args)
         {
             Console.WriteLine("Init Volume");
-            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());                        
+            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());
+            CurrentVolume = volume;
             Console.WriteLine($"CurrentVolume Raw = {alsaDevice.PlaybackVolume}");
             Console.WriteLine($"CurrentVolume = {volume}");
 
             // Init GPIO - We use Pin12 for Touch Sensor IRQ and pin 5 to power the LED Ring on Respeaker
-            Console.WriteLine("Init GPIO Controller");            
+            Console.WriteLine("Init GPIO Controller");
             gpio = new GpioController();
 
             // Init LED Ring
@@ -121,7 +124,7 @@ namespace AlarmClockPi
                     Thread.Yield();
                 }
                 while (true);
-                
+
             }
             catch (Exception ex)
             {
@@ -146,7 +149,7 @@ namespace AlarmClockPi
             var mpdStatus = AlarmClock.mpc.Status();
             // Console.WriteLine($"{mpdStatus.ToString()}");
             AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
-        }  
+        }
 
         private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
         {
@@ -226,7 +229,7 @@ namespace AlarmClockPi
             }
             if (s.StartsWith("PicoEnd", StringComparison.CurrentCultureIgnoreCase))
             {
-                ledRing.PlayAnimation(JarvisEnd);                
+                ledRing.PlayAnimation(JarvisEnd);
             }
 
             if (s.StartsWith("PicoEnd", StringComparison.CurrentCultureIgnoreCase))
@@ -284,54 +287,60 @@ namespace AlarmClockPi
         public static void PlayRadio()
         {
             Console.WriteLine("Play Radio");
-            if (mpc.Connected == false)
-                mpc.Connection.Connect();
+            //if (mpc.Connected == false)
+            //    mpc.Connection.Connect();
 
-            if (mpc.Status().State != MpdState.Play)
-            {
-                // Remove old playlist
-                mpc.Clear();
+            //if (mpc.Status().State != MpdState.Play)
+            //{
+            //    // Remove old playlist
+            //    mpc.Clear();
 
-                // Add UCB1
-                // mpc.Add("http://edge-audio-21.sharp-stream.com/ucbuk.mp3");
-                mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");            
+            //    // Add UCB1
+            //    // mpc.Add("http://edge-audio-21.sharp-stream.com/ucbuk.mp3");
+            //    mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");            
 
-                mpc.Play();
-            }
+            //    mpc.Play();
+            //}
+            PlayStream("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
         }
 
         public static void StopRadio()
         {
             Console.WriteLine("Stop Radio");
-            if (mpc.Connected == false)
-                mpc.Connection.Connect();
-            if (mpc.Status().State != MpdState.Stop)
-                mpc.Stop();
+            //if (mpc.Connected == false)
+            //    mpc.Connection.Connect();
+            //if (mpc.Status().State != MpdState.Stop)
+            //    mpc.Stop();
+
+            if (tokenSource != null)
+                tokenSource.Cancel();
+            tokenSource.Dispose();
+            tokenSource = null;
         }
 
-        
         public static void MpcQuiteVolume()
         {
-            Console.WriteLine($"Making volume quite");          
-            volume = alsaDevice.PlaybackVolume;
-            if (volume > 30) 
-                alsaDevice.PlaybackVolume = 30;
+            Console.WriteLine($"Making volume quite");
+            if (volume > 20)
+            {
+                CurrentVolume = volume;
+                volume = 20;
+            }
         }
 
         public static void MpcNormalVolume()
         {
-            Console.WriteLine($"Restore volume to previous level of {volume}");            
-            alsaDevice.PlaybackVolume = volume;
+            Console.WriteLine($"Restore volume to previous level of {volume}");
+            volume = CurrentVolume;
         }
 
-        internal static void ChangeVolume(int Direction, Dictionary<string, string> slots=null)
+        internal static void ChangeVolume(int Direction, Dictionary<string, string> slots = null)
         {
-            volume = alsaDevice.PlaybackVolume;
             Console.WriteLine($"Changing Volume from {volume}");
 
             int volumeChange = 10;
 
-            if (slots!=null && slots.ContainsKey("volumeChange"))
+            if (slots != null && slots.ContainsKey("volumeChange"))
             {
                 volumeChange = Convert.ToInt32(slots["volumeChange"]);
             }
@@ -350,8 +359,33 @@ namespace AlarmClockPi
             if (volume > 100)
                 volume = 100;
 
-            Console.WriteLine($"Changing Volume to {volume}");               
-            alsaDevice.PlaybackVolume = volume;
+            Console.WriteLine($"Changing Volume to {volume}");
+        }
+
+        private static CancellationTokenSource tokenSource = null;
+        private static CancellationToken token;
+        private static void PlayStream(string url)
+        {
+            tokenSource = new CancellationTokenSource();
+            var t = Task.Run(() =>
+            {
+                try
+                {
+                    HttpClient webClient = new HttpClient();
+                    var s = webClient.GetStreamAsync(url).Result;
+                    alsaDevice.Play(s);
+                    do
+                    {
+                        Thread.Yield();
+                    }
+                    while (token.IsCancellationRequested == false);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+            , tokenSource.Token);
         }
     }
 }
