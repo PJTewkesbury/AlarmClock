@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Alsa.Net/1.0.7": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Alsa.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Alsa.Net.dll": {}
+        }
+      },
       "Angle/3.0.4": {
         "type": "package",
         "compile": {
@@ -1163,6 +1172,19 @@
     }
   },
   "libraries": {
+    "Alsa.Net/1.0.7": {
+      "sha512": "oTy5KUeeqfidBamOpj2wYSa2rdQrhQSH3m+esDhkUgmk7S9x3MMEWgvKN26+L/5ApAuwkEG3Zqq8vrvHmSX6mQ==",
+      "type": "package",
+      "path": "alsa.net/1.0.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "alsa.net.1.0.7.nupkg.sha512",
+        "alsa.net.nuspec",
+        "lib/netstandard2.1/Alsa.Net.dll",
+        "lib/netstandard2.1/Alsa.Net.xml"
+      ]
+    },
     "Angle/3.0.4": {
       "sha512": "iDFW4YC0rZCLGTG4ANu2IXXHc5lL/T16++A7CBTLmn5Gd6qb4VzZGIu1lN5NuxHZbW3+LwtrXi2d7tilw/QQVA==",
       "type": "package",
@@ -2952,6 +2974,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "Alsa.Net >= 1.0.7",
       "Humanizer.Core >= 2.14.1",
       "Iot.Device.Bindings >= 2.0.0",
       "MQTTnet.Extensions.ManagedClient >= 3.1.2",
@@ -3023,6 +3046,10 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
+          "Alsa.Net": {
+            "target": "Package",
+            "version": "[1.0.7, )"
+          },
           "Humanizer.Core": {
             "target": "Package",
             "version": "[2.14.1, )"

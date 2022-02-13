@@ -7,6 +7,7 @@ using AlarmClock;
 using System.Net;
 using Libmpc;
 using System.Collections.Generic;
+using Alsa.Net;
 
 namespace AlarmClockPi
 {
@@ -27,10 +28,36 @@ namespace AlarmClockPi
         public static Libmpc.Mpc mpc;
         public static MQTT mqtt;
 
+        public static ISoundDevice alsaDevice = null;
+        /// <summary>
+        /// Volume as percentage
+        /// </summary>
+        public static long volume
+        {
+            get 
+            {
+                double v = Convert.ToDouble(alsaDevice.PlaybackVolume);
+                Console.WriteLine($"Vol 1 : {v}");
+                double m = 655.35;
+                v = v / m;
+                Console.WriteLine($"Vol 3 : {v}");
+                return Convert.ToInt64(v);
+            }
+            set
+            {                
+                alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);
+            }
+        }
+
         public static string Topic = "AlarmClock";
 
         public void Run(string[] args)
         {
+            Console.WriteLine("Init Volume");
+            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());                        
+            Console.WriteLine($"CurrentVolume Raw = {alsaDevice.PlaybackVolume}");
+            Console.WriteLine($"CurrentVolume = {volume}");
+
             // Init GPIO - We use Pin12 for Touch Sensor IRQ and pin 5 to power the LED Ring on Respeaker
             Console.WriteLine("Init GPIO Controller");            
             gpio = new GpioController();
@@ -119,37 +146,7 @@ namespace AlarmClockPi
             var mpdStatus = AlarmClock.mpc.Status();
             // Console.WriteLine($"{mpdStatus.ToString()}");
             AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
-        }
-
-        internal static void ChangeVolume(int Direction, Dictionary<string, string> slots)
-        {
-            var volume = mpc.Status().Volume;
-            Console.WriteLine($"Changing Volume from {volume}");
-
-            int volumeChange = 10;
-
-            if (slots.ContainsKey("volumeChange"))
-            {                
-                volumeChange = Convert.ToInt32(slots["volumeChange"]);                
-            }
-            Console.WriteLine($"Change Volume by {volumeChange}");
-
-            if (Direction == 0)
-                volume = volumeChange;
-            if (Direction > 0)
-                volume += volumeChange;
-            if (Direction<0)
-                volume -= volumeChange;
-
-            if (volume < 0)
-                volume = 0;
-
-            if (volume >100)
-                volume = 100;
-
-            Console.WriteLine($"Changing Volume to {volume}");
-            mpc.SetVol(volume);
-        }
+        }  
 
         private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
         {
@@ -312,26 +309,49 @@ namespace AlarmClockPi
                 mpc.Stop();
         }
 
-        public static int volume = 0;
+        
         public static void MpcQuiteVolume()
         {
-            Console.WriteLine($"Making MPC volume quite");
-            if (mpc.Connected == false)
-                mpc.Connection.Connect();
-
-            volume = mpc.Status().Volume;
-            Console.WriteLine($"Existing MPC volume = {volume}, setting to 20");
-            if (volume > 30)
-                mpc.SetVol(30);
+            Console.WriteLine($"Making volume quite");          
+            volume = alsaDevice.PlaybackVolume;
+            if (volume > 30) 
+                alsaDevice.PlaybackVolume = 30;
         }
 
         public static void MpcNormalVolume()
         {
-            Console.WriteLine($"Restore MPC volume to {volume}");
-            if (mpc.Connected == false)
-                mpc.Connection.Connect();
-            if (volume > 0)
-                mpc.SetVol(volume);
+            Console.WriteLine($"Restore volume to previous level of {volume}");            
+            alsaDevice.PlaybackVolume = volume;
+        }
+
+        internal static void ChangeVolume(int Direction, Dictionary<string, string> slots=null)
+        {
+            volume = alsaDevice.PlaybackVolume;
+            Console.WriteLine($"Changing Volume from {volume}");
+
+            int volumeChange = 10;
+
+            if (slots!=null && slots.ContainsKey("volumeChange"))
+            {
+                volumeChange = Convert.ToInt32(slots["volumeChange"]);
+            }
+            Console.WriteLine($"Change Volume by {volumeChange}");
+
+            if (Direction == 0)
+                volume = volumeChange;
+            if (Direction > 0)
+                volume += volumeChange;
+            if (Direction < 0)
+                volume -= volumeChange;
+
+            if (volume < 0)
+                volume = 0;
+
+            if (volume > 100)
+                volume = 100;
+
+            Console.WriteLine($"Changing Volume to {volume}");               
+            alsaDevice.PlaybackVolume = volume;
         }
     }
 }

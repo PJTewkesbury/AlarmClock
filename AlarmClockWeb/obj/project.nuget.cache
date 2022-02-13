@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "g3nOsDo1O3C4AYgicKJ8+Uh4CfxR8DW6GHq7kyoI9LrxOknGF16hK0S8g09/jJfC3g66DwAdJuFwgyxYEcWwmg==",
+  "dgSpecHash": "zzsucV6y0aUQ4yrQzUNNPB4WGr+qXYU+JR1oPnPqWX0h91lMIMowbAb8RWqECgZ8zO2/VlI/RdZ45KCHpqpGOg==",
   "success": true,
   "projectFilePath": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\pjtew\\.nuget\\packages\\alsa.net\\1.0.7\\alsa.net.1.0.7.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\angle\\3.0.4\\angle.3.0.4.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\iot.device.bindings\\2.0.0\\iot.device.bindings.2.0.0.nupkg.sha512",

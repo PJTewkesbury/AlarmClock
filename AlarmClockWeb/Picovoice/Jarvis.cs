@@ -92,7 +92,7 @@ namespace AlarmClockPi
 
         static void inferenceCallback(Inference inference)
         {
-            AlarmClock.ledRing.PlayAnimation(AlarmClock.a);            
+            AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);            
 
             if (inference.IsUnderstood)
             {
@@ -103,7 +103,7 @@ namespace AlarmClockPi
                     Console.WriteLine($"    {slot.Key} : '{slot.Value}'");
                 Console.WriteLine("  }");
                 Console.WriteLine("}\n");
-
+                
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
                 switch (inference.Intent.ToLower())
                 {
