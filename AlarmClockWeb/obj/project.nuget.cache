@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zzsucV6y0aUQ4yrQzUNNPB4WGr+qXYU+JR1oPnPqWX0h91lMIMowbAb8RWqECgZ8zO2/VlI/RdZ45KCHpqpGOg==",
+  "dgSpecHash": "Kvg476/njXBAlUtUotUG1dQQkX6M+nhLG8t3v+i6IEjD3EhCPuInk66fSCWKzM3VbsXpJvIj5WeBk8ueWfFMlQ==",
   "success": true,
   "projectFilePath": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj",
   "expectedPackageFiles": [
@@ -38,6 +38,7 @@
     "C:\\Users\\pjtew\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\pjtew\\.nuget\\packages\\mp3sharp\\1.0.5\\mp3sharp.1.0.5.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\mqttnet\\3.1.2\\mqttnet.3.1.2.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\mqttnet.extensions.managedclient\\3.1.2\\mqttnet.extensions.managedclient.3.1.2.nupkg.sha512",
     "C:\\Users\\pjtew\\.nuget\\packages\\opentk\\4.6.4\\opentk.4.6.4.nupkg.sha512",

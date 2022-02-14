@@ -30,6 +30,7 @@
     <PackageReference Include="Iot.Device.Bindings" Version="2.0.0" />
     <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.20.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="5.0.1" />
+    <PackageReference Include="MP3Sharp" Version="1.0.5" />
     <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="3.1.2" />
     <PackageReference Include="OpenTK" Version="4.6.4" />
     <PackageReference Include="SolarCalculator" Version="3.0.6" />

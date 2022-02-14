@@ -9,6 +9,7 @@ using Libmpc;
 using System.Collections.Generic;
 using Alsa.Net;
 using System.Net.Http;
+using System.IO;
 
 namespace AlarmClockPi
 {
@@ -371,18 +372,30 @@ namespace AlarmClockPi
             {
                 try
                 {
+                    Console.WriteLine($"Play Radio Stream");                    
                     HttpClient webClient = new HttpClient();
-                    var s = webClient.GetStreamAsync(url).Result;
-                    alsaDevice.Play(s);
-                    do
+
+                    Console.WriteLine($"Opening {url}");
+                    using (Stream s = webClient.GetStreamAsync(url).Result)
                     {
-                        Thread.Yield();
+                        Console.WriteLine($"Creating MP3 Decoder");
+                        using (MP3Sharp.MP3Stream mp3 = new MP3Sharp.MP3Stream(s))
+                        {
+                            Console.WriteLine($"Play Stream");
+                            alsaDevice.Play(mp3);
+                            do
+                            {
+                                Thread.Yield();
+                            }
+                            while (token.IsCancellationRequested == false);
+                        }
                     }
-                    while (token.IsCancellationRequested == false);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine($"Play Radio Stream Error");
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
                 }
             }
             , tokenSource.Token);

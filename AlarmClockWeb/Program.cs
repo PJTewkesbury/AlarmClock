@@ -68,12 +68,18 @@ namespace AlarmClockPi
                     {
                         if (Console.KeyAvailable)
                         {
-                            quit = (Console.ReadKey().Key == ConsoleKey.Q);
+                            var key = Console.ReadKey().Key;
+                            quit = (key == ConsoleKey.Q);
+                            if (key == ConsoleKey.P)
+                                AlarmClock.PlayRadio();
+                            if (key == ConsoleKey.S)
+                                AlarmClock.StopRadio();
+                            if (key == ConsoleKey.Z)
+                                AlarmClock.ChangeVolume(1);
+                            if (key == ConsoleKey.X)
+                                AlarmClock.ChangeVolume(-1);
                         }
-                        else
-                        {
-                            System.Threading.Thread.Yield();
-                        }
+                        System.Threading.Thread.Yield();
                     }
                     while (quit == false);
                 }

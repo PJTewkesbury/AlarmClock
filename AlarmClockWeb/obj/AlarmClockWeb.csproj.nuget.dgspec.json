@@ -68,6 +68,10 @@
               "target": "Package",
               "version": "[2.0.0, )"
             },
+            "MP3Sharp": {
+              "target": "Package",
+              "version": "[1.0.5, )"
+            },
             "MQTTnet.Extensions.ManagedClient": {
               "target": "Package",
               "version": "[3.1.2, )"
