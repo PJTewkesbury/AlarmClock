@@ -65,7 +65,7 @@ namespace AlarmClockPi
                         {
                             Console.WriteLine(ex.Message);
                         }
-                        System.Threading.Thread.Yield();
+                        // System.Threading.Thread.Yield();
                     }
                     while (true);
                 }
@@ -85,9 +85,9 @@ namespace AlarmClockPi
         static void wakeWordCallback(int rc)
         {
             Console.WriteLine($"[wake word] : {(rc == 0 ? "Jarvis" : "Alexa")}");
-            AlarmClock.MpcQuiteVolume();
-            AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
-            AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
+            //AlarmClock.MpcQuiteVolume();
+            //AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
+            //AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
         }
 
         static void inferenceCallback(Inference inference)

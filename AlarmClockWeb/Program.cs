@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Systemd;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AlarmClockPi
@@ -38,12 +39,14 @@ namespace AlarmClockPi
             // Start the Website
             var taskWebSite = Task.Run(() =>
             {
+                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                 CreateHostBuilder(args).Build().Run();
             });
 
             // Start the hardware loop
             var taskHardware = Task.Run(() =>
             {
+                // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                 {
                     AlarmClock alarmClock = new AlarmClock();
@@ -54,6 +57,7 @@ namespace AlarmClockPi
             // Start the voice interface
             var taskPico = Task.Run(() =>
             {
+                Thread.CurrentThread.Priority = ThreadPriority.Highest;
                 Jarvis jarvis = new Jarvis();
                 jarvis.Run();
             });
@@ -61,6 +65,7 @@ namespace AlarmClockPi
             // Look for user pressing 'Q' key to quit if not running as systemd service
             var taskQuit = Task.Run(() =>
             {
+                Thread.CurrentThread.Priority = ThreadPriority.Lowest;
                 if (SystemdHelpers.IsSystemdService() == false)
                 {
                     bool quit = false;

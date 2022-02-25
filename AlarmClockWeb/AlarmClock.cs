@@ -122,7 +122,7 @@ namespace AlarmClockPi
 
                 do
                 {
-                    Thread.Yield();
+                    Thread.Yield();                    
                 }
                 while (true);
 

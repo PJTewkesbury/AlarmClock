@@ -65,15 +65,20 @@ namespace AlarmClockPi
             else
                 gpio.Write(5, PinValue.Low);
         }
-
+        
+        public int LedLitCount { get; set; }  = 0;
         /// <summary>
         /// Update color data to LEDs
         /// </summary>
         public void Render()
         {
             int idx = StartLedIndex;
-            foreach(Color pix in Pixels)
+            LedLitCount = 0;
+            foreach (Color pix in Pixels)
             {
+                if (pix.R>0 || pix.G>0 || pix.B>0)
+                    LedLitCount++;
+
                 apa102Device.Pixels[idx] = pix;
                 idx++;
                 if (idx >= LedCount)

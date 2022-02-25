@@ -92,12 +92,12 @@ namespace AlarmClock.Picovoice
 
         public void Process(short[] pcm)
         {
-            if (pcm == null)
-                return; //  throw new PicovoiceInvalidArgumentException("Null audo frame passed to Picovoice");
-            if (pcm.Length != this.FrameLength)
-                throw new PicovoiceInvalidArgumentException(string.Format("Invalid frame length - expected {0}, received {1}", (object)this.FrameLength, (object)pcm.Length));
-            if (this._porcupine == null || this._rhino == null)
-                throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released.");
+            //if (pcm == null)
+            //    return; //  throw new PicovoiceInvalidArgumentException("Null audo frame passed to Picovoice");
+            //if (pcm.Length != this.FrameLength)
+            //    throw new PicovoiceInvalidArgumentException(string.Format("Invalid frame length - expected {0}, received {1}", (object)this.FrameLength, (object)pcm.Length));
+            //if (this._porcupine == null || this._rhino == null)
+            //    throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released.");
             if (!this._isWakeWordDetected)
             {
                 int rc = this._porcupine.Process(pcm);
@@ -107,15 +107,17 @@ namespace AlarmClock.Picovoice
                     return;
 
                 this._wakeWordCallback(rc);
+                
+                // Only process Jarvis wakeword
                 if (rc != 0)
                     this._isWakeWordDetected = false;
             }
             else
             {
                 if (!this._rhino.Process(pcm))
-                    return;
-                this._isWakeWordDetected = false;
+                    return;                
                 this._inferenceCallback(this._rhino.GetInference());
+                this._isWakeWordDetected = false;
             }
         }
 
