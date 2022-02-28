@@ -6,6 +6,7 @@ using Pv;
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AlarmClockPi
 {
@@ -65,7 +66,7 @@ namespace AlarmClockPi
                         {
                             Console.WriteLine(ex.Message);
                         }
-                        // System.Threading.Thread.Yield();
+                        System.Threading.Thread.Yield();
                     }
                     while (true);
                 }
@@ -85,14 +86,20 @@ namespace AlarmClockPi
         static void wakeWordCallback(int rc)
         {
             Console.WriteLine($"[wake word] : {(rc == 0 ? "Jarvis" : "Alexa")}");
-            //AlarmClock.MpcQuiteVolume();
-            //AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
-            //AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
+            Task.Run(() =>
+            {
+                AlarmClock.MpcQuiteVolume();
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
+            });
         }
 
         static void inferenceCallback(Inference inference)
         {
-            AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);            
+            if (AlarmClock.ledRing != null)
+            {
+                Task.Run(()=>AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake));
+            }
 
             if (inference.IsUnderstood)
             {
@@ -109,12 +116,18 @@ namespace AlarmClockPi
                 {
                     case "turnradioon":
                         {
-                            AlarmClock.PlayRadio();
+                            Task.Run(() =>
+                            {
+                                AlarmClock.PlayRadio();
+                            });
                         }
                         break;
                     case "turnradiooff":
                         {
-                            AlarmClock.StopRadio();
+                            Task.Run(() =>
+                            {
+                                AlarmClock.StopRadio();
+                            });
                         }
                         break;
                     case "turnalarmon":
@@ -135,20 +148,29 @@ namespace AlarmClockPi
                         break;
                     case "decreasevolume":
                         {
-                            AlarmClock.MpcNormalVolume();
-                            AlarmClock.ChangeVolume(-1, inference?.Slots);
+                            Task.Run(() =>
+                            {
+                                AlarmClock.MpcNormalVolume();
+                                AlarmClock.ChangeVolume(-1, inference?.Slots);
+                            });
                         }
                         break;
                     case "increasevolume":
                         {
-                            AlarmClock.MpcNormalVolume();
-                            AlarmClock.ChangeVolume(1, inference?.Slots);
+                            Task.Run(() =>
+                            {
+                                AlarmClock.MpcNormalVolume();
+                                AlarmClock.ChangeVolume(1, inference?.Slots);
+                            });
                         }
                         break;
                     case "setvolume":
                         {
-                            AlarmClock.MpcNormalVolume();
-                            AlarmClock.ChangeVolume(0, inference?.Slots);
+                            Task.Run(() =>
+                            {
+                                AlarmClock.MpcNormalVolume();
+                                AlarmClock.ChangeVolume(0, inference?.Slots);
+                            });
                         }
                         break;
 
@@ -180,26 +202,42 @@ namespace AlarmClockPi
             {
                 Console.WriteLine("Didn't understand the command\n");
             }
-            AlarmClock.MpcNormalVolume();
-            AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+            
+            if (AlarmClock.ledRing != null)
+            {
+                Task.Run(() =>
+                {
+                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+                    AlarmClock.MpcNormalVolume();
+                });
+            }                        
         }
 
         private static void SpeakTime()
         {
-            string text = $"The time is {DateTime.Now.ToString("hh:mm tt")}";
-            Console.WriteLine($"Speaking Time : {text}");
-            SpeechSynthesizer synthesizer = GetTTS();
-            if (synthesizer!= null) 
-                synthesizer.SpeakTextAsync(text).Wait();
+            Task.Run(() => { 
+                string text = $"The time is {DateTime.Now.ToString("hh:mm tt")}";
+                Console.WriteLine($"Speaking Time : {text}");
+                SpeechSynthesizer synthesizer = GetTTS();
+                if (synthesizer != null)
+                    synthesizer.SpeakTextAsync(text).Wait();
+                else
+                    Console.WriteLine("No SpeechSynthesizer object created");
+            });
         }
 
         private static void SpeakDate()
         {
-            string text = $"The date is {DateTime.Now.ToString("dddd, d MMM yyyy")}";
-            Console.WriteLine($"Speaking Date : {text}");
-            SpeechSynthesizer synthesizer = GetTTS();
-            if (synthesizer != null)
-                synthesizer.SpeakTextAsync(text).Wait();
+            Task.Run(() =>
+            {
+                string text = $"The date is {DateTime.Now.ToString("dddd, d MMM yyyy")}";
+                Console.WriteLine($"Speaking Date : {text}");
+                SpeechSynthesizer synthesizer = GetTTS();
+                if (synthesizer != null)
+                    synthesizer.SpeakTextAsync(text).Wait();
+                else
+                    Console.WriteLine("No SpeechSynthesizer object created");
+            });
         }
 
         private static SpeechSynthesizer GetTTS()

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Systemd;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,24 +36,30 @@ namespace AlarmClockPi
                     System.Threading.Thread.Sleep(1000);
                 }
             }
-            
-            // Start the Website
-            var taskWebSite = Task.Run(() =>
-            {
-                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-                CreateHostBuilder(args).Build().Run();
-            });
 
-            // Start the hardware loop
-            var taskHardware = Task.Run(() =>
-            {
-                // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
-                {
-                    AlarmClock alarmClock = new AlarmClock();
-                    alarmClock.Run(args);
-                }
-            });
+            List<Task> systemTasks = new List<Task>();
+
+            // Start the Website
+            //var taskWebSite = Task.Run(() =>
+            //{
+            //    Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+            //    CreateHostBuilder(args).Build().Run();
+            //});
+            // systemTasks.Add(taskWebSite);
+
+            //// Start the hardware loop
+            //var taskHardware = Task.Run(() =>
+            //{
+            //    // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
+            //    if (Environment.OSVersion.Platform == PlatformID.Unix)
+            //    {
+            //        AlarmClock alarmClock = new AlarmClock();
+            //        alarmClock.Run(args);
+            //    }
+            //});
+            // systemTasks.Add(taskHardware);
+            AlarmClock alarmClock = new AlarmClock();
+            alarmClock.Init();
 
             // Start the voice interface
             var taskPico = Task.Run(() =>
@@ -61,45 +68,47 @@ namespace AlarmClockPi
                 Jarvis jarvis = new Jarvis();
                 jarvis.Run();
             });
+            systemTasks.Add(taskPico);
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
-            var taskQuit = Task.Run(() =>
-            {
-                Thread.CurrentThread.Priority = ThreadPriority.Lowest;
-                if (SystemdHelpers.IsSystemdService() == false)
-                {
-                    bool quit = false;
-                    do
-                    {
-                        if (Console.KeyAvailable)
-                        {
-                            var key = Console.ReadKey().Key;
-                            quit = (key == ConsoleKey.Q);
-                            if (key == ConsoleKey.P)
-                                AlarmClock.PlayRadio();
-                            if (key == ConsoleKey.S)
-                                AlarmClock.StopRadio();
-                            if (key == ConsoleKey.Z)
-                                AlarmClock.ChangeVolume(1);
-                            if (key == ConsoleKey.X)
-                                AlarmClock.ChangeVolume(-1);
-                        }
-                        System.Threading.Thread.Yield();
-                    }
-                    while (quit == false);
-                }
-                else
-                {
-                    do
-                    {
-                        System.Threading.Thread.Yield();
-                    }
-                    while (true) ;
-                }
-            });
+            //var taskQuit = Task.Run(() =>
+            //{
+            //    Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+            //    if (SystemdHelpers.IsSystemdService() == false)
+            //    {
+            //        bool quit = false;
+            //        do
+            //        {
+            //            if (Console.KeyAvailable)
+            //            {
+            //                var key = Console.ReadKey().Key;
+            //                quit = (key == ConsoleKey.Q);
+            //                if (key == ConsoleKey.P)
+            //                    AlarmClock.PlayRadio();
+            //                if (key == ConsoleKey.S)
+            //                    AlarmClock.StopRadio();
+            //                if (key == ConsoleKey.Z)
+            //                    AlarmClock.ChangeVolume(1);
+            //                if (key == ConsoleKey.X)
+            //                    AlarmClock.ChangeVolume(-1);
+            //            }
+            //            System.Threading.Thread.Yield();
+            //        }
+            //        while (quit == false);
+            //    }
+            //    else
+            //    {
+            //        do
+            //        {
+            //            System.Threading.Thread.Yield();
+            //        }
+            //        while (true) ;
+            //    }
+            //});
+            // systemTasks.Add(taskQuit);
 
             // Wait for one of the tasks to complete then quit.
-            Task.WaitAny(taskWebSite, taskHardware, taskQuit, taskPico);
+            Task.WaitAny(systemTasks.ToArray());
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)

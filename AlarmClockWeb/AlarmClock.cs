@@ -27,6 +27,9 @@ namespace AlarmClockPi
         public static LEDRingAnimation JarvisEnd = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisEnd);
 
         public static ClockDisplayDriver clockDisplay;
+        public static TouchDriver touchDriver;
+        public static IDisposable touchObservable;
+
         public static Libmpc.Mpc mpc;
         public static MQTT mqtt;
 
@@ -54,7 +57,7 @@ namespace AlarmClockPi
 
         public static string Topic = "AlarmClock";
 
-        public void Run(string[] args)
+        public void Init()
         {
             Console.WriteLine("Init Volume");
             alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());
@@ -88,7 +91,7 @@ namespace AlarmClockPi
             I2cConnectionSettings touchSettings = new I2cConnectionSettings(1, 0x29);
             I2cDevice touchI2CDevice = I2cDevice.Create(touchSettings);
             TouchDriver touchDriver = new TouchDriver(touchI2CDevice, gpio, 12, true);
-            var touchObservable = touchDriver.rxTouch.Subscribe(r =>
+            touchObservable = touchDriver.rxTouch.Subscribe(r =>
             {
                 ProcessTouch(r);
             });
@@ -102,17 +105,26 @@ namespace AlarmClockPi
             mpc.Connection.AutoConnect = true;
 
             // Init MQTT Messaging that allows Alexa AVS client to talk to AlarmClock and vice-versa
-            mqtt = new MQTT();
-            mqtt.Init("192.168.0.18");
-            mqtt.MQTTMessagesRecevied.Subscribe((s) =>
-            {
-                ProcessMQTTMessages(s);
-            });
+            //mqtt = new MQTT();
+            //mqtt.Init("192.168.0.18");
+            //mqtt.MQTTMessagesRecevied.Subscribe((s) =>
+            //{
+            //    ProcessMQTTMessages(s);
+            //});
 
-            // This will get mpd status and SendMQTT 'StillAlive' messages once 5 seconds to keep connections active
-            var keepAliveEvent = new AutoResetEvent(false);
-            var keepAliveTimer = new Timer(KeepAliveCallback, keepAliveEvent, 250, 5000);
+            //// This will get mpd status and SendMQTT 'StillAlive' messages once 5 seconds to keep connections active
+            //var keepAliveEvent = new AutoResetEvent(false);
+            //var keepAliveTimer = new Timer(KeepAliveCallback, keepAliveEvent, 250, 5000);
 
+            Console.WriteLine("Show Alexa wait and end");
+            Task.Run(() => {
+                ledRing.PlayAnimation(alexaWake);
+                ledRing.PlayAnimation(alexaEnd);
+            });            
+        }
+
+        public void Run(string[] args)
+        {
             // Main loop
             try
             {
@@ -170,10 +182,11 @@ namespace AlarmClockPi
             Console.WriteLine($"Debounced Touch : {t}");
             if ((t & 129) == 129)
             {
-                if (mpc.Status().State == MpdState.Play)
-                    mqtt.SendMessage("AlarmClock", "Stop");
-                else
-                    mqtt.SendMessage("AlarmClock", "Play");
+                Console.WriteLine("Play/Pause Radio");
+                //if (mpc.Status().State == MpdState.Play)
+                //    mqtt.SendMessage("AlarmClock", "Stop");
+                //else
+                //    mqtt.SendMessage("AlarmClock", "Play");
                 return;
             }
 
