@@ -65,17 +65,19 @@ namespace AlarmClockPi
     public class LEDRingAnimation
     {
         public List<LEDRingAnimationFrame> Frames { get; set; }  = new List<LEDRingAnimationFrame>();
+        public string Name { get; set; }
 
         public int LedCount { get; set; } = 12;
 
-        public LEDRingAnimation(int LedCount)
+        public LEDRingAnimation(int LedCount, string Name="")
         {
             this.LedCount = LedCount;
+            this.Name= Name;
         }
 
-        public static LEDRingAnimation LoadAnimationFile(int LedCount, StreamReader s)
+        public static LEDRingAnimation LoadAnimationFile(int LedCount, StreamReader s, string Name="")
         {
-            LEDRingAnimation animation = new LEDRingAnimation(LedCount);
+            LEDRingAnimation animation = new LEDRingAnimation(LedCount,Name);
             do
             {
                 string line = s.ReadLine();
@@ -87,14 +89,14 @@ namespace AlarmClockPi
             return animation;
         }
 
-        public static LEDRingAnimation LoadAnimationFile(int LedCount, String s)
+        public static LEDRingAnimation LoadAnimationFile(int LedCount, String s, string Name="")
         {
             byte[] byteArray = Encoding.ASCII.GetBytes(s);
             MemoryStream stream = new MemoryStream(byteArray);
 
             // convert stream to string
             StreamReader reader = new StreamReader(stream);
-            return LoadAnimationFile(LedCount, reader);
+            return LoadAnimationFile(LedCount, reader,Name);
         }
     }
 

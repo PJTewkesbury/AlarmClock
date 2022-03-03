@@ -58,6 +58,13 @@ namespace AlarmClockPi
                         // Listen for voice and process.
                         try
                         {
+                            if (AlarmClock.ledRing.LedLitCount > 0 && picovoice._isWakeWordDetected == false)
+                            {
+                                Task.Run(() => {
+                                    AlarmClock.ledRing.ClearPixels();
+                                });                                
+                            }
+
                             short[] pcm = recorder.Read();
                             if (pcm != null)
                                 picovoice.Process(pcm);
@@ -90,19 +97,19 @@ namespace AlarmClockPi
             {
                 AlarmClock.MpcQuiteVolume();
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
-                AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
+                // AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
             });
         }
 
         static void inferenceCallback(Inference inference)
         {
-            if (AlarmClock.ledRing != null)
-            {
-                Task.Run(()=>AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake));
-            }
-
             if (inference.IsUnderstood)
             {
+                if (AlarmClock.ledRing != null)
+                {
+                    Task.Run(() => AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking));
+                }
+
                 Console.WriteLine("{");
                 Console.WriteLine($"  intent : '{inference.Intent}'");
                 Console.WriteLine("  slots : {");
@@ -110,8 +117,9 @@ namespace AlarmClockPi
                     Console.WriteLine($"    {slot.Key} : '{slot.Value}'");
                 Console.WriteLine("  }");
                 Console.WriteLine("}\n");
-                
-                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+
+                AlarmClock.MpcNormalVolume();                
+
                 switch (inference.Intent.ToLower())
                 {
                     case "turnradioon":
@@ -119,6 +127,7 @@ namespace AlarmClockPi
                             Task.Run(() =>
                             {
                                 AlarmClock.PlayRadio();
+                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
                             });
                         }
                         break;
@@ -127,6 +136,7 @@ namespace AlarmClockPi
                             Task.Run(() =>
                             {
                                 AlarmClock.StopRadio();
+                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
                             });
                         }
                         break;
@@ -149,18 +159,18 @@ namespace AlarmClockPi
                     case "decreasevolume":
                         {
                             Task.Run(() =>
-                            {
-                                AlarmClock.MpcNormalVolume();
+                            {                             
                                 AlarmClock.ChangeVolume(-1, inference?.Slots);
+                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
                             });
                         }
                         break;
                     case "increasevolume":
                         {
                             Task.Run(() =>
-                            {
-                                AlarmClock.MpcNormalVolume();
+                            {                             
                                 AlarmClock.ChangeVolume(1, inference?.Slots);
+                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
                             });
                         }
                         break;
@@ -168,8 +178,8 @@ namespace AlarmClockPi
                         {
                             Task.Run(() =>
                             {
-                                AlarmClock.MpcNormalVolume();
                                 AlarmClock.ChangeVolume(0, inference?.Slots);
+                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
                             });
                         }
                         break;
@@ -186,11 +196,13 @@ namespace AlarmClockPi
                         break;
                     case "whatisthetime":
                         {
+                            AlarmClock.MpcNormalVolume();
                             SpeakTime();
                         }
                         break;
                     case "whatisthedate":
                         {
+                            AlarmClock.MpcNormalVolume();
                             SpeakDate();
                         }
                         break;
@@ -207,8 +219,7 @@ namespace AlarmClockPi
             {
                 Task.Run(() =>
                 {
-                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
-                    AlarmClock.MpcNormalVolume();
+                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);                    
                 });
             }                        
         }
@@ -223,6 +234,7 @@ namespace AlarmClockPi
                     synthesizer.SpeakTextAsync(text).Wait();
                 else
                     Console.WriteLine("No SpeechSynthesizer object created");
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
         }
 
@@ -230,13 +242,15 @@ namespace AlarmClockPi
         {
             Task.Run(() =>
             {
-                string text = $"The date is {DateTime.Now.ToString("dddd, d MMM yyyy")}";
+                // Check for special dates like Bank Holiday Monday
+                string text = $"The date is {DateTime.Now.ToString("dddd, d MMMM yyyy")}";
                 Console.WriteLine($"Speaking Date : {text}");
                 SpeechSynthesizer synthesizer = GetTTS();
                 if (synthesizer != null)
                     synthesizer.SpeakTextAsync(text).Wait();
                 else
                     Console.WriteLine("No SpeechSynthesizer object created");
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
         }
 

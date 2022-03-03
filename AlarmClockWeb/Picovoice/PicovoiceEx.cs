@@ -13,7 +13,7 @@ namespace AlarmClock.Picovoice
         private Action<int> _wakeWordCallback;
         private Rhino _rhino;
         private Action<Inference> _inferenceCallback;
-        private bool _isWakeWordDetected;
+        public bool _isWakeWordDetected;
 
         public static PicovoiceEx Create(
           string accessKey,

@@ -129,6 +129,7 @@ namespace AlarmClockPi
             if (animation == null)
                 return;
 
+            Console.WriteLine($"LED Ring : {animation.Name}");
             foreach(var f in animation.Frames)
             {
                 if (f.Loop)
