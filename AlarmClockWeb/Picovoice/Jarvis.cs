@@ -73,7 +73,8 @@ namespace AlarmClockPi
                         {
                             Console.WriteLine(ex.Message);
                         }
-                        System.Threading.Thread.Yield();
+                        // System.Threading.Thread.Yield();
+                        System.Threading.Thread.Sleep(10);
                     }
                     while (true);
                 }
@@ -257,7 +258,7 @@ namespace AlarmClockPi
         private static SpeechSynthesizer GetTTS()
         {
             var config = SpeechConfig.FromSubscription("f9e7343e7af348ada02b9c4b1626c823", "uksouth");
-            config.SpeechSynthesisVoiceName = "Ryan"; // Libby, Mia, Sonia, Ryan
+            // config.SpeechSynthesisVoiceName = "Ryan"; // Libby, Mia, Sonia, Ryan
             var synthesizer = new SpeechSynthesizer(config);
             return synthesizer;
         }

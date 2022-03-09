@@ -134,7 +134,8 @@ namespace AlarmClockPi
 
                 do
                 {
-                    Thread.Yield();                    
+                    // Thread.Yield();                    
+                    Thread.Sleep(10);
                 }
                 while (true);
 
@@ -400,7 +401,8 @@ namespace AlarmClockPi
                             alsaDevice.Play(mp3);
                             do
                             {
-                                Thread.Yield();
+                                // Thread.Yield();
+                                Thread.Sleep(10);
                             }
                             while (token.IsCancellationRequested == false);
                         }
