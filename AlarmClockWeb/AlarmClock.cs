@@ -18,7 +18,7 @@ namespace AlarmClockPi
         public static GpioController gpio { get; private set; } = null;
         public static LedRing ledRing { get; private set; } = null;
 
-        public static LEDRingAnimation alexaWake = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaWake,"AlexaWake");
+        public static LEDRingAnimation alexaWake = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaWake, "AlexaWake");
         public static LEDRingAnimation alexaThinking = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaThinking, "AlexaThinking");
         public static LEDRingAnimation alexaSpeaking = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaSpeaking, "AlexaSpeaking");
         public static LEDRingAnimation alexaEnd = LEDRingAnimation.LoadAnimationFile(12, Animations.AlexaEnd, "AlexaEnd");
@@ -117,10 +117,11 @@ namespace AlarmClockPi
             //var keepAliveTimer = new Timer(KeepAliveCallback, keepAliveEvent, 250, 5000);
 
             Console.WriteLine("Show Alexa wait and end");
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 ledRing.PlayAnimation(alexaWake);
                 ledRing.PlayAnimation(alexaEnd);
-            });            
+            });
         }
 
         public void Run(string[] args)
@@ -240,7 +241,7 @@ namespace AlarmClockPi
             if (s.StartsWith("PicoListen", StringComparison.CurrentCultureIgnoreCase))
             {
                 ledRing.PlayAnimation(JarvisWake);
-                MpcQuiteVolume();
+                QuiteVolume();
             }
             if (s.StartsWith("PicoEnd", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -302,38 +303,42 @@ namespace AlarmClockPi
         public static void PlayRadio()
         {
             Console.WriteLine("Play Radio");
-            //if (mpc.Connected == false)
-            //    mpc.Connection.Connect();
+            Task.Run(() =>
+            {
+                if (mpc.Connected == false)
+                    mpc.Connection.Connect();
 
-            //if (mpc.Status().State != MpdState.Play)
-            //{
-            //    // Remove old playlist
-            //    mpc.Clear();
+                if (mpc.Status().State != MpdState.Play)
+                {
+                    // Remove old playlist
+                    mpc.Clear();
 
-            //    // Add UCB1
-            //    // mpc.Add("http://edge-audio-21.sharp-stream.com/ucbuk.mp3");
-            //    mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");            
+                    // Add UCB1        
+                    mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
 
-            //    mpc.Play();
-            //}
-            PlayStream("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
+                    mpc.Play();
+                }
+                // PlayStream("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
+            });
         }
 
         public static void StopRadio()
         {
-            Console.WriteLine("Stop Radio");
-            //if (mpc.Connected == false)
-            //    mpc.Connection.Connect();
-            //if (mpc.Status().State != MpdState.Stop)
-            //    mpc.Stop();
+            Task.Run(() => { 
+                Console.WriteLine("Stop Radio");
+            if (mpc.Connected == false)
+                mpc.Connection.Connect();
+            if (mpc.Status().State != MpdState.Stop)
+                mpc.Stop();
 
-            if (tokenSource != null)
-                tokenSource.Cancel();
-            tokenSource.Dispose();
-            tokenSource = null;
+                //if (tokenSource != null)
+                //    tokenSource.Cancel();
+                //tokenSource.Dispose();
+                //tokenSource = null;
+            }); 
         }
 
-        public static void MpcQuiteVolume()
+        public static void QuiteVolume()
         {
             Console.WriteLine($"Making volume quite");
             if (volume > 20)
@@ -379,43 +384,43 @@ namespace AlarmClockPi
             Console.WriteLine($"Changing Volume to {volume}");
         }
 
-        private static CancellationTokenSource tokenSource = null;
-        private static CancellationToken token;
-        private static void PlayStream(string url)
-        {
-            tokenSource = new CancellationTokenSource();
-            var t = Task.Run(() =>
-            {
-                try
-                {
-                    Console.WriteLine($"Play Radio Stream");                    
-                    HttpClient webClient = new HttpClient();
+        //private static CancellationTokenSource tokenSource = null;
+        //private static CancellationToken token;
+        //private static void PlayStream(string url)
+        //{
+        //    tokenSource = new CancellationTokenSource();
+        //    var t = Task.Run(() =>
+        //    {
+        //        try
+        //        {
+        //            Console.WriteLine($"Play Radio Stream");                    
+        //            HttpClient webClient = new HttpClient();
 
-                    Console.WriteLine($"Opening {url}");
-                    using (Stream s = webClient.GetStreamAsync(url).Result)
-                    {
-                        Console.WriteLine($"Creating MP3 Decoder");
-                        using (MP3Sharp.MP3Stream mp3 = new MP3Sharp.MP3Stream(s))
-                        {
-                            Console.WriteLine($"Play Stream");
-                            alsaDevice.Play(mp3);
-                            do
-                            {
-                                // Thread.Yield();
-                                Thread.Sleep(10);
-                            }
-                            while (token.IsCancellationRequested == false);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Play Radio Stream Error");
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                }
-            }
-            , tokenSource.Token);
-        }
+        //            Console.WriteLine($"Opening {url}");
+        //            using (Stream s = webClient.GetStreamAsync(url).Result)
+        //            {
+        //                Console.WriteLine($"Creating MP3 Decoder");
+        //                using (MP3Sharp.MP3Stream mp3 = new MP3Sharp.MP3Stream(s))
+        //                {
+        //                    Console.WriteLine($"Play Stream");
+        //                    alsaDevice.Play(mp3);
+        //                    do
+        //                    {
+        //                        // Thread.Yield();
+        //                        Thread.Sleep(10);
+        //                    }
+        //                    while (token.IsCancellationRequested == false);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine($"Play Radio Stream Error");
+        //            Console.WriteLine(ex.Message);
+        //            Console.WriteLine(ex.StackTrace);
+        //        }
+        //    }
+        //    , tokenSource.Token);
+        //}
     }
 }

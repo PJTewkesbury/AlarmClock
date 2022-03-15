@@ -96,7 +96,7 @@ namespace AlarmClockPi
             Console.WriteLine($"[wake word] : {(rc == 0 ? "Jarvis" : "Alexa")}");
             Task.Run(() =>
             {
-                AlarmClock.MpcQuiteVolume();
+                AlarmClock.QuiteVolume();
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
                 // AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
             });
