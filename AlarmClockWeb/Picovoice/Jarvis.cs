@@ -98,18 +98,25 @@ namespace AlarmClockPi
             {
                 AlarmClock.QuiteVolume();
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
-                // AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
+
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
+
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(15));
+                if (AlarmClock.ledRing.LedLitCount>0)
+                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
         }
 
-        static void inferenceCallback(Inference inference)
+        static async void inferenceCallback(Inference inference)
         {
+            List<Task> taskList = new List<Task>();
+
             if (inference.IsUnderstood)
             {
-                if (AlarmClock.ledRing != null)
+                taskList.Add(new Task(() => 
                 {
-                    Task.Run(() => AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking));
-                }
+                    AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking);                   
+                }));
 
                 Console.WriteLine("{");
                 Console.WriteLine($"  intent : '{inference.Intent}'");
@@ -119,26 +126,22 @@ namespace AlarmClockPi
                 Console.WriteLine("  }");
                 Console.WriteLine("}\n");
 
-                AlarmClock.MpcNormalVolume();                
+                AlarmClock.NormalVolume();
 
                 switch (inference.Intent.ToLower())
                 {
                     case "turnradioon":
-                        {
-                            Task.Run(() =>
-                            {
+                        {                            
+                            taskList.Add(new Task(() => {
                                 AlarmClock.PlayRadio();
-                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
-                            });
+                            }));
                         }
                         break;
                     case "turnradiooff":
                         {
-                            Task.Run(() =>
-                            {
+                            taskList.Add(new Task(() => {
                                 AlarmClock.StopRadio();
-                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
-                            });
+                            }));                            
                         }
                         break;
                     case "turnalarmon":
@@ -159,29 +162,23 @@ namespace AlarmClockPi
                         break;
                     case "decreasevolume":
                         {
-                            Task.Run(() =>
-                            {                             
-                                AlarmClock.ChangeVolume(-1, inference?.Slots);
-                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
-                            });
+                            taskList.Add(new Task(() => {
+                                AlarmClock.ChangeVolume(-1, inference?.Slots);                                
+                            }));                            
                         }
                         break;
                     case "increasevolume":
                         {
-                            Task.Run(() =>
-                            {                             
-                                AlarmClock.ChangeVolume(1, inference?.Slots);
-                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
-                            });
+                            taskList.Add(new Task(() => {
+                                AlarmClock.ChangeVolume(1, inference?.Slots);                                
+                            }));                            
                         }
                         break;
                     case "setvolume":
                         {
-                            Task.Run(() =>
-                            {
-                                AlarmClock.ChangeVolume(0, inference?.Slots);
-                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
-                            });
+                            taskList.Add(new Task(() => {
+                                AlarmClock.ChangeVolume(0, inference?.Slots);                                
+                            }));                            
                         }
                         break;
 
@@ -197,14 +194,20 @@ namespace AlarmClockPi
                         break;
                     case "whatisthetime":
                         {
-                            AlarmClock.MpcNormalVolume();
-                            SpeakTime();
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.NormalVolume();
+                            }));
+                            taskList.Add(SpeakTime());
                         }
                         break;
                     case "whatisthedate":
                         {
-                            AlarmClock.MpcNormalVolume();
-                            SpeakDate();
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.NormalVolume();
+                            }));
+                            taskList.Add(SpeakDate());
                         }
                         break;
                     default:
@@ -215,19 +218,25 @@ namespace AlarmClockPi
             {
                 Console.WriteLine("Didn't understand the command\n");
             }
-            
-            if (AlarmClock.ledRing != null)
-            {
-                Task.Run(() =>
+
+            taskList.Add(new Task(() => {
+                if (AlarmClock.ledRing != null)
+                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+            }));
+
+            // Run Tasks
+            await Task.Run(() => {
+                foreach (var t in taskList)
                 {
-                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);                    
-                });
-            }                        
+                    t.Start();
+                    t.Wait();
+                }
+            });            
         }
 
-        private static void SpeakTime()
+        private static Task SpeakTime()
         {
-            Task.Run(() => { 
+            return new Task(() => { 
                 string text = $"The time is {DateTime.Now.ToString("hh:mm tt")}";
                 Console.WriteLine($"Speaking Time : {text}");
                 SpeechSynthesizer synthesizer = GetTTS();
@@ -239,9 +248,9 @@ namespace AlarmClockPi
             });
         }
 
-        private static void SpeakDate()
+        private static Task SpeakDate()
         {
-            Task.Run(() =>
+            return new Task(() =>
             {
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The date is {DateTime.Now.ToString("dddd, d MMMM yyyy")}";

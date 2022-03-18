@@ -251,7 +251,7 @@ namespace AlarmClockPi
             if (s.StartsWith("PicoEnd", StringComparison.CurrentCultureIgnoreCase))
             {
                 ledRing.PlayAnimation(alexaEnd);
-                MpcNormalVolume();
+                NormalVolume();
             }
 
             if (s.StartsWith("AlexaWakeup", StringComparison.CurrentCultureIgnoreCase))
@@ -348,7 +348,7 @@ namespace AlarmClockPi
             }
         }
 
-        public static void MpcNormalVolume()
+        public static void NormalVolume()
         {
             Console.WriteLine($"Restore volume to previous level of {volume}");
             volume = CurrentVolume;
@@ -362,7 +362,7 @@ namespace AlarmClockPi
 
             if (slots != null && slots.ContainsKey("volumeChange"))
             {
-                volumeChange = Convert.ToInt32(slots["volumeChange"]);
+                volumeChange = Convert.ToInt32(slots["volumeChange"].Replace("%",""));
             }
             Console.WriteLine($"Change Volume by {volumeChange}");
 
