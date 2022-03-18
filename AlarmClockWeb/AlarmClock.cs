@@ -185,10 +185,10 @@ namespace AlarmClockPi
             if ((t & 129) == 129)
             {
                 Console.WriteLine("Play/Pause Radio");
-                //if (mpc.Status().State == MpdState.Play)
-                //    mqtt.SendMessage("AlarmClock", "Stop");
-                //else
-                //    mqtt.SendMessage("AlarmClock", "Play");
+                if (mpc.Status().State == MpdState.Play)
+                    StopRadio();
+                else
+                    PlayRadio();
                 return;
             }
 
@@ -315,10 +315,8 @@ namespace AlarmClockPi
 
                     // Add UCB1        
                     mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
-
                     mpc.Play();
-                }
-                // PlayStream("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
+                }              
             });
         }
 
@@ -330,11 +328,6 @@ namespace AlarmClockPi
                 mpc.Connection.Connect();
             if (mpc.Status().State != MpdState.Stop)
                 mpc.Stop();
-
-                //if (tokenSource != null)
-                //    tokenSource.Cancel();
-                //tokenSource.Dispose();
-                //tokenSource = null;
             }); 
         }
 
@@ -382,45 +375,6 @@ namespace AlarmClockPi
             CurrentVolume = volume;
 
             Console.WriteLine($"Changing Volume to {volume}");
-        }
-
-        //private static CancellationTokenSource tokenSource = null;
-        //private static CancellationToken token;
-        //private static void PlayStream(string url)
-        //{
-        //    tokenSource = new CancellationTokenSource();
-        //    var t = Task.Run(() =>
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine($"Play Radio Stream");                    
-        //            HttpClient webClient = new HttpClient();
-
-        //            Console.WriteLine($"Opening {url}");
-        //            using (Stream s = webClient.GetStreamAsync(url).Result)
-        //            {
-        //                Console.WriteLine($"Creating MP3 Decoder");
-        //                using (MP3Sharp.MP3Stream mp3 = new MP3Sharp.MP3Stream(s))
-        //                {
-        //                    Console.WriteLine($"Play Stream");
-        //                    alsaDevice.Play(mp3);
-        //                    do
-        //                    {
-        //                        // Thread.Yield();
-        //                        Thread.Sleep(10);
-        //                    }
-        //                    while (token.IsCancellationRequested == false);
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine($"Play Radio Stream Error");
-        //            Console.WriteLine(ex.Message);
-        //            Console.WriteLine(ex.StackTrace);
-        //        }
-        //    }
-        //    , tokenSource.Token);
-        //}
+        }     
     }
 }
