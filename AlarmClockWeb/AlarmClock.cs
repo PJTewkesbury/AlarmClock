@@ -105,12 +105,12 @@ namespace AlarmClockPi
             mpc.Connection.AutoConnect = true;
 
             // Init MQTT Messaging that allows Alexa AVS client to talk to AlarmClock and vice-versa
-            //mqtt = new MQTT();
-            //mqtt.Init("192.168.0.18");
-            //mqtt.MQTTMessagesRecevied.Subscribe((s) =>
-            //{
-            //    ProcessMQTTMessages(s);
-            //});
+            mqtt = new MQTT();
+            mqtt.Init("192.168.0.18");
+            mqtt.MQTTMessagesRecevied.Subscribe((s) =>
+            {
+                ProcessMQTTMessages(s);
+            });
 
             //// This will get mpd status and SendMQTT 'StillAlive' messages once 5 seconds to keep connections active
             //var keepAliveEvent = new AutoResetEvent(false);
@@ -119,6 +119,13 @@ namespace AlarmClockPi
             Console.WriteLine("Show Alexa wait and end");
             Task.Run(() =>
             {
+                // Set Master Vol to 50
+                volume = 50;
+
+                // Set MPD Vol to 50%
+                mpc.SetVol(50);
+
+                // Play Animaition
                 ledRing.PlayAnimation(alexaWake);
                 ledRing.PlayAnimation(alexaEnd);
             });
