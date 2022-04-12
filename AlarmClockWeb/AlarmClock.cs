@@ -103,7 +103,7 @@ namespace AlarmClockPi
             mpc.OnDisconnected += Mpc_OnDisconnected;
             mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
             mpc.Connection.AutoConnect = true;
-
+            
             // Init MQTT Messaging that allows Alexa AVS client to talk to AlarmClock and vice-versa
             mqtt = new MQTT();
             mqtt.Init("192.168.0.18");
@@ -123,7 +123,9 @@ namespace AlarmClockPi
                 volume = 50;
 
                 // Set MPD Vol to 50%
+                mpc.Connection.Connect();
                 mpc.SetVol(50);
+                mpc.Connection.Disconnect();
 
                 // Play Animaition
                 ledRing.PlayAnimation(alexaWake);
@@ -176,7 +178,7 @@ namespace AlarmClockPi
         private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
         {
             Console.WriteLine("MPC Disconnected");
-            mpc.Connection.Connect();
+            //mpc.Connection.Connect();
         }
 
         private static void Mpc_OnConnected(Libmpc.Mpc connection)
@@ -298,6 +300,8 @@ namespace AlarmClockPi
 
                 if (mpc.Status().State != MpdState.Pause)
                     mpc.Pause(true);
+
+                mpc.Connection.Disconnect();
                 return;
             }
             if (s.StartsWith("Stop", StringComparison.CurrentCultureIgnoreCase))
@@ -323,7 +327,8 @@ namespace AlarmClockPi
                     // Add UCB1        
                     mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
                     mpc.Play();
-                }              
+                }
+                mpc.Connection.Disconnect();
             });
         }
 
@@ -335,6 +340,7 @@ namespace AlarmClockPi
                 mpc.Connection.Connect();
             if (mpc.Status().State != MpdState.Stop)
                 mpc.Stop();
+                mpc.Connection.Disconnect();
             }); 
         }
 
