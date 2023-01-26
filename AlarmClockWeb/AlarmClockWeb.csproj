@@ -1,56 +1,65 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <SshDeployHost>192.168.0.18</SshDeployHost>
-    <SshDeployTargetPath>/Apps/AlarmClock/</SshDeployTargetPath>
-    <SshDeployUsername>root</SshDeployUsername>
-    <SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
-    <SshDeployClean />
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
-    <SshDeployExecutePermission>true</SshDeployExecutePermission>
-    <IsPublishable>True</IsPublishable>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-  </PropertyGroup>
-  <Target Condition="$(BuildingInsideSshDeploy) ==''" Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Message Text="Post Build Event - Push to Rpi" />
-    <Exec Command="cd $(ProjectDir)&#xD;&#xA;echo %25DATE%25 %25TIME%25 &gt;&gt; &quot;$(TargetDir)sshdeploy.ready&quot;&#xD;&#xA;" />
-    <Exec Command="dotnet-sshdeploy push" />
-    <Message Text="Post Build Event - Push to Rpi - Complete" />
-  </Target>
+	<PropertyGroup>
+		<SshDeployHost>devpi.lan</SshDeployHost>
+		<SshDeployTargetPath>/Apps/AlarmClock/</SshDeployTargetPath>
+		<SshDeployUsername>root</SshDeployUsername>
+		<SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
+		<SshDeployClean />
+		<RunPostBuildEvent>Always</RunPostBuildEvent>
+		<SshDeployExecutePermission>true</SshDeployExecutePermission>
+		<IsPublishable>True</IsPublishable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<StartupObject>AlarmClockPi.Program</StartupObject>
+		<Nullable>disable</Nullable>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>linux-arm</RuntimeIdentifier>
+		<PublishReadyToRun>true</PublishReadyToRun>
+	</PropertyGroup>
+	<Target Condition="$(BuildingInsideSshDeploy) ==''" Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Message Text="Post Build Event - Push to Rpi" />
+		<Exec Command="cd $(ProjectDir)&#xD;&#xA;echo %25DATE%25 %25TIME%25 &gt;&gt; &quot;$(TargetDir)sshdeploy.ready&quot;&#xD;&#xA;" />
+		<Exec Command="dotnet-sshdeploy push" />
+		<Message Text="Post Build Event - Push to Rpi - Complete" />
+	</Target>
 
-  <ItemGroup>
-    <PackageReference Include="Alsa.Net" Version="1.0.7" />
-    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
-    <PackageReference Include="Iot.Device.Bindings" Version="2.0.0" />
-    <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.20.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="5.0.1" />
-    <PackageReference Include="MP3Sharp" Version="1.0.5" />
-    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="3.1.2" />
-    <PackageReference Include="OpenTK" Version="4.6.4" />
-    <PackageReference Include="SolarCalculator" Version="3.0.6" />
-    <PackageReference Include="System.Device.Gpio" Version="2.0.0" />
-    <PackageReference Include="System.Reactive" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Alsa.Net" Version="1.0.8" />
+		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
+		<PackageReference Include="Iot.Device.Bindings" Version="2.2.0" />
+		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.25.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="7.0.0" />
+		<PackageReference Include="MP3Sharp" Version="1.0.5" />
+		<PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="3.1.2" />
+		<PackageReference Include="OpenTK" Version="4.7.5" />
+		<PackageReference Include="Porcupine" Version="2.1.6" />
+		<PackageReference Include="PvRecorder" Version="1.1.1" />
+		<PackageReference Include="Rhino" Version="2.1.8" />
+		<PackageReference Include="SolarCalculator" Version="3.2.1" />
+		<PackageReference Include="System.Device.Gpio" Version="2.2.0" />
+		<PackageReference Include="System.Reactive" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\porcupine\binding\dotnet\Porcupine\Porcupine.csproj" />
-    <ProjectReference Include="..\pvrecorder\sdk\dotnet\PvRecorder\PvRecorder.csproj" />
-    <ProjectReference Include="..\rhino\binding\dotnet\Rhino\Rhino.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Picovoice\AlarmClock_en_raspberry-pi_v2_1_0.rhn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Picovoice\alexa_raspberry-pi.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Picovoice\jarvis_raspberry-pi.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Picovoice\AlarmClock_en_raspberry-pi_v2_1_0.rhn">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MPD\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="MPD\" />
+	</ItemGroup>
 </Project>

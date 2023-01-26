@@ -210,6 +210,15 @@ namespace AlarmClockPi
                             taskList.Add(SpeakDate());
                         }
                         break;
+                    case "weather":
+                        {
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.NormalVolume();
+                            }));
+                            taskList.Add(SpeakWeather());
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -255,6 +264,23 @@ namespace AlarmClockPi
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The date is {DateTime.Now.ToString("dddd, d MMMM yyyy")}";
                 Console.WriteLine($"Speaking Date : {text}");
+                SpeechSynthesizer synthesizer = GetTTS();
+                if (synthesizer != null)
+                    synthesizer.SpeakTextAsync(text).Wait();
+                else
+                    Console.WriteLine("No SpeechSynthesizer object created");
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+            });
+        }
+        private static Task SpeakWeather()
+        {
+            return new Task(() =>
+            {
+                // Get Weather forecast for todate
+
+                // Check for special dates like Bank Holiday Monday
+                string text = $"The weather for today in Marple is still being devloped. Please check back tomorrow";
+                Console.WriteLine($"Speaking Weather : {text}");
                 SpeechSynthesizer synthesizer = GetTTS();
                 if (synthesizer != null)
                     synthesizer.SpeakTextAsync(text).Wait();

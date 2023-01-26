@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nZ5VvbOa+YLfYtNMZStyJ6NcdJ9egwTtw4sFswBS7hdKDUcC520/wU/i0Mr50XP0ESdKX1FoZP20YuqXu4iLAA==",
+  "dgSpecHash": "GHHudJRauTmG64uQWQanMJokNJBACiUrgZW48UkqWYoYLUSDY7BTT/G/7I2It7Iv43ty3rp4GE5hkpdwmxsW2Q==",
   "success": true,
   "projectFilePath": "C:\\Projects\\Repos\\AlarmClock\\pvrecorder\\sdk\\dotnet\\PvRecorder\\PvRecorder.csproj",
   "expectedPackageFiles": [

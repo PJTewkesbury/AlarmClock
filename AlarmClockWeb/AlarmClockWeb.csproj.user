@@ -6,5 +6,9 @@
   <PropertyGroup>
     <ActiveDebugProfile>AlarmClockWeb</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>I:\PJT\AlarmClock\AlarmClockWeb\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
+    <ShouldLintJavaScript>False</ShouldLintJavaScript>
+    <ShouldLintJavaScriptReact>False</ShouldLintJavaScriptReact>
+    <ShouldLintTypeScript>False</ShouldLintTypeScript>
+    <ShouldLintTypeScriptReact>False</ShouldLintTypeScriptReact>
   </PropertyGroup>
 </Project>

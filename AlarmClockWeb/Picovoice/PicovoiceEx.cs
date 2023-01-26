@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AlarmClockWeb.Picovoice;
 using Pv;
 
 namespace AlarmClock.Picovoice
@@ -26,7 +27,7 @@ namespace AlarmClock.Picovoice
           string rhinoModelPath = null,
           float rhinoSensitivity = 0.5f,
           bool requireEndpoint = true)
-        {
+        {            
             if (wakeWordCallback == null)
                 throw new PicovoiceInvalidArgumentException("'wakeWordCallback' cannot be null");
             if (inferenceCallback == null)
@@ -36,7 +37,8 @@ namespace AlarmClock.Picovoice
                 string accessKey1 = accessKey;
                 
                 Console.WriteLine($"Create Rhino");
-                Rhino rhino = Rhino.Create(accessKey, contextPath, rhinoModelPath, rhinoSensitivity, requireEndpoint);
+                int endPointDurationSec = 1;
+                Rhino rhino = Rhino.Create(accessKey, contextPath, rhinoModelPath, rhinoSensitivity, endPointDurationSec, requireEndpoint);
 
                 Console.WriteLine($"Create porcupine : {String.Join(",", wakeWordList)}");                
                 Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey1, wakeWordList.AsEnumerable<BuiltInKeyword>());                

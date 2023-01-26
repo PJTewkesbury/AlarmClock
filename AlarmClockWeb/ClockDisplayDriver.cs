@@ -47,7 +47,8 @@ namespace AlarmClockPi
             display.BlinkRate = BlinkRate.Off;
             display.DisplayOn = true;
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 // Display Pump
                 while (bQuit == false)
                 {
@@ -74,7 +75,7 @@ namespace AlarmClockPi
                     }
                     else
                     {
-                        if ((TimeToSunSet>0 && TimeToSunRise > 0) || (TimeToSunSet <  0 && TimeToSunRise < 0))
+                        if ((TimeToSunSet > 0 && TimeToSunRise > 0) || (TimeToSunSet < 0 && TimeToSunRise < 0))
                             Brightness = 1;
                         else
                             Brightness = 15;
@@ -85,16 +86,17 @@ namespace AlarmClockPi
                     display.Brightness = Brightness;
 
                     int Duration = 1000;
-                    switch(WhatToDisplay)
+                    switch (WhatToDisplay)
                     {
                         case enumShow.Date:
                             {
                                 display.Write(DateTime.Now.ToString("ddMM"));
+                                display.Dots = Dot.Off;
                             }
                             break;
 
                         case enumShow.Animation:
-                        {
+                            {
                                 var aniFrame = Animation.Frames[Animation.Index];
                                 Duration = aniFrame.Duration;
                                 ReadOnlySpan<Segment> span = aniFrame.Frame;
@@ -103,7 +105,7 @@ namespace AlarmClockPi
                                 if (Animation.Index >= Animation.Frames.Count)
                                     Animation.Index = 0;
                             }
-                        break;
+                            break;
 
                         case enumShow.Time:
                             {
@@ -123,7 +125,7 @@ namespace AlarmClockPi
                                     s[3] = s[3] | Segment.Dot;
                                 }
 
-                                    ReadOnlySpan<Segment> span = new ReadOnlySpan<Segment>(s);
+                                ReadOnlySpan<Segment> span = new ReadOnlySpan<Segment>(s);
                                 display.Write(span, 0);
 
                                 // Make center colon toggle on and off with seconds on clock.

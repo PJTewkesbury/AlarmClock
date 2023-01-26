@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
+	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
 	  <Version>2.1.1</Version>
 	  <PackageIcon>pv_circle_512.png</PackageIcon>
   </PropertyGroup>
@@ -84,5 +84,8 @@
 	    <Pack>True</Pack>
 	    <PackagePath></PackagePath>
 	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="System.Collections" Version="4.3.0" />
 	</ItemGroup>
 </Project>

@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
+	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
 	  <Version>2.1.1</Version>
 	  <PackageIcon>pv_circle_512.png</PackageIcon>	  
   </PropertyGroup>
 	<ItemGroup>		
 		<Content Include="Porcupine.targets">
 			<PackagePath>
-				build/netstandard2.0;
-				build/netcoreapp3.1
+				build/netstandard2.0;				
 			</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>

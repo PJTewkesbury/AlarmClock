@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pv
+namespace AlarmClockWeb.Picovoice
 {
     public class PicovoiceException : Exception
     {
