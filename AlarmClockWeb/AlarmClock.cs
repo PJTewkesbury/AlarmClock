@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Alsa.Net;
 using System.Net.Http;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace AlarmClockPi
 {
@@ -56,6 +57,12 @@ namespace AlarmClockPi
         }
 
         public static string Topic = "AlarmClock";
+
+        IConfiguration config;
+        public AlarmClock(IConfiguration config)
+        {
+            this.config = config;
+        }
 
         public void Init()
         {

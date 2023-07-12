@@ -11,7 +11,7 @@ namespace AlarmClockPi
     public class ClockDisplayDriver : IDisposable
     {
         LED4x7SegDisplay display;
-        int c = 0;
+        // int c = 0;
         bool bQuit = false;
 
         public LED7SegAnimation Animation { get; set; } = LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.LEDTest);

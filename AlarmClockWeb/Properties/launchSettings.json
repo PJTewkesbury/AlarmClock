@@ -1,30 +1,35 @@
-﻿{
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:53840",
-      "sslPort": 0
-    }
-  },
+{
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
-      }
-    },
     "AlarmClockWeb": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
-      }
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "http://localhost:5000"
     }
+  },
+  "remoteDebug": {
+    "name": ".NET Remote Launch - Self-contained",
+    "type": "coreclr",
+    "request": "launch",
+    "program": "/Apps/AlarmClock/AlarmClockWeb",
+    "args": [],
+    "cwd": "/Apps/AlarmClock",
+    "stopAtEntry": false,
+    "console": "internalConsole",
+    "pipeTransport": {
+      "pipeCwd": "${workspaceRoot}",
+      "pipeProgram": "C:\\Program Files\\PuTTY\\PLINK.EXE",
+      "pipeArgs": [
+        "-pw",
+        "DevPIP@ssw0rd",
+        "root@devpi.lan"
+      ],
+      "debuggerPath": "~/vsdbg/vsdbg"
+    }
+
   }
 }

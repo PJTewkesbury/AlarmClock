@@ -1,17 +1,48 @@
 ﻿using AlarmClock.Picovoice;
 
 using Microsoft.CognitiveServices.Speech;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 using Pv;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace AlarmClockPi
 {
     public class Jarvis
-    {
+    {        
+        string accessKey = "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==";
+        string contextPath = @"/Apps/PicoVoice/AlarmClock_en_raspberry-pi_v2_1_0.rhn";
+        ILogger<Jarvis> Log;
+
+        public Jarvis(ILogger<Jarvis> Log, IConfiguration config)
+        {
+            this.Log = Log;
+
+            this.Log.LogInformation("Jarvis CTOR");
+            var cs = config.GetSection("PicoVoice");
+            if (cs != null)
+            {
+                accessKey = cs.GetValue<string>("AccessKey", "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==");
+                contextPath = cs.GetValue<string>("IntentFile", @"/Apps/PicoVoice/AlarmClock_en_raspberry-pi_v2_1_0.rhn");
+                this.Log.LogInformation($"Access key : {accessKey}");
+                this.Log.LogInformation($"Access key : {contextPath}");
+
+                if (File.Exists(contextPath))
+                {
+                    this.Log.LogInformation($"File Exists");
+                }
+                else
+                {
+                    this.Log.LogInformation($"File DOES NOT Exist");
+                }
+            }
+        }
+
         public void Run()
         {
             bool bUsePicoVoice = true;
@@ -19,18 +50,16 @@ namespace AlarmClockPi
             PicovoiceEx picovoice = null;
             try
             {
-                int audioDeviceIndex = -1;
-                string accessKey = "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==";
-                List<BuiltInKeyword> wakeWords = new List<BuiltInKeyword>() { BuiltInKeyword.JARVIS, BuiltInKeyword.ALEXA };                    
-                string contextPath = @"/Apps/AlarmClock/Picovoice/AlarmClock_en_raspberry-pi_v2_1_0.rhn";                
+                int audioDeviceIndex = -1;    
+                List<BuiltInKeyword> wakeWords = new List<BuiltInKeyword>() { BuiltInKeyword.JARVIS, BuiltInKeyword.ALEXA };
 
-                string porcupineModelPath = null;
+                string porcupineModelPath = "./lib/common/porcupine_params.pv";
                 float porcupineSensitivity = 0.5f;
-                string rhinoModelPath = null;
+                string rhinoModelPath = "./lib/common/rhino_params.pv";
                 float rhinoSensitivity = 0.5f;
                 bool requireEndpoint = true;
-
-                Console.WriteLine("PicoVoice Create");
+                
+                Console.WriteLine($"PicoVoice Create : {Rhino.DEFAULT_MODEL_PATH}");
                 picovoice = PicovoiceEx.Create(
                        accessKey,
                        wakeWords,
@@ -60,9 +89,10 @@ namespace AlarmClockPi
                         {
                             if (AlarmClock.ledRing.LedLitCount > 0 && picovoice._isWakeWordDetected == false)
                             {
-                                Task.Run(() => {
+                                Task.Run(() =>
+                                {
                                     AlarmClock.ledRing.ClearPixels();
-                                });                                
+                                });
                             }
 
                             short[] pcm = recorder.Read();
@@ -102,7 +132,7 @@ namespace AlarmClockPi
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
 
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(15));
-                if (AlarmClock.ledRing.LedLitCount>0)
+                if (AlarmClock.ledRing.LedLitCount > 0)
                     AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
         }
@@ -113,9 +143,9 @@ namespace AlarmClockPi
 
             if (inference.IsUnderstood)
             {
-                taskList.Add(new Task(() => 
+                taskList.Add(new Task(() =>
                 {
-                    AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking);                   
+                    AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking);
                 }));
 
                 Console.WriteLine("{");
@@ -131,17 +161,19 @@ namespace AlarmClockPi
                 switch (inference.Intent.ToLower())
                 {
                     case "turnradioon":
-                        {                            
-                            taskList.Add(new Task(() => {
+                        {
+                            taskList.Add(new Task(() =>
+                            {
                                 AlarmClock.PlayRadio();
                             }));
                         }
                         break;
                     case "turnradiooff":
                         {
-                            taskList.Add(new Task(() => {
+                            taskList.Add(new Task(() =>
+                            {
                                 AlarmClock.StopRadio();
-                            }));                            
+                            }));
                         }
                         break;
                     case "turnalarmon":
@@ -162,23 +194,26 @@ namespace AlarmClockPi
                         break;
                     case "decreasevolume":
                         {
-                            taskList.Add(new Task(() => {
-                                AlarmClock.ChangeVolume(-1, inference?.Slots);                                
-                            }));                            
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.ChangeVolume(-1, inference?.Slots);
+                            }));
                         }
                         break;
                     case "increasevolume":
                         {
-                            taskList.Add(new Task(() => {
-                                AlarmClock.ChangeVolume(1, inference?.Slots);                                
-                            }));                            
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.ChangeVolume(1, inference?.Slots);
+                            }));
                         }
                         break;
                     case "setvolume":
                         {
-                            taskList.Add(new Task(() => {
-                                AlarmClock.ChangeVolume(0, inference?.Slots);                                
-                            }));                            
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.ChangeVolume(0, inference?.Slots);
+                            }));
                         }
                         break;
 
@@ -228,24 +263,27 @@ namespace AlarmClockPi
                 Console.WriteLine("Didn't understand the command\n");
             }
 
-            taskList.Add(new Task(() => {
+            taskList.Add(new Task(() =>
+            {
                 if (AlarmClock.ledRing != null)
                     AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             }));
 
             // Run Tasks
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 foreach (var t in taskList)
                 {
                     t.Start();
                     t.Wait();
                 }
-            });            
+            });
         }
 
         private static Task SpeakTime()
         {
-            return new Task(() => { 
+            return new Task(() =>
+            {
                 string text = $"The time is {DateTime.Now.ToString("hh:mm tt")}";
                 Console.WriteLine($"Speaking Time : {text}");
                 SpeechSynthesizer synthesizer = GetTTS();

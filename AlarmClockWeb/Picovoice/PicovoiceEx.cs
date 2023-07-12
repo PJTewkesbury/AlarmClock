@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AlarmClockWeb.Picovoice;
+
 using Pv;
 
 namespace AlarmClock.Picovoice
@@ -27,21 +25,37 @@ namespace AlarmClock.Picovoice
           string rhinoModelPath = null,
           float rhinoSensitivity = 0.5f,
           bool requireEndpoint = true)
-        {            
+        {
             if (wakeWordCallback == null)
                 throw new PicovoiceInvalidArgumentException("'wakeWordCallback' cannot be null");
             if (inferenceCallback == null)
                 throw new PicovoiceInvalidArgumentException("'inferenceCallback' cannot be null");
             try
             {
-                string accessKey1 = accessKey;
-                
                 Console.WriteLine($"Create Rhino");
-                int endPointDurationSec = 1;
-                Rhino rhino = Rhino.Create(accessKey, contextPath, rhinoModelPath, rhinoSensitivity, endPointDurationSec, requireEndpoint);
+                Console.WriteLine($"Create Rhino {accessKey} : {contextPath} -> {rhinoModelPath} ");
+                float endpointDurationSec = 1.0f;
+                Rhino rhino = null;
+                try
+                {
+                    rhino = Rhino.Create(accessKey, contextPath, modelPath: rhinoModelPath, sensitivity: rhinoSensitivity, endpointDurationSec, requireEndpoint);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine(ex.InnerException.Message);
+                        Console.WriteLine(ex.InnerException.StackTrace);
+                    }
+                    throw ex;
+                }
 
-                Console.WriteLine($"Create porcupine : {String.Join(",", wakeWordList)}");                
-                Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey1, wakeWordList.AsEnumerable<BuiltInKeyword>());                
+                Console.WriteLine($"Create porcupine : {String.Join(",", wakeWordList)}");
+
+                // Porcupine porcupine = Porcupine.FromKeywordPaths( accessKey, new List<string> { keywordPath }, modelPath: porcupineModelPath, sensitivities: new List<float> { porcupineSensitivity });
+                Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey, wakeWordList.AsEnumerable<BuiltInKeyword>());
 
                 if (porcupine.FrameLength != rhino.FrameLength)
                     throw new PicovoiceInvalidArgumentException(string.Format("Porcupine frame length ({0}) and Rhino frame length ({1}) are different", (object)porcupine.FrameLength, (object)rhino.FrameLength));
@@ -109,7 +123,7 @@ namespace AlarmClock.Picovoice
                     return;
 
                 this._wakeWordCallback(rc);
-                
+
                 // Only process Jarvis wakeword
                 if (rc != 0)
                     this._isWakeWordDetected = false;
@@ -117,7 +131,7 @@ namespace AlarmClock.Picovoice
             else
             {
                 if (!this._rhino.Process(pcm))
-                    return;                
+                    return;
                 this._inferenceCallback(this._rhino.GetInference());
                 this._isWakeWordDetected = false;
             }

@@ -16,7 +16,7 @@ namespace AlarmClockPi
         int TouchIRQPinNumber = -1;
 
         public event EventHandler<TouchEventArgs> OnTouched = null;
-        PinValue pv;
+        // PinValue pv;
 
         public Subject<byte> rxTouchInternal { get; private set; } = null;
 

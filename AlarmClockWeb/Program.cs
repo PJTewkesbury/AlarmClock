@@ -1,6 +1,11 @@
+using AlarmClock.Picovoice;
+
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Systemd;
+using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -58,17 +63,50 @@ namespace AlarmClockPi
             //    }
             //});
             // systemTasks.Add(taskHardware);
-            AlarmClock alarmClock = new AlarmClock();
+
+            IConfiguration config = new ConfigurationBuilder()
+                                        .AddJsonFile("appSettings.json", true)
+                                        .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
+                                        .Build();
+
+            AlarmClock alarmClock = new AlarmClock(config);
             alarmClock.Init();
 
-            // Start the voice interface
-            var taskPico = Task.Run(() =>
+            Jarvis jarvis = null;
+            try
             {
-                Thread.CurrentThread.Priority = ThreadPriority.Highest;
-                Jarvis jarvis = new Jarvis();
+                LoggerFactory loggerFactory = new LoggerFactory();
+                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
                 jarvis.Run();
-            });
-            systemTasks.Add(taskPico);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            //// Start the voice interface
+            //var taskPico = Task.Run(() =>
+            //{
+            //    Thread.CurrentThread.Priority = ThreadPriority.Highest;
+            //    Jarvis jarvis = null;
+            //    try
+            //    {
+            //        LoggerFactory loggerFactory = new LoggerFactory();
+            //        jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(),config);
+            //        jarvis.Run();
+            //    }
+            //    catch(Exception ex) { 
+            //        Console.WriteLine(ex.Message);
+            //        Console.WriteLine(ex.StackTrace);
+            //    }
+            //    do
+            //    {                 
+            //        System.Threading.Thread.Sleep(1000);
+            //    }
+            //    while (true);
+            //});
+            //systemTasks.Add(taskPico);
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
             //var taskQuit = Task.Run(() =>
