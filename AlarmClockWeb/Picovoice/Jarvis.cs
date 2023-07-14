@@ -85,7 +85,7 @@ namespace AlarmClockPi
 
                 Console.WriteLine($"Frame length : {picovoice.FrameLength}");
                 Console.WriteLine("PvRecorder Create");
-                recorder = PvRecorder.Create(audioDeviceIndex, picovoice.FrameLength);
+                recorder = PvRecorder.Create(picovoice.FrameLength,audioDeviceIndex );
 
                 Console.WriteLine("PvRecorder Start");
                 recorder.Start();
