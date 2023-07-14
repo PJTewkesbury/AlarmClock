@@ -20,10 +20,10 @@
 		<Nullable>disable</Nullable>
 		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>true</SelfContained>
-		<RuntimeIdentifier>linux-arm</RuntimeIdentifier>
+		<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
 		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
-	<Target Condition="$(BuildingInsideSshDeploy) ==''" Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Target Condition="$(BuildingInsideSshDeploy) =='' and '0'=='1'" Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Message Text="Post Build Event - Push to Rpi" />
 		<Exec Command="cd $(ProjectDir)&#xD;&#xA;echo %25DATE%25 %25TIME%25 &gt;&gt; &quot;$(TargetDir)sshdeploy.ready&quot;&#xD;&#xA;" />
 		<Exec Command="dotnet-sshdeploy push" />
@@ -45,10 +45,15 @@
 		<PackageReference Include="SolarCalculator" Version="3.3.0" />
 		<PackageReference Include="System.Device.Gpio" Version="2.2.0" />
 		<PackageReference Include="System.Reactive" Version="6.0.0" />
+		
+		<PackageReference Include="Porcupine" Version="2.2.1" />
+        <PackageReference Include="PvRecorder" Version="1.2.1" />
+		<PackageReference Include="PicoVoice" Version="2.2.1" />
+		<PackageReference Include="Rhino" Version="2.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Picovoice\AlarmClock_en_raspberry-pi_v2_1_0.rhn">
+		<None Update="Picovoice\AlarmClock_en_raspberry-pi_v2_2_0.rhn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Picovoice\alexa_raspberry-pi.ppn">
@@ -61,10 +66,5 @@
 
 	<ItemGroup>
 		<Folder Include="MPD\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\picovoice\sdk\dotnet\Picovoice\Picovoice.csproj" />
-	  <ProjectReference Include="..\..\..\pvrecorder\sdk\dotnet\PvRecorder\PvRecorder.csproj" />
-	</ItemGroup>
+	</ItemGroup>	
 </Project>

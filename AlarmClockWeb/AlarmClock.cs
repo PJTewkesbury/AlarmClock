@@ -32,7 +32,7 @@ namespace AlarmClockPi
         public static IDisposable touchObservable;
 
         public static Libmpc.Mpc mpc;
-        public static MQTT mqtt;
+        // public static MQTT mqtt;
 
         public static ISoundDevice alsaDevice = null;
         public static long CurrentVolume = 0;
@@ -109,19 +109,7 @@ namespace AlarmClockPi
             mpc.OnConnected += Mpc_OnConnected;
             mpc.OnDisconnected += Mpc_OnDisconnected;
             mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
-            mpc.Connection.AutoConnect = true;
-            
-            // Init MQTT Messaging that allows Alexa AVS client to talk to AlarmClock and vice-versa
-            mqtt = new MQTT();
-            mqtt.Init("192.168.0.18");
-            mqtt.MQTTMessagesRecevied.Subscribe((s) =>
-            {
-                ProcessMQTTMessages(s);
-            });
-
-            //// This will get mpd status and SendMQTT 'StillAlive' messages once 5 seconds to keep connections active
-            //var keepAliveEvent = new AutoResetEvent(false);
-            //var keepAliveTimer = new Timer(KeepAliveCallback, keepAliveEvent, 250, 5000);
+            mpc.Connection.AutoConnect = true;                    
 
             Console.WriteLine("Show Alexa wait and end");
             Task.Run(() =>
@@ -179,7 +167,7 @@ namespace AlarmClockPi
         {
             var mpdStatus = AlarmClock.mpc.Status();
             // Console.WriteLine($"{mpdStatus.ToString()}");
-            AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
+            // AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
         }
 
         private static void Mpc_OnDisconnected(Libmpc.Mpc connection)

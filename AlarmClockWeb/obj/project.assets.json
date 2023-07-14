@@ -15,7 +15,7 @@
           }
         }
       },
-      "Angle/3.2.1": {
+      "Angle/3.3.0": {
         "type": "package",
         "compile": {
           "lib/net7.0/Innovative.Geometry.Angle.dll": {
@@ -64,7 +64,7 @@
           }
         }
       },
-      "Microsoft.CognitiveServices.Speech/1.25.0": {
+      "Microsoft.CognitiveServices.Speech/1.29.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Microsoft.CognitiveServices.Speech.csharp.dll": {
@@ -465,7 +465,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Configuration.Binder/7.0.0": {
+      "Microsoft.Extensions.Configuration.Binder/7.0.4": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "7.0.0"
@@ -1045,50 +1045,50 @@
           }
         }
       },
-      "MQTTnet/3.1.2": {
+      "MQTTnet/4.2.1.781": {
         "type": "package",
         "compile": {
-          "lib/net5.0/MQTTnet.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.dll": {
+            "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/MQTTnet.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.dll": {
+            "related": ".xml"
           }
         }
       },
-      "MQTTnet.Extensions.ManagedClient/3.1.2": {
+      "MQTTnet.Extensions.ManagedClient/4.2.1.781": {
         "type": "package",
         "dependencies": {
-          "MQTTnet": "3.1.2"
+          "MQTTnet": "4.2.1.781"
         },
         "compile": {
-          "lib/net5.0/MQTTnet.Extensions.ManagedClient.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.Extensions.ManagedClient.dll": {
+            "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/MQTTnet.Extensions.ManagedClient.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.Extensions.ManagedClient.dll": {
+            "related": ".xml"
           }
         }
       },
-      "OpenTK/4.7.5": {
+      "OpenTK/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Compute": "4.7.5",
-          "OpenTK.Core": "4.7.5",
-          "OpenTK.Graphics": "4.7.5",
-          "OpenTK.Input": "4.7.5",
-          "OpenTK.Mathematics": "4.7.5",
-          "OpenTK.OpenAL": "4.7.5",
-          "OpenTK.Windowing.Common": "4.7.5",
-          "OpenTK.Windowing.Desktop": "4.7.5",
-          "OpenTK.Windowing.GraphicsLibraryFramework": "4.7.5"
+          "OpenTK.Compute": "4.7.7",
+          "OpenTK.Core": "4.7.7",
+          "OpenTK.Graphics": "4.7.7",
+          "OpenTK.Input": "4.7.7",
+          "OpenTK.Mathematics": "4.7.7",
+          "OpenTK.OpenAL": "4.7.7",
+          "OpenTK.Windowing.Common": "4.7.7",
+          "OpenTK.Windowing.Desktop": "4.7.7",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "4.7.7"
         }
       },
-      "OpenTK.Compute/4.7.5": {
+      "OpenTK.Compute/4.7.7": {
         "type": "package",
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Compute.dll": {
@@ -1101,7 +1101,7 @@
           }
         }
       },
-      "OpenTK.Core/4.7.5": {
+      "OpenTK.Core/4.7.7": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/OpenTK.Core.dll": {
@@ -1114,11 +1114,11 @@
           }
         }
       },
-      "OpenTK.Graphics/4.7.5": {
+      "OpenTK.Graphics/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Graphics.dll": {
@@ -1131,7 +1131,7 @@
           }
         }
       },
-      "OpenTK.Input/4.7.5": {
+      "OpenTK.Input/4.7.7": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/OpenTK.Input.dll": {
@@ -1144,7 +1144,7 @@
           }
         }
       },
-      "OpenTK.Mathematics/4.7.5": {
+      "OpenTK.Mathematics/4.7.7": {
         "type": "package",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "5.0.0"
@@ -1160,11 +1160,11 @@
           }
         }
       },
-      "OpenTK.OpenAL/4.7.5": {
+      "OpenTK.OpenAL/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.OpenAL.dll": {
@@ -1208,11 +1208,11 @@
           }
         }
       },
-      "OpenTK.Windowing.Common/4.7.5": {
+      "OpenTK.Windowing.Common/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Windowing.Common.dll": {
@@ -1225,13 +1225,13 @@
           }
         }
       },
-      "OpenTK.Windowing.Desktop/4.7.5": {
+      "OpenTK.Windowing.Desktop/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)",
-          "OpenTK.Windowing.Common": "[4.7.5, 4.8.0)",
-          "OpenTK.Windowing.GraphicsLibraryFramework": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)",
+          "OpenTK.Windowing.Common": "[4.7.7, 4.8.0)",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.dll": {
@@ -1244,10 +1244,10 @@
           }
         }
       },
-      "OpenTK.Windowing.GraphicsLibraryFramework/4.7.5": {
+      "OpenTK.Windowing.GraphicsLibraryFramework/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
           "OpenTK.redist.glfw": "3.3.8.30"
         },
         "compile": {
@@ -1261,7 +1261,20 @@
           }
         }
       },
-      "Porcupine/2.1.6": {
+      "Picovoice/2.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Porcupine": "2.2.1",
+          "Rhino": "2.2.1"
+        },
+        "compile": {
+          "lib/net6.0/Picovoice.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Picovoice.dll": {}
+        }
+      },
+      "Porcupine/2.2.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/Porcupine.dll": {}
@@ -1273,7 +1286,7 @@
           "build/net6.0/Porcupine.targets": {}
         }
       },
-      "PvRecorder/1.1.1": {
+      "PvRecorder/1.2.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/PvRecorder.dll": {}
@@ -1285,7 +1298,7 @@
           "build/net6.0/PvRecorder.targets": {}
         }
       },
-      "Rhino/2.1.8": {
+      "Rhino/2.2.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/Rhino.dll": {}
@@ -1355,10 +1368,10 @@
           }
         }
       },
-      "SolarCalculator/3.2.1": {
+      "SolarCalculator/3.3.0": {
         "type": "package",
         "dependencies": {
-          "Angle": "3.2.1"
+          "Angle": "3.3.0"
         },
         "compile": {
           "lib/net7.0/Innovative.SolarCalculator.dll": {
@@ -1507,20 +1520,20 @@
           }
         }
       },
-      "System.Reactive/5.0.0": {
+      "System.Reactive/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net5.0/System.Reactive.dll": {
+          "lib/net6.0/System.Reactive.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/System.Reactive.dll": {
+          "lib/net6.0/System.Reactive.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/net5.0/_._": {}
+          "buildTransitive/net6.0/_._": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/5.0.0": {
@@ -1649,7 +1662,7 @@
         }
       }
     },
-    "net7.0/linux-arm": {
+    "net7.0/linux-arm64": {
       "Alsa.Net/1.0.8": {
         "type": "package",
         "compile": {
@@ -1663,7 +1676,7 @@
           }
         }
       },
-      "Angle/3.2.1": {
+      "Angle/3.3.0": {
         "type": "package",
         "compile": {
           "lib/net7.0/Innovative.Geometry.Angle.dll": {
@@ -1712,7 +1725,7 @@
           }
         }
       },
-      "Microsoft.CognitiveServices.Speech/1.25.0": {
+      "Microsoft.CognitiveServices.Speech/1.29.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Microsoft.CognitiveServices.Speech.csharp.dll": {
@@ -1720,18 +1733,18 @@
           }
         },
         "runtime": {
-          "runtimes/linux-arm/lib/netstandard2.0/Microsoft.CognitiveServices.Speech.csharp.dll": {
+          "runtimes/linux-arm64/lib/netstandard2.0/Microsoft.CognitiveServices.Speech.csharp.dll": {
             "related": ".xml"
           }
         },
         "native": {
-          "runtimes/linux-arm/native/libMicrosoft.CognitiveServices.Speech.core.so": {},
-          "runtimes/linux-arm/native/libMicrosoft.CognitiveServices.Speech.extension.audio.sys.so": {},
-          "runtimes/linux-arm/native/libMicrosoft.CognitiveServices.Speech.extension.codec.so": {},
-          "runtimes/linux-arm/native/libMicrosoft.CognitiveServices.Speech.extension.kws.ort.so": {},
-          "runtimes/linux-arm/native/libMicrosoft.CognitiveServices.Speech.extension.kws.so": {},
-          "runtimes/linux-arm/native/libMicrosoft.CognitiveServices.Speech.extension.lu.so": {},
-          "runtimes/linux-arm/native/libMicrosoft.CognitiveServices.Speech.extension.mas.so": {}
+          "runtimes/linux-arm64/native/libMicrosoft.CognitiveServices.Speech.core.so": {},
+          "runtimes/linux-arm64/native/libMicrosoft.CognitiveServices.Speech.extension.audio.sys.so": {},
+          "runtimes/linux-arm64/native/libMicrosoft.CognitiveServices.Speech.extension.codec.so": {},
+          "runtimes/linux-arm64/native/libMicrosoft.CognitiveServices.Speech.extension.kws.ort.so": {},
+          "runtimes/linux-arm64/native/libMicrosoft.CognitiveServices.Speech.extension.kws.so": {},
+          "runtimes/linux-arm64/native/libMicrosoft.CognitiveServices.Speech.extension.lu.so": {},
+          "runtimes/linux-arm64/native/libMicrosoft.CognitiveServices.Speech.extension.mas.so": {}
         },
         "build": {
           "build/Microsoft.CognitiveServices.Speech.props": {}
@@ -1776,7 +1789,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Configuration.Binder/7.0.0": {
+      "Microsoft.Extensions.Configuration.Binder/7.0.4": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "7.0.0"
@@ -2344,50 +2357,50 @@
           }
         }
       },
-      "MQTTnet/3.1.2": {
+      "MQTTnet/4.2.1.781": {
         "type": "package",
         "compile": {
-          "lib/net5.0/MQTTnet.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.dll": {
+            "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/MQTTnet.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.dll": {
+            "related": ".xml"
           }
         }
       },
-      "MQTTnet.Extensions.ManagedClient/3.1.2": {
+      "MQTTnet.Extensions.ManagedClient/4.2.1.781": {
         "type": "package",
         "dependencies": {
-          "MQTTnet": "3.1.2"
+          "MQTTnet": "4.2.1.781"
         },
         "compile": {
-          "lib/net5.0/MQTTnet.Extensions.ManagedClient.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.Extensions.ManagedClient.dll": {
+            "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/MQTTnet.Extensions.ManagedClient.dll": {
-            "related": ".deps.json"
+          "lib/net7.0/MQTTnet.Extensions.ManagedClient.dll": {
+            "related": ".xml"
           }
         }
       },
-      "OpenTK/4.7.5": {
+      "OpenTK/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Compute": "4.7.5",
-          "OpenTK.Core": "4.7.5",
-          "OpenTK.Graphics": "4.7.5",
-          "OpenTK.Input": "4.7.5",
-          "OpenTK.Mathematics": "4.7.5",
-          "OpenTK.OpenAL": "4.7.5",
-          "OpenTK.Windowing.Common": "4.7.5",
-          "OpenTK.Windowing.Desktop": "4.7.5",
-          "OpenTK.Windowing.GraphicsLibraryFramework": "4.7.5"
+          "OpenTK.Compute": "4.7.7",
+          "OpenTK.Core": "4.7.7",
+          "OpenTK.Graphics": "4.7.7",
+          "OpenTK.Input": "4.7.7",
+          "OpenTK.Mathematics": "4.7.7",
+          "OpenTK.OpenAL": "4.7.7",
+          "OpenTK.Windowing.Common": "4.7.7",
+          "OpenTK.Windowing.Desktop": "4.7.7",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "4.7.7"
         }
       },
-      "OpenTK.Compute/4.7.5": {
+      "OpenTK.Compute/4.7.7": {
         "type": "package",
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Compute.dll": {
@@ -2400,7 +2413,7 @@
           }
         }
       },
-      "OpenTK.Core/4.7.5": {
+      "OpenTK.Core/4.7.7": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/OpenTK.Core.dll": {
@@ -2413,11 +2426,11 @@
           }
         }
       },
-      "OpenTK.Graphics/4.7.5": {
+      "OpenTK.Graphics/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Graphics.dll": {
@@ -2430,7 +2443,7 @@
           }
         }
       },
-      "OpenTK.Input/4.7.5": {
+      "OpenTK.Input/4.7.7": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/OpenTK.Input.dll": {
@@ -2443,7 +2456,7 @@
           }
         }
       },
-      "OpenTK.Mathematics/4.7.5": {
+      "OpenTK.Mathematics/4.7.7": {
         "type": "package",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "5.0.0"
@@ -2459,11 +2472,11 @@
           }
         }
       },
-      "OpenTK.OpenAL/4.7.5": {
+      "OpenTK.OpenAL/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.OpenAL.dll": {
@@ -2485,11 +2498,11 @@
           "lib/netstandard2.0/_._": {}
         }
       },
-      "OpenTK.Windowing.Common/4.7.5": {
+      "OpenTK.Windowing.Common/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Windowing.Common.dll": {
@@ -2502,13 +2515,13 @@
           }
         }
       },
-      "OpenTK.Windowing.Desktop/4.7.5": {
+      "OpenTK.Windowing.Desktop/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
-          "OpenTK.Mathematics": "[4.7.5, 4.8.0)",
-          "OpenTK.Windowing.Common": "[4.7.5, 4.8.0)",
-          "OpenTK.Windowing.GraphicsLibraryFramework": "[4.7.5, 4.8.0)"
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.7, 4.8.0)",
+          "OpenTK.Windowing.Common": "[4.7.7, 4.8.0)",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "[4.7.7, 4.8.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.dll": {
@@ -2521,10 +2534,10 @@
           }
         }
       },
-      "OpenTK.Windowing.GraphicsLibraryFramework/4.7.5": {
+      "OpenTK.Windowing.GraphicsLibraryFramework/4.7.7": {
         "type": "package",
         "dependencies": {
-          "OpenTK.Core": "[4.7.5, 4.8.0)",
+          "OpenTK.Core": "[4.7.7, 4.8.0)",
           "OpenTK.redist.glfw": "3.3.8.30"
         },
         "compile": {
@@ -2538,7 +2551,20 @@
           }
         }
       },
-      "Porcupine/2.1.6": {
+      "Picovoice/2.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Porcupine": "2.2.1",
+          "Rhino": "2.2.1"
+        },
+        "compile": {
+          "lib/net6.0/Picovoice.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Picovoice.dll": {}
+        }
+      },
+      "Porcupine/2.2.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/Porcupine.dll": {}
@@ -2550,7 +2576,7 @@
           "build/net6.0/Porcupine.targets": {}
         }
       },
-      "PvRecorder/1.1.1": {
+      "PvRecorder/1.2.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/PvRecorder.dll": {}
@@ -2562,7 +2588,7 @@
           "build/net6.0/PvRecorder.targets": {}
         }
       },
-      "Rhino/2.1.8": {
+      "Rhino/2.2.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/Rhino.dll": {}
@@ -2575,13 +2601,13 @@
         }
       },
       "runtime.linux-arm.runtime.native.System.IO.Ports/5.0.0": {
-        "type": "package",
-        "native": {
-          "runtimes/linux-arm/native/libSystem.IO.Ports.Native.so": {}
-        }
+        "type": "package"
       },
       "runtime.linux-arm64.runtime.native.System.IO.Ports/5.0.0": {
-        "type": "package"
+        "type": "package",
+        "native": {
+          "runtimes/linux-arm64/native/libSystem.IO.Ports.Native.so": {}
+        }
       },
       "runtime.linux-x64.runtime.native.System.IO.Ports/5.0.0": {
         "type": "package"
@@ -2611,10 +2637,10 @@
           }
         }
       },
-      "SolarCalculator/3.2.1": {
+      "SolarCalculator/3.3.0": {
         "type": "package",
         "dependencies": {
-          "Angle": "3.2.1"
+          "Angle": "3.3.0"
         },
         "compile": {
           "lib/net7.0/Innovative.SolarCalculator.dll": {
@@ -2723,20 +2749,20 @@
           }
         }
       },
-      "System.Reactive/5.0.0": {
+      "System.Reactive/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net5.0/System.Reactive.dll": {
+          "lib/net6.0/System.Reactive.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/System.Reactive.dll": {
+          "lib/net6.0/System.Reactive.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/net5.0/_._": {}
+          "buildTransitive/net6.0/_._": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/5.0.0": {
@@ -2858,16 +2884,16 @@
         "lib/netstandard2.1/Alsa.Net.xml"
       ]
     },
-    "Angle/3.2.1": {
-      "sha512": "W9FzynyNIx4cIcJJns7haNMBVVEA9QXg4qTigbI+OJQYSR2i28+Kw3Qb2jwJ9SyPIBSf4/OdN1o+2Y0JssHCxw==",
+    "Angle/3.3.0": {
+      "sha512": "Vckv2JalO5msWu7KptFAl4OpXugmBDQg45fB1eSB1rTJ8SB9r2gMXhWX0lk70cI98obp3k51wkxzb1DvvRYOeA==",
       "type": "package",
-      "path": "angle/3.2.1",
+      "path": "angle/3.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Angle.png",
         "README.md",
-        "angle.3.2.1.nupkg.sha512",
+        "angle.3.3.0.nupkg.sha512",
         "angle.nuspec",
         "lib/net40/Innovative.Geometry.Angle.dll",
         "lib/net40/Innovative.Geometry.Angle.xml",
@@ -2928,10 +2954,10 @@
         "lib/netstandard2.0/Iot.Device.Bindings.xml"
       ]
     },
-    "Microsoft.CognitiveServices.Speech/1.25.0": {
-      "sha512": "d+65nUUDTQ/JHB8F3qaAAvV9pbvkAcdRIUmBdv/c4ScpmLqDZRFBrcs5Agae3nBefI1U41NZ0AA95sEASeM8GA==",
+    "Microsoft.CognitiveServices.Speech/1.29.0": {
+      "sha512": "gHLToO6ROBYhYsDlTEgXBy99jc2PfdQTrqWp91AtUN5poBoh6u0x8rZCDZSHvITDQfM2JNlNCOVYDTYFltujhA==",
       "type": "package",
-      "path": "microsoft.cognitiveservices.speech/1.25.0",
+      "path": "microsoft.cognitiveservices.speech/1.29.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2964,6 +2990,7 @@
         "build/native/ARM64/Release/Microsoft.CognitiveServices.Speech.core.lib",
         "build/native/Microsoft.CognitiveServices.Speech.targets",
         "build/native/Win32/Release/Microsoft.CognitiveServices.Speech.core.lib",
+        "build/native/include/c_api/CMakeLists.txt",
         "build/native/include/c_api/azac_api_c_common.h",
         "build/native/include/c_api/azac_api_c_diagnostics.h",
         "build/native/include/c_api/azac_api_c_error.h",
@@ -3009,12 +3036,14 @@
         "build/native/include/c_api/speechapi_c_speech_config.h",
         "build/native/include/c_api/speechapi_c_speech_recognition_model.h",
         "build/native/include/c_api/speechapi_c_speech_translation_config.h",
+        "build/native/include/c_api/speechapi_c_speech_translation_model.h",
         "build/native/include/c_api/speechapi_c_synthesizer.h",
         "build/native/include/c_api/speechapi_c_translation_recognizer.h",
         "build/native/include/c_api/speechapi_c_translation_result.h",
         "build/native/include/c_api/speechapi_c_user.h",
         "build/native/include/c_api/spxdebug.h",
         "build/native/include/c_api/spxerror.h",
+        "build/native/include/cxx_api/CMakeLists.txt",
         "build/native/include/cxx_api/azac_api_cxx_common.h",
         "build/native/include/cxx_api/speechapi_cxx.h",
         "build/native/include/cxx_api/speechapi_cxx_audio_config.h",
@@ -3096,6 +3125,7 @@
         "build/native/include/cxx_api/speechapi_cxx_speech_synthesis_word_boundary_eventargs.h",
         "build/native/include/cxx_api/speechapi_cxx_speech_synthesizer.h",
         "build/native/include/cxx_api/speechapi_cxx_speech_translation_config.h",
+        "build/native/include/cxx_api/speechapi_cxx_speech_translation_model.h",
         "build/native/include/cxx_api/speechapi_cxx_string_helpers.h",
         "build/native/include/cxx_api/speechapi_cxx_synthesis_voices_result.h",
         "build/native/include/cxx_api/speechapi_cxx_translation_eventargs.h",
@@ -3116,6 +3146,7 @@
         "build/native/x64/Release/Microsoft.CognitiveServices.Speech.core.lib",
         "build/net462/Microsoft.CognitiveServices.Speech.targets",
         "build/net6.0-android/Microsoft.CognitiveServices.Speech.targets",
+        "build/net6.0-ios/Microsoft.CognitiveServices.Speech.targets",
         "lib/Xamarin.iOS/Microsoft.CognitiveServices.Speech.csharp.dll",
         "lib/Xamarin.iOS/Microsoft.CognitiveServices.Speech.csharp.xml",
         "lib/monoandroid/Microsoft.CognitiveServices.Speech.csharp.dll",
@@ -3132,7 +3163,7 @@
         "lib/netstandard2.0/Microsoft.CognitiveServices.Speech.csharp.xml",
         "lib/uap10.0/Microsoft.CognitiveServices.Speech.csharp.dll",
         "lib/uap10.0/Microsoft.CognitiveServices.Speech.csharp.xml",
-        "microsoft.cognitiveservices.speech.1.25.0.nupkg.sha512",
+        "microsoft.cognitiveservices.speech.1.29.0.nupkg.sha512",
         "microsoft.cognitiveservices.speech.nuspec",
         "runtimes/android-arm/native/libMicrosoft.CognitiveServices.Speech.core.so",
         "runtimes/android-arm/native/libMicrosoft.CognitiveServices.Speech.extension.audio.sys.so",
@@ -3306,10 +3337,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Configuration.Binder/7.0.0": {
-      "sha512": "tgU4u7bZsoS9MKVRiotVMAwHtbREHr5/5zSEV+JPhg46+ox47Au84E3D2IacAaB0bk5ePNaNieTlPrfjbbRJkg==",
+    "Microsoft.Extensions.Configuration.Binder/7.0.4": {
+      "sha512": "8+XPvJnHZsYgHOQlcMuQe7QNF5KdVKHH1F/wW3nd8/u81Gk/XFAYMDP0Lpz18h7/AM95M662vvqMorcYxCBB4w==",
       "type": "package",
-      "path": "microsoft.extensions.configuration.binder/7.0.0",
+      "path": "microsoft.extensions.configuration.binder/7.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3328,7 +3359,7 @@
         "lib/net7.0/Microsoft.Extensions.Configuration.Binder.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.xml",
-        "microsoft.extensions.configuration.binder.7.0.0.nupkg.sha512",
+        "microsoft.extensions.configuration.binder.7.0.4.nupkg.sha512",
         "microsoft.extensions.configuration.binder.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -4159,101 +4190,119 @@
         "src/MP3Sharp/Support/SupportClass.cs"
       ]
     },
-    "MQTTnet/3.1.2": {
-      "sha512": "074AmNXQSs6S3vKyWqYIVvVCeyydCYhOLqfTfRXTaOihQTLAeKRnZh8c3Xhsvct4Rn+tCORFpUdLE35lH4c5Aw==",
+    "MQTTnet/4.2.1.781": {
+      "sha512": "oKPAoW1Ynukm6ws6P3NmmMlNb3xIlPVf/89WVCkoWOJdz1dYtAdGYRdqe876pVsPru4j0uyU/hKf7iL3NU1r6w==",
       "type": "package",
-      "path": "mqttnet/3.1.2",
+      "path": "mqttnet/4.2.1.781",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE",
-        "images/Logo_128x128.png",
         "lib/net452/MQTTnet.dll",
+        "lib/net452/MQTTnet.xml",
         "lib/net461/MQTTnet.dll",
-        "lib/net5.0/MQTTnet.deps.json",
+        "lib/net461/MQTTnet.xml",
+        "lib/net48/MQTTnet.dll",
+        "lib/net48/MQTTnet.xml",
         "lib/net5.0/MQTTnet.dll",
-        "lib/netcoreapp3.1/MQTTnet.deps.json",
+        "lib/net5.0/MQTTnet.xml",
+        "lib/net6.0/MQTTnet.dll",
+        "lib/net6.0/MQTTnet.xml",
+        "lib/net7.0/MQTTnet.dll",
+        "lib/net7.0/MQTTnet.xml",
         "lib/netcoreapp3.1/MQTTnet.dll",
-        "lib/netstandard1.3/MQTTnet.deps.json",
+        "lib/netcoreapp3.1/MQTTnet.xml",
         "lib/netstandard1.3/MQTTnet.dll",
-        "lib/netstandard2.0/MQTTnet.deps.json",
+        "lib/netstandard1.3/MQTTnet.xml",
         "lib/netstandard2.0/MQTTnet.dll",
-        "lib/netstandard2.1/MQTTnet.deps.json",
+        "lib/netstandard2.0/MQTTnet.xml",
         "lib/netstandard2.1/MQTTnet.dll",
-        "lib/uap10.0/MQTTnet.dll",
-        "lib/uap10.0/MQTTnet.pri",
-        "mqttnet.3.1.2.nupkg.sha512",
-        "mqttnet.nuspec"
+        "lib/netstandard2.1/MQTTnet.xml",
+        "lib/uap10.0.10240/MQTTnet.dll",
+        "lib/uap10.0.10240/MQTTnet.pri",
+        "lib/uap10.0.10240/MQTTnet.xml",
+        "mqttnet.4.2.1.781.nupkg.sha512",
+        "mqttnet.nuspec",
+        "nuget.png"
       ]
     },
-    "MQTTnet.Extensions.ManagedClient/3.1.2": {
-      "sha512": "9VO8h7psOBERM0ZJ8I7OrQbAcdFvGLDRmpu3HNuA4cGiQRWNorzm5WbHExePnLR0pbSqWsYLH8wEvHbv3hjD0w==",
+    "MQTTnet.Extensions.ManagedClient/4.2.1.781": {
+      "sha512": "JkW4/p9ZgfV/w33AO1Ug5liAnQCdcXoytKx4BVgU5LznaasMDv24skMKkGyOf+/XO24OdFbbpx8kr9u13HJ/7w==",
       "type": "package",
-      "path": "mqttnet.extensions.managedclient/3.1.2",
+      "path": "mqttnet.extensions.managedclient/4.2.1.781",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE",
-        "images/Logo_128x128.png",
         "lib/net452/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/net452/MQTTnet.Extensions.ManagedClient.xml",
         "lib/net461/MQTTnet.Extensions.ManagedClient.dll",
-        "lib/net5.0/MQTTnet.Extensions.ManagedClient.deps.json",
+        "lib/net461/MQTTnet.Extensions.ManagedClient.xml",
+        "lib/net48/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/net48/MQTTnet.Extensions.ManagedClient.xml",
         "lib/net5.0/MQTTnet.Extensions.ManagedClient.dll",
-        "lib/netstandard1.3/MQTTnet.Extensions.ManagedClient.deps.json",
+        "lib/net5.0/MQTTnet.Extensions.ManagedClient.xml",
+        "lib/net6.0/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/net6.0/MQTTnet.Extensions.ManagedClient.xml",
+        "lib/net7.0/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/net7.0/MQTTnet.Extensions.ManagedClient.xml",
+        "lib/netcoreapp3.1/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/netcoreapp3.1/MQTTnet.Extensions.ManagedClient.xml",
         "lib/netstandard1.3/MQTTnet.Extensions.ManagedClient.dll",
-        "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.deps.json",
+        "lib/netstandard1.3/MQTTnet.Extensions.ManagedClient.xml",
         "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.dll",
-        "lib/netstandard2.1/MQTTnet.Extensions.ManagedClient.deps.json",
+        "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.xml",
         "lib/netstandard2.1/MQTTnet.Extensions.ManagedClient.dll",
-        "lib/uap10.0/MQTTnet.Extensions.ManagedClient.dll",
-        "lib/uap10.0/MQTTnet.Extensions.ManagedClient.pri",
-        "mqttnet.extensions.managedclient.3.1.2.nupkg.sha512",
-        "mqttnet.extensions.managedclient.nuspec"
+        "lib/netstandard2.1/MQTTnet.Extensions.ManagedClient.xml",
+        "lib/uap10.0.10240/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/uap10.0.10240/MQTTnet.Extensions.ManagedClient.pri",
+        "lib/uap10.0.10240/MQTTnet.Extensions.ManagedClient.xml",
+        "mqttnet.extensions.managedclient.4.2.1.781.nupkg.sha512",
+        "mqttnet.extensions.managedclient.nuspec",
+        "nuget.png"
       ]
     },
-    "OpenTK/4.7.5": {
-      "sha512": "eFcD4adeP+bTOfjFT44K8gJxr9CabE/F3tQgFkQdHvOb+xI3ynWZ8m0MNZ5vwhTAVSKWFCv12pC5lMhFPAYYOQ==",
+    "OpenTK/4.7.7": {
+      "sha512": "T5SV1uSNgB5dpipFsfMkTnK3IIGzUnl1J2foYu3tqmYwlqLnQfQHFZ6ILiNQMPhXdBhrjnxHIU7ZeWJdNW60sw==",
       "type": "package",
-      "path": "opentk/4.7.5",
+      "path": "opentk/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "opentk.4.7.5.nupkg.sha512",
+        "opentk.4.7.7.nupkg.sha512",
         "opentk.nuspec"
       ]
     },
-    "OpenTK.Compute/4.7.5": {
-      "sha512": "Vd/ZSX2d/WeAJiPXPXkf823CjOtFKBkcQKu1gYiQYYy6xx5Hv7nUt50t+X/1ZEph54hJBtVFi/ePtvMpIss6VQ==",
+    "OpenTK.Compute/4.7.7": {
+      "sha512": "DvqLgGubdqbb7svXCxDLyYUGcZoIrB4jRN0su1YOOOjdNZnOpC1qUqspFx0NjWGBMq3TipoSSwW1JfN0hbK36A==",
       "type": "package",
-      "path": "opentk.compute/4.7.5",
+      "path": "opentk.compute/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netcoreapp3.1/OpenTK.Compute.dll",
         "lib/netcoreapp3.1/OpenTK.Compute.pdb",
         "lib/netcoreapp3.1/OpenTK.Compute.xml",
-        "opentk.compute.4.7.5.nupkg.sha512",
+        "opentk.compute.4.7.7.nupkg.sha512",
         "opentk.compute.nuspec"
       ]
     },
-    "OpenTK.Core/4.7.5": {
-      "sha512": "qRnNUImMQexp0dezp70XkD/DV5lOpDXou+wzYM79u1F4c986hmIK5SyM5gRlVZBPYdSLv1lhSPpEPIcJrWGKRg==",
+    "OpenTK.Core/4.7.7": {
+      "sha512": "YlBGXGelHbXKabe2u6EOXkooK8rkFxh97VJlK3M4D0vzrZJltL5aHnB15I+W1adUJVI2P3e16qXJaGd7VsLfgA==",
       "type": "package",
-      "path": "opentk.core/4.7.5",
+      "path": "opentk.core/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.1/OpenTK.Core.dll",
         "lib/netstandard2.1/OpenTK.Core.pdb",
         "lib/netstandard2.1/OpenTK.Core.xml",
-        "opentk.core.4.7.5.nupkg.sha512",
+        "opentk.core.4.7.7.nupkg.sha512",
         "opentk.core.nuspec"
       ]
     },
-    "OpenTK.Graphics/4.7.5": {
-      "sha512": "8PrVCl/C7v9LUO/3dwXzqfAkp/QnCdQBY62a7VT53cXCEuj/RwkQijDMp3TxOuOhLvUSyIbyt/MFa2yxqmoRUQ==",
+    "OpenTK.Graphics/4.7.7": {
+      "sha512": "LcSkqJFlSJ4jr/tgBMmqAsLkIrDMgpKmnC8WHzQ9/KMRWbryLawez/Uj52Y7EMwRvSpm3nhs0wZb/ZepbiNhVw==",
       "type": "package",
-      "path": "opentk.graphics/4.7.5",
+      "path": "opentk.graphics/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4263,28 +4312,28 @@
         "lib/netstandard2.1/OpenTK.Graphics.dll",
         "lib/netstandard2.1/OpenTK.Graphics.pdb",
         "lib/netstandard2.1/OpenTK.Graphics.xml",
-        "opentk.graphics.4.7.5.nupkg.sha512",
+        "opentk.graphics.4.7.7.nupkg.sha512",
         "opentk.graphics.nuspec"
       ]
     },
-    "OpenTK.Input/4.7.5": {
-      "sha512": "tV2QVTzfRsaCUa1oLThiEoEq0Rj/XDE0pNCWjh6mJeziv6+lxsOy+3BvK3n5G1nnA41P0+ZwRFdyhjcZqVLy/g==",
+    "OpenTK.Input/4.7.7": {
+      "sha512": "Ayy88Ia5RoMsAxGMXWT7QzMii5Ch7yBQLVqQWbJAHTRlqBtX05tI8CtCbFuxRPf20790i6wpILpF069av5eN3A==",
       "type": "package",
-      "path": "opentk.input/4.7.5",
+      "path": "opentk.input/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/OpenTK.Input.dll",
         "lib/netstandard2.0/OpenTK.Input.pdb",
         "lib/netstandard2.0/OpenTK.Input.xml",
-        "opentk.input.4.7.5.nupkg.sha512",
+        "opentk.input.4.7.7.nupkg.sha512",
         "opentk.input.nuspec"
       ]
     },
-    "OpenTK.Mathematics/4.7.5": {
-      "sha512": "pTdhfAMe+eeIu31OTgJ9UwHK14L2hMxigx9wduANBM7eKZwEd6V+cFhzobJJXzc1RjX/weBB6wVcKg6u9XJVQw==",
+    "OpenTK.Mathematics/4.7.7": {
+      "sha512": "tx6/xM8sdj7OQQp1Q8+xH25jSceU/muvlVircBPvPSPe5OdEtxgOk1OHZrSPu2c4u7u1id5lGf3dWKn8IQdU3g==",
       "type": "package",
-      "path": "opentk.mathematics/4.7.5",
+      "path": "opentk.mathematics/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4294,21 +4343,21 @@
         "lib/netstandard2.1/OpenTK.Mathematics.dll",
         "lib/netstandard2.1/OpenTK.Mathematics.pdb",
         "lib/netstandard2.1/OpenTK.Mathematics.xml",
-        "opentk.mathematics.4.7.5.nupkg.sha512",
+        "opentk.mathematics.4.7.7.nupkg.sha512",
         "opentk.mathematics.nuspec"
       ]
     },
-    "OpenTK.OpenAL/4.7.5": {
-      "sha512": "o0jEaAJnCZytgs17TbmJGRpyrOAfShyDz7dlbjoE9a0clM6QIl1nY9+ct9wnNCXds1NnctKveUzDqIJ5XBcm/A==",
+    "OpenTK.OpenAL/4.7.7": {
+      "sha512": "5OQhnGgg3tEi+RSw3BWwQkGoews1axpYFvT9q34lr1nBUplSVS6h9IIsnOpBHBqY+dt0Ff3DXTj8YVXTAt9XMQ==",
       "type": "package",
-      "path": "opentk.openal/4.7.5",
+      "path": "opentk.openal/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netcoreapp3.1/OpenTK.OpenAL.dll",
         "lib/netcoreapp3.1/OpenTK.OpenAL.pdb",
         "lib/netcoreapp3.1/OpenTK.OpenAL.xml",
-        "opentk.openal.4.7.5.nupkg.sha512",
+        "opentk.openal.4.7.7.nupkg.sha512",
         "opentk.openal.nuspec"
       ]
     },
@@ -4331,10 +4380,10 @@
         "runtimes/win-x86/native/glfw3.dll"
       ]
     },
-    "OpenTK.Windowing.Common/4.7.5": {
-      "sha512": "vEO4MgZX1sarZ0q2wgySn0lKunqCTIX2pk/alO76sNZ3vh8lrQsAv+n9qUynD5JRxESiox0HktYxPoIkeUej4A==",
+    "OpenTK.Windowing.Common/4.7.7": {
+      "sha512": "g1277SMVCaHPob+7ZYQ9Of6nm34yWuJ2OTaz/6o9P0B26/rvxGiKm4MalWZzvix4l6FU2tevgpgPi4VecK27FA==",
       "type": "package",
-      "path": "opentk.windowing.common/4.7.5",
+      "path": "opentk.windowing.common/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4344,42 +4393,57 @@
         "lib/netstandard2.1/OpenTK.Windowing.Common.dll",
         "lib/netstandard2.1/OpenTK.Windowing.Common.pdb",
         "lib/netstandard2.1/OpenTK.Windowing.Common.xml",
-        "opentk.windowing.common.4.7.5.nupkg.sha512",
+        "opentk.windowing.common.4.7.7.nupkg.sha512",
         "opentk.windowing.common.nuspec"
       ]
     },
-    "OpenTK.Windowing.Desktop/4.7.5": {
-      "sha512": "8yfpN501XAGfNmxE6Ys/RxokVe1WiyeeiYR6uUjUkJUYf4W9rpK2tZqpspGoHjzL5Io1zo7XIKaW1T8S4NK2AQ==",
+    "OpenTK.Windowing.Desktop/4.7.7": {
+      "sha512": "Kd0UzgSA49meQvW9sfnmtH02rlfwFIox2+fF+5Y4EhIQ8+VwEiiSszs8WkNM9QIhUTHovK4ww384AQkAmpUxIw==",
       "type": "package",
-      "path": "opentk.windowing.desktop/4.7.5",
+      "path": "opentk.windowing.desktop/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.dll",
         "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.pdb",
         "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.xml",
-        "opentk.windowing.desktop.4.7.5.nupkg.sha512",
+        "opentk.windowing.desktop.4.7.7.nupkg.sha512",
         "opentk.windowing.desktop.nuspec"
       ]
     },
-    "OpenTK.Windowing.GraphicsLibraryFramework/4.7.5": {
-      "sha512": "zBSlfqgmtRZD41XlWVKbArtStLjOlvhMIaS6ETbYdbp6Nl/m3oPqnOGegfP12lFe2FvxBq/nRGgaNiQ/VSVPRg==",
+    "OpenTK.Windowing.GraphicsLibraryFramework/4.7.7": {
+      "sha512": "TZXZOcnfyPU7zosW+ZPtfemqp4oSBYmQlRQRR7qtEezOBrzotO5ZmlWl0hNti3qjFmJThSxhBn+o/bF7aoBLrA==",
       "type": "package",
-      "path": "opentk.windowing.graphicslibraryframework/4.7.5",
+      "path": "opentk.windowing.graphicslibraryframework/4.7.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.dll",
         "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.pdb",
         "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.xml",
-        "opentk.windowing.graphicslibraryframework.4.7.5.nupkg.sha512",
+        "opentk.windowing.graphicslibraryframework.4.7.7.nupkg.sha512",
         "opentk.windowing.graphicslibraryframework.nuspec"
       ]
     },
-    "Porcupine/2.1.6": {
-      "sha512": "GVXUVLyMYP1ZIUHrgabYjFatb24QMr7K+FHGTqJOVoLup17qT2ki9FbTXyzFJqVkzSqyctt0vEAclK4PIJBazw==",
+    "Picovoice/2.2.1": {
+      "sha512": "KOHzi8/2RcHqyAX4cwlix/FDcRBwcjFC16esTa8LnKM5ZRW/FQddfHGBTSXlJN3bzxIhpFs4FqOnWcppTTgcFQ==",
       "type": "package",
-      "path": "porcupine/2.1.6",
+      "path": "picovoice/2.2.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Picovoice.dll",
+        "lib/netcoreapp3.0/Picovoice.dll",
+        "lib/netstandard2.0/Picovoice.dll",
+        "picovoice.2.2.1.nupkg.sha512",
+        "picovoice.nuspec",
+        "pv_circle_512.png"
+      ]
+    },
+    "Porcupine/2.2.1": {
+      "sha512": "rQ4rfnUY5Xnqx8Bi4a0WayEnOmuJKPKe8PIu4W2v+N4FuSC34M3EbZdKGf1qAJDWzYiJG2FD0iNplyIfIw53Vg==",
+      "type": "package",
+      "path": "porcupine/2.2.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4480,116 +4544,107 @@
         "build/net6.0/resources/keyword_files/windows/picovoice_windows.ppn",
         "build/net6.0/resources/keyword_files/windows/porcupine_windows.ppn",
         "build/net6.0/resources/keyword_files/windows/terminator_windows.ppn",
-        "build/netcoreapp3.1/Porcupine.targets",
-        "build/netcoreapp3.1/lib/beaglebone/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/common/porcupine_params.pv",
-        "build/netcoreapp3.1/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/linux/x86_64/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/mac/arm64/libpv_porcupine.dylib",
-        "build/netcoreapp3.1/lib/mac/x86_64/libpv_porcupine.dylib",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a53-aarch64/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a53/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a7/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a72-aarch64/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a72/libpv_porcupine.so",
-        "build/netcoreapp3.1/lib/windows/amd64/libpv_porcupine.dll",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/alexa_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/americano_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/blueberry_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/bumblebee_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/computer_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/grapefruit_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/grasshopper_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/hey google_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/hey siri_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/jarvis_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/ok google_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/porcupine_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/beaglebone/terminator_beaglebone.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/alexa_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/americano_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/blueberry_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/bumblebee_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/computer_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/grapefruit_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/grasshopper_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/hey google_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/hey siri_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/jarvis_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/ok google_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/picovoice_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/porcupine_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/jetson/terminator_jetson.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/alexa_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/americano_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/blueberry_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/bumblebee_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/computer_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/grapefruit_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/grasshopper_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/hey google_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/hey siri_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/jarvis_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/ok google_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/picovoice_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/porcupine_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/linux/terminator_linux.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/alexa_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/americano_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/blueberry_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/bumblebee_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/computer_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/grapefruit_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/grasshopper_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/hey google_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/hey siri_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/jarvis_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/ok google_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/picovoice_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/porcupine_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/mac/terminator_mac.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/alexa_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/americano_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/blueberry_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/bumblebee_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/computer_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/grapefruit_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/grasshopper_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/hey google_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/hey siri_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/jarvis_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/ok google_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/raspberry-pi/terminator_raspberry-pi.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/alexa_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/americano_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/blueberry_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/bumblebee_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/computer_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/grapefruit_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/grasshopper_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/hey google_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/hey siri_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/jarvis_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/ok google_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/picovoice_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/porcupine_windows.ppn",
-        "build/netcoreapp3.1/resources/keyword_files/windows/terminator_windows.ppn",
+        "build/netcoreapp3.0/Porcupine.targets",
+        "build/netcoreapp3.0/lib/beaglebone/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/common/porcupine_params.pv",
+        "build/netcoreapp3.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/linux/x86_64/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/mac/x86_64/libpv_porcupine.dylib",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a53-aarch64/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a53/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a7/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a72-aarch64/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a72/libpv_porcupine.so",
+        "build/netcoreapp3.0/lib/windows/amd64/libpv_porcupine.dll",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/alexa_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/americano_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/blueberry_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/bumblebee_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/computer_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/grapefruit_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/grasshopper_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/hey google_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/hey siri_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/jarvis_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/ok google_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/porcupine_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/beaglebone/terminator_beaglebone.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/alexa_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/americano_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/blueberry_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/bumblebee_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/computer_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/grapefruit_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/grasshopper_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/hey google_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/hey siri_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/jarvis_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/ok google_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/picovoice_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/porcupine_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/jetson/terminator_jetson.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/alexa_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/americano_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/blueberry_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/bumblebee_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/computer_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/grapefruit_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/grasshopper_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/hey google_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/hey siri_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/jarvis_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/ok google_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/picovoice_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/porcupine_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/linux/terminator_linux.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/alexa_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/americano_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/blueberry_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/bumblebee_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/computer_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/grapefruit_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/grasshopper_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/hey google_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/hey siri_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/jarvis_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/ok google_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/picovoice_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/porcupine_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/mac/terminator_mac.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/alexa_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/americano_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/blueberry_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/bumblebee_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/computer_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/grapefruit_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/grasshopper_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/hey google_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/hey siri_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/jarvis_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/ok google_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/raspberry-pi/terminator_raspberry-pi.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/alexa_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/americano_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/blueberry_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/bumblebee_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/computer_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/grapefruit_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/grasshopper_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/hey google_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/hey siri_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/jarvis_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/ok google_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/picovoice_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/porcupine_windows.ppn",
+        "build/netcoreapp3.0/resources/keyword_files/windows/terminator_windows.ppn",
         "build/netstandard2.0/Porcupine.targets",
-        "build/netstandard2.0/lib/beaglebone/libpv_porcupine.so",
         "build/netstandard2.0/lib/common/porcupine_params.pv",
-        "build/netstandard2.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so",
-        "build/netstandard2.0/lib/linux/x86_64/libpv_porcupine.so",
-        "build/netstandard2.0/lib/mac/arm64/libpv_porcupine.dylib",
-        "build/netstandard2.0/lib/mac/x86_64/libpv_porcupine.dylib",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a53-aarch64/libpv_porcupine.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a53/libpv_porcupine.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a7/libpv_porcupine.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a72-aarch64/libpv_porcupine.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a72/libpv_porcupine.so",
-        "build/netstandard2.0/lib/windows/amd64/libpv_porcupine.dll",
+        "build/netstandard2.0/libpv_porcupine.dll",
+        "build/netstandard2.0/libpv_porcupine.dylib",
+        "build/netstandard2.0/libpv_porcupine.so",
         "build/netstandard2.0/resources/keyword_files/beaglebone/alexa_beaglebone.ppn",
         "build/netstandard2.0/resources/keyword_files/beaglebone/americano_beaglebone.ppn",
         "build/netstandard2.0/resources/keyword_files/beaglebone/blueberry_beaglebone.ppn",
@@ -4675,17 +4730,17 @@
         "build/netstandard2.0/resources/keyword_files/windows/porcupine_windows.ppn",
         "build/netstandard2.0/resources/keyword_files/windows/terminator_windows.ppn",
         "lib/net6.0/Porcupine.dll",
-        "lib/netcoreapp3.1/Porcupine.dll",
+        "lib/netcoreapp3.0/Porcupine.dll",
         "lib/netstandard2.0/Porcupine.dll",
-        "porcupine.2.1.6.nupkg.sha512",
+        "porcupine.2.2.1.nupkg.sha512",
         "porcupine.nuspec",
         "pv_circle_512.png"
       ]
     },
-    "PvRecorder/1.1.1": {
-      "sha512": "c1mIeg7UHfGfity9YgFAMRxFs9zfOQ25cVJMVvjyHAmg/IgmUTBL9t5psEX5TwDc8JZq4DDd/pAmyVfpqcaNUg==",
+    "PvRecorder/1.2.1": {
+      "sha512": "Xoei4xhzO31upLfaI39zH2LfKh8KTNIb4bR1MgZdPXSx8ocRlbK48GHUVuLEVrpJmdqslULpa+BEwZh5KQZ5ew==",
       "type": "package",
-      "path": "pvrecorder/1.1.1",
+      "path": "pvrecorder/1.2.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4703,45 +4758,37 @@
         "build/net6.0/lib/windows/amd64/libpv_recorder.dll",
         "build/net6.0/scripts/platform.bat",
         "build/net6.0/scripts/platform.sh",
-        "build/netcoreapp3.1/PvRecorder.targets",
-        "build/netcoreapp3.1/lib/beaglebone/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/jetson/cortex-a57-aarch64/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/linux/x86_64/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/mac/arm64/libpv_recorder.dylib",
-        "build/netcoreapp3.1/lib/mac/x86_64/libpv_recorder.dylib",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a53-aarch64/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a53/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a7/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a72-aarch64/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a72/libpv_recorder.so",
-        "build/netcoreapp3.1/lib/windows/amd64/libpv_recorder.dll",
-        "build/netcoreapp3.1/scripts/platform.bat",
-        "build/netcoreapp3.1/scripts/platform.sh",
+        "build/netcoreapp3.0/PvRecorder.targets",
+        "build/netcoreapp3.0/lib/beaglebone/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/jetson/cortex-a57-aarch64/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/linux/x86_64/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/mac/x86_64/libpv_recorder.dylib",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a53-aarch64/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a53/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a7/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a72-aarch64/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a72/libpv_recorder.so",
+        "build/netcoreapp3.0/lib/windows/amd64/libpv_recorder.dll",
+        "build/netcoreapp3.0/scripts/platform.bat",
+        "build/netcoreapp3.0/scripts/platform.sh",
         "build/netstandard2.0/PvRecorder.targets",
-        "build/netstandard2.0/lib/beaglebone/libpv_recorder.so",
-        "build/netstandard2.0/lib/jetson/cortex-a57-aarch64/libpv_recorder.so",
-        "build/netstandard2.0/lib/linux/x86_64/libpv_recorder.so",
-        "build/netstandard2.0/lib/mac/arm64/libpv_recorder.dylib",
-        "build/netstandard2.0/lib/mac/x86_64/libpv_recorder.dylib",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a53-aarch64/libpv_recorder.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a53/libpv_recorder.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a7/libpv_recorder.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a72-aarch64/libpv_recorder.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a72/libpv_recorder.so",
-        "build/netstandard2.0/lib/windows/amd64/libpv_recorder.dll",
+        "build/netstandard2.0/libpv_recorder.dll",
+        "build/netstandard2.0/libpv_recorder.dylib",
+        "build/netstandard2.0/libpv_recorder.so",
         "build/netstandard2.0/scripts/platform.bat",
         "build/netstandard2.0/scripts/platform.sh",
         "lib/net6.0/PvRecorder.dll",
-        "lib/netcoreapp3.1/PvRecorder.dll",
+        "lib/netcoreapp3.0/PvRecorder.dll",
         "lib/netstandard2.0/PvRecorder.dll",
-        "pvrecorder.1.1.1.nupkg.sha512",
+        "pv_circle_512.png",
+        "pvrecorder.1.2.1.nupkg.sha512",
         "pvrecorder.nuspec"
       ]
     },
-    "Rhino/2.1.8": {
-      "sha512": "j4CQIi82Qsw0UySR3SoC7EhQSAPcTUy266bxPOEEievBB5X3CEBiUoSAiMclL0neUTxDlE4nS+7D0VtvsufR1g==",
+    "Rhino/2.2.1": {
+      "sha512": "t8lUwjRp9xlbN4Cc7siCCrsxzo6H2P3Tm50CS0pP0sMKg0r1QMKXEx5exC2sklWD99MUqSJCZwIDGQoANQamUw==",
       "type": "package",
-      "path": "rhino/2.1.8",
+      "path": "rhino/2.2.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4758,37 +4805,28 @@
         "build/net6.0/lib/raspberry-pi/cortex-a72-aarch64/libpv_rhino.so",
         "build/net6.0/lib/raspberry-pi/cortex-a72/libpv_rhino.so",
         "build/net6.0/lib/windows/amd64/libpv_rhino.dll",
-        "build/netcoreapp3.1/Rhino.targets",
-        "build/netcoreapp3.1/lib/beaglebone/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/common/rhino_params.pv",
-        "build/netcoreapp3.1/lib/jetson/cortex-a57-aarch64/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/linux/x86_64/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/mac/arm64/libpv_rhino.dylib",
-        "build/netcoreapp3.1/lib/mac/x86_64/libpv_rhino.dylib",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a53-aarch64/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a53/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a7/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a72-aarch64/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/raspberry-pi/cortex-a72/libpv_rhino.so",
-        "build/netcoreapp3.1/lib/windows/amd64/libpv_rhino.dll",
+        "build/netcoreapp3.0/Rhino.targets",
+        "build/netcoreapp3.0/lib/beaglebone/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/common/rhino_params.pv",
+        "build/netcoreapp3.0/lib/jetson/cortex-a57-aarch64/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/linux/x86_64/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/mac/x86_64/libpv_rhino.dylib",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a53-aarch64/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a53/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a7/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a72-aarch64/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/raspberry-pi/cortex-a72/libpv_rhino.so",
+        "build/netcoreapp3.0/lib/windows/amd64/libpv_rhino.dll",
         "build/netstandard2.0/Rhino.targets",
-        "build/netstandard2.0/lib/beaglebone/libpv_rhino.so",
         "build/netstandard2.0/lib/common/rhino_params.pv",
-        "build/netstandard2.0/lib/jetson/cortex-a57-aarch64/libpv_rhino.so",
-        "build/netstandard2.0/lib/linux/x86_64/libpv_rhino.so",
-        "build/netstandard2.0/lib/mac/arm64/libpv_rhino.dylib",
-        "build/netstandard2.0/lib/mac/x86_64/libpv_rhino.dylib",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a53-aarch64/libpv_rhino.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a53/libpv_rhino.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a7/libpv_rhino.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a72-aarch64/libpv_rhino.so",
-        "build/netstandard2.0/lib/raspberry-pi/cortex-a72/libpv_rhino.so",
-        "build/netstandard2.0/lib/windows/amd64/libpv_rhino.dll",
+        "build/netstandard2.0/libpv_rhino.dll",
+        "build/netstandard2.0/libpv_rhino.dylib",
+        "build/netstandard2.0/libpv_rhino.so",
         "lib/net6.0/Rhino.dll",
-        "lib/netcoreapp3.1/Rhino.dll",
+        "lib/netcoreapp3.0/Rhino.dll",
         "lib/netstandard2.0/Rhino.dll",
         "pv_circle_512.png",
-        "rhino.2.1.8.nupkg.sha512",
+        "rhino.2.2.1.nupkg.sha512",
         "rhino.nuspec"
       ]
     },
@@ -4900,10 +4938,10 @@
         "sixlabors.imagesharp.nuspec"
       ]
     },
-    "SolarCalculator/3.2.1": {
-      "sha512": "eap3OQSsVJONQQWvUBsaSzVspximLUBiMnn38C50TvU52LOT7/qX2oy08z53jOgk0FpoDM8b/62HaXMaEJ/DJA==",
+    "SolarCalculator/3.3.0": {
+      "sha512": "JRF8PujymPhMgh3Czais4Q9+Xwfxpaa/QyUx+IcFIJp0in21VltJyLHlezap0ndAikyniLcipz9ugm7WfqE7Ag==",
       "type": "package",
-      "path": "solarcalculator/3.2.1",
+      "path": "solarcalculator/3.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4929,7 +4967,7 @@
         "lib/netstandard2.0/Innovative.SolarCalculator.xml",
         "lib/netstandard2.1/Innovative.SolarCalculator.dll",
         "lib/netstandard2.1/Innovative.SolarCalculator.xml",
-        "solarcalculator.3.2.1.nupkg.sha512",
+        "solarcalculator.3.3.0.nupkg.sha512",
         "solarcalculator.nuspec"
       ]
     },
@@ -5112,32 +5150,31 @@
         "version.txt"
       ]
     },
-    "System.Reactive/5.0.0": {
-      "sha512": "erBZjkQHWL9jpasCE/0qKAryzVBJFxGHVBAvgRN1bzM0q2s1S4oYREEEL0Vb+1kA/6BKb5FjUZMp5VXmy+gzkQ==",
+    "System.Reactive/6.0.0": {
+      "sha512": "31kfaW4ZupZzPsI5PVe77VhnvFF55qgma7KZr/E0iFTs6fmdhhG8j0mgEx620iLTey1EynOkEfnyTjtNEpJzGw==",
       "type": "package",
-      "path": "system.reactive/5.0.0",
+      "path": "system.reactive/6.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "build/net5.0/_._",
-        "build/netcoreapp3.1/System.Reactive.dll",
-        "build/netcoreapp3.1/System.Reactive.targets",
-        "build/netcoreapp3.1/System.Reactive.xml",
-        "buildTransitive/net5.0/_._",
-        "buildTransitive/netcoreapp3.1/System.Reactive.targets",
+        "build/net6.0-windows10.0.19041/_._",
+        "build/net6.0/_._",
+        "buildTransitive/net6.0-windows10.0.19041/_._",
+        "buildTransitive/net6.0/_._",
+        "icon.png",
         "lib/net472/System.Reactive.dll",
         "lib/net472/System.Reactive.xml",
-        "lib/net5.0-windows10.0.19041/System.Reactive.dll",
-        "lib/net5.0-windows10.0.19041/System.Reactive.xml",
-        "lib/net5.0/System.Reactive.dll",
-        "lib/net5.0/System.Reactive.xml",
-        "lib/netcoreapp3.1/_._",
+        "lib/net6.0-windows10.0.19041/System.Reactive.dll",
+        "lib/net6.0-windows10.0.19041/System.Reactive.xml",
+        "lib/net6.0/System.Reactive.dll",
+        "lib/net6.0/System.Reactive.xml",
         "lib/netstandard2.0/System.Reactive.dll",
         "lib/netstandard2.0/System.Reactive.xml",
-        "lib/uap10.0.16299/System.Reactive.dll",
-        "lib/uap10.0.16299/System.Reactive.pri",
-        "lib/uap10.0.16299/System.Reactive.xml",
-        "system.reactive.5.0.0.nupkg.sha512",
+        "lib/uap10.0.18362/System.Reactive.dll",
+        "lib/uap10.0.18362/System.Reactive.pri",
+        "lib/uap10.0.18362/System.Reactive.xml",
+        "readme.md",
+        "system.reactive.6.0.0.nupkg.sha512",
         "system.reactive.nuspec"
       ]
     },
@@ -5446,48 +5483,42 @@
       "Humanizer.Core >= 2.14.1",
       "Iot.Device.Bindings >= 2.2.0",
       "MP3Sharp >= 1.0.5",
-      "MQTTnet.Extensions.ManagedClient >= 3.1.2",
-      "Microsoft.CognitiveServices.Speech >= 1.25.0",
+      "MQTTnet.Extensions.ManagedClient >= 4.2.1.781",
+      "Microsoft.CognitiveServices.Speech >= 1.29.0",
+      "Microsoft.Extensions.Configuration.Binder >= 7.0.4",
+      "Microsoft.Extensions.Configuration.EnvironmentVariables >= 7.0.0",
+      "Microsoft.Extensions.Configuration.Json >= 7.0.0",
       "Microsoft.Extensions.Hosting.Systemd >= 7.0.0",
-      "OpenTK >= 4.7.5",
-      "Porcupine >= 2.1.6",
-      "PvRecorder >= 1.1.1",
-      "Rhino >= 2.1.8",
-      "SolarCalculator >= 3.2.1",
+      "OpenTK >= 4.7.7",
+      "PicoVoice >= 2.2.1",
+      "Porcupine >= 2.2.1",
+      "PvRecorder >= 1.2.1",
+      "Rhino >= 2.2.1",
+      "SolarCalculator >= 3.3.0",
       "System.Device.Gpio >= 2.2.0",
-      "System.Reactive >= 5.0.0"
+      "System.Reactive >= 6.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pjtew\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/root/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj",
+      "projectUniqueName": "/Apps/AlarmClock/AlarmClockWeb/AlarmClockWeb.csproj",
       "projectName": "AlarmClockWeb",
-      "projectPath": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj",
-      "packagesPath": "C:\\Users\\pjtew\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\obj\\",
+      "projectPath": "/Apps/AlarmClock/AlarmClockWeb/AlarmClockWeb.csproj",
+      "packagesPath": "/root/.nuget/packages/",
+      "outputPath": "/Apps/AlarmClock/AlarmClockWeb/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\pjtew\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/root/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
-        "C:\\Users\\pjtew\\source\\repos\\piranha.core\\artifacts": {},
+        "/root/.dotnet/sdk/7.0.306/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -5524,11 +5555,23 @@
           },
           "MQTTnet.Extensions.ManagedClient": {
             "target": "Package",
-            "version": "[3.1.2, )"
+            "version": "[4.2.1.781, )"
           },
           "Microsoft.CognitiveServices.Speech": {
             "target": "Package",
-            "version": "[1.25.0, )"
+            "version": "[1.29.0, )"
+          },
+          "Microsoft.Extensions.Configuration.Binder": {
+            "target": "Package",
+            "version": "[7.0.4, )"
+          },
+          "Microsoft.Extensions.Configuration.EnvironmentVariables": {
+            "target": "Package",
+            "version": "[7.0.0, )"
+          },
+          "Microsoft.Extensions.Configuration.Json": {
+            "target": "Package",
+            "version": "[7.0.0, )"
           },
           "Microsoft.Extensions.Hosting.Systemd": {
             "target": "Package",
@@ -5536,23 +5579,27 @@
           },
           "OpenTK": {
             "target": "Package",
-            "version": "[4.7.5, )"
+            "version": "[4.7.7, )"
+          },
+          "PicoVoice": {
+            "target": "Package",
+            "version": "[2.2.1, )"
           },
           "Porcupine": {
             "target": "Package",
-            "version": "[2.1.6, )"
+            "version": "[2.2.1, )"
           },
           "PvRecorder": {
             "target": "Package",
-            "version": "[1.1.1, )"
+            "version": "[1.2.1, )"
           },
           "Rhino": {
             "target": "Package",
-            "version": "[2.1.8, )"
+            "version": "[2.2.1, )"
           },
           "SolarCalculator": {
             "target": "Package",
-            "version": "[3.2.1, )"
+            "version": "[3.3.0, )"
           },
           "System.Device.Gpio": {
             "target": "Package",
@@ -5560,7 +5607,7 @@
           },
           "System.Reactive": {
             "target": "Package",
-            "version": "[5.0.0, )"
+            "version": "[6.0.0, )"
           }
         },
         "imports": [
@@ -5576,20 +5623,16 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.AspNetCore.App.Runtime.linux-arm",
-            "version": "[7.0.2, 7.0.2]"
+            "name": "Microsoft.AspNetCore.App.Runtime.linux-arm64",
+            "version": "[7.0.9, 7.0.9]"
           },
           {
-            "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
-            "version": "[7.0.2, 7.0.2]"
+            "name": "Microsoft.NETCore.App.Crossgen2.linux-arm64",
+            "version": "[7.0.9, 7.0.9]"
           },
           {
-            "name": "Microsoft.NETCore.App.Host.linux-arm",
-            "version": "[7.0.2, 7.0.2]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Runtime.linux-arm",
-            "version": "[7.0.2, 7.0.2]"
+            "name": "Microsoft.NETCore.App.Runtime.linux-arm64",
+            "version": "[7.0.9, 7.0.9]"
           }
         ],
         "frameworkReferences": {
@@ -5600,11 +5643,11 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/root/.dotnet/sdk/7.0.306/RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {
-      "linux-arm": {
+      "linux-arm64": {
         "#import": []
       }
     }

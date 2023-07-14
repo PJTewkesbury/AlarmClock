@@ -1,3 +1,3 @@
 is_global = true
 build_property.RootNamespace = PvRecorder
-build_property.ProjectDir = C:\Projects\Repos\AlarmClock\pvrecorder\sdk\dotnet\PvRecorder\
+build_property.ProjectDir = /Apps/AlarmClock/pvrecorder/sdk/dotnet/PvRecorder/

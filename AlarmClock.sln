@@ -5,13 +5,11 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlarmClockWeb", "AlarmClockWeb\AlarmClockWeb.csproj", "{7E536E62-B1DE-4F4F-AA70-193235DD1AFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PvRecorder", "..\..\pvrecorder\sdk\dotnet\PvRecorder\PvRecorder.csproj", "{F6B754E6-AFF7-4A93-A5B0-DDFA2F1BEA8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PvRecorder", ".\pvrecorder\sdk\dotnet\PvRecorder\PvRecorder.csproj", "{F6B754E6-AFF7-4A93-A5B0-DDFA2F1BEA8E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Porcupine", "..\..\porcupine\binding\dotnet\Porcupine\Porcupine.csproj", "{EEE30E34-F464-4130-A5B3-EC8DBA9240CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Porcupine", ".\porcupine\binding\dotnet\Porcupine\Porcupine.csproj", "{EEE30E34-F464-4130-A5B3-EC8DBA9240CA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Picovoice", "..\..\picovoice\sdk\dotnet\Picovoice\Picovoice.csproj", "{0795EF81-52FB-4A4B-8E55-4C043BFBA21F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino", "..\..\rhino\binding\dotnet\Rhino\Rhino.csproj", "{C94A48D5-22C2-4509-B787-2F1DB3D82B89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhino", ".\rhino\binding\dotnet\Rhino\Rhino.csproj", "{C94A48D5-22C2-4509-B787-2F1DB3D82B89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

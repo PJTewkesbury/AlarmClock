@@ -1,34 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj": {}
+    "/Apps/AlarmClock/AlarmClockWeb/AlarmClockWeb.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj": {
+    "/Apps/AlarmClock/AlarmClockWeb/AlarmClockWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj",
+        "projectUniqueName": "/Apps/AlarmClock/AlarmClockWeb/AlarmClockWeb.csproj",
         "projectName": "AlarmClockWeb",
-        "projectPath": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\AlarmClockWeb.csproj",
-        "packagesPath": "C:\\Users\\pjtew\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Repos\\AlarmClock\\AlarmClockWeb\\obj\\",
+        "projectPath": "/Apps/AlarmClock/AlarmClockWeb/AlarmClockWeb.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/Apps/AlarmClock/AlarmClockWeb/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\pjtew\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "C:\\Users\\pjtew\\source\\repos\\piranha.core\\artifacts": {},
+          "/root/.dotnet/sdk/7.0.306/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,11 +57,23 @@
             },
             "MQTTnet.Extensions.ManagedClient": {
               "target": "Package",
-              "version": "[3.1.2, )"
+              "version": "[4.2.1.781, )"
             },
             "Microsoft.CognitiveServices.Speech": {
               "target": "Package",
-              "version": "[1.25.0, )"
+              "version": "[1.29.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Microsoft.Extensions.Configuration.EnvironmentVariables": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             },
             "Microsoft.Extensions.Hosting.Systemd": {
               "target": "Package",
@@ -77,23 +81,27 @@
             },
             "OpenTK": {
               "target": "Package",
-              "version": "[4.7.5, )"
+              "version": "[4.7.7, )"
+            },
+            "PicoVoice": {
+              "target": "Package",
+              "version": "[2.2.1, )"
             },
             "Porcupine": {
               "target": "Package",
-              "version": "[2.1.6, )"
+              "version": "[2.2.1, )"
             },
             "PvRecorder": {
               "target": "Package",
-              "version": "[1.1.1, )"
+              "version": "[1.2.1, )"
             },
             "Rhino": {
               "target": "Package",
-              "version": "[2.1.8, )"
+              "version": "[2.2.1, )"
             },
             "SolarCalculator": {
               "target": "Package",
-              "version": "[3.2.1, )"
+              "version": "[3.3.0, )"
             },
             "System.Device.Gpio": {
               "target": "Package",
@@ -101,7 +109,7 @@
             },
             "System.Reactive": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
@@ -117,20 +125,16 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Runtime.linux-arm",
-              "version": "[7.0.2, 7.0.2]"
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-arm64",
+              "version": "[7.0.9, 7.0.9]"
             },
             {
-              "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
-              "version": "[7.0.2, 7.0.2]"
+              "name": "Microsoft.NETCore.App.Crossgen2.linux-arm64",
+              "version": "[7.0.9, 7.0.9]"
             },
             {
-              "name": "Microsoft.NETCore.App.Host.linux-arm",
-              "version": "[7.0.2, 7.0.2]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.linux-arm",
-              "version": "[7.0.2, 7.0.2]"
+              "name": "Microsoft.NETCore.App.Runtime.linux-arm64",
+              "version": "[7.0.9, 7.0.9]"
             }
           ],
           "frameworkReferences": {
@@ -141,11 +145,11 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/root/.dotnet/sdk/7.0.306/RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
-        "linux-arm": {
+        "linux-arm64": {
           "#import": []
         }
       }

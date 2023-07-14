@@ -45,24 +45,24 @@ namespace AlarmClockPi
             List<Task> systemTasks = new List<Task>();
 
             // Start the Website
-            //var taskWebSite = Task.Run(() =>
-            //{
-            //    Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-            //    CreateHostBuilder(args).Build().Run();
-            //});
-            //systemTasks.Add(taskWebSite);
+            var taskWebSite = Task.Run(() =>
+            {
+               Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+               CreateHostBuilder(args).Build().Run();
+            });
+            systemTasks.Add(taskWebSite);
 
-            //// Start the hardware loop
-            //var taskHardware = Task.Run(() =>
-            //{
-            //    // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
-            //    if (Environment.OSVersion.Platform == PlatformID.Unix)
-            //    {
-            //        AlarmClock alarmClock = new AlarmClock();
-            //        alarmClock.Run(args);
-            //    }
-            //});
-            // systemTasks.Add(taskHardware);
+            // Start the hardware loop
+            var taskHardware = Task.Run(() =>
+            {
+               // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
+               if (Environment.OSVersion.Platform == PlatformID.Unix)
+               {
+                   AlarmClock alarmClock = new AlarmClock(null);
+                   alarmClock.Run(args);
+               }
+            });
+            systemTasks.Add(taskHardware);
 
             IConfiguration config = new ConfigurationBuilder()
                                         .AddJsonFile("appSettings.json", true)
@@ -109,41 +109,41 @@ namespace AlarmClockPi
             //systemTasks.Add(taskPico);
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
-            //var taskQuit = Task.Run(() =>
-            //{
-            //    Thread.CurrentThread.Priority = ThreadPriority.Lowest;
-            //    if (SystemdHelpers.IsSystemdService() == false)
-            //    {
-            //        bool quit = false;
-            //        do
-            //        {
-            //            if (Console.KeyAvailable)
-            //            {
-            //                var key = Console.ReadKey().Key;
-            //                quit = (key == ConsoleKey.Q);
-            //                if (key == ConsoleKey.P)
-            //                    AlarmClock.PlayRadio();
-            //                if (key == ConsoleKey.S)
-            //                    AlarmClock.StopRadio();
-            //                if (key == ConsoleKey.Z)
-            //                    AlarmClock.ChangeVolume(1);
-            //                if (key == ConsoleKey.X)
-            //                    AlarmClock.ChangeVolume(-1);
-            //            }
-            //            System.Threading.Thread.Yield();
-            //        }
-            //        while (quit == false);
-            //    }
-            //    else
-            //    {
-            //        do
-            //        {
-            //            System.Threading.Thread.Yield();
-            //        }
-            //        while (true) ;
-            //    }
-            //});
-            // systemTasks.Add(taskQuit);
+            var taskQuit = Task.Run(() =>
+            {
+               Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+               if (SystemdHelpers.IsSystemdService() == false)
+               {
+                   bool quit = false;
+                   do
+                   {
+                       if (Console.KeyAvailable)
+                       {
+                           var key = Console.ReadKey().Key;
+                           quit = (key == ConsoleKey.Q);
+                           if (key == ConsoleKey.P)
+                               AlarmClock.PlayRadio();
+                           if (key == ConsoleKey.S)
+                               AlarmClock.StopRadio();
+                           if (key == ConsoleKey.Z)
+                               AlarmClock.ChangeVolume(1);
+                           if (key == ConsoleKey.X)
+                               AlarmClock.ChangeVolume(-1);
+                       }
+                       System.Threading.Thread.Yield();
+                   }
+                   while (quit == false);
+               }
+               else
+               {
+                   do
+                   {
+                       System.Threading.Thread.Yield();
+                   }
+                   while (true) ;
+               }
+            });
+            systemTasks.Add(taskQuit);
 
             // Wait for one of the tasks to complete then quit.
             Task.WaitAny(systemTasks.ToArray());

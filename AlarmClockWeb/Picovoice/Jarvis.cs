@@ -16,7 +16,7 @@ namespace AlarmClockPi
     public class Jarvis
     {        
         string accessKey = "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==";
-        string contextPath = @"/Apps/PicoVoice/AlarmClock_en_raspberry-pi_v2_1_0.rhn";
+        string contextPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v2_2_0.rhn";
         ILogger<Jarvis> Log;
 
         public Jarvis(ILogger<Jarvis> Log, IConfiguration config)
@@ -28,7 +28,7 @@ namespace AlarmClockPi
             if (cs != null)
             {
                 accessKey = cs.GetValue<string>("AccessKey", "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==");
-                contextPath = cs.GetValue<string>("IntentFile", @"/Apps/PicoVoice/AlarmClock_en_raspberry-pi_v2_1_0.rhn");
+                contextPath = cs.GetValue<string>("IntentFile", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v2_2_0.rhn");
                 this.Log.LogInformation($"Access key : {accessKey}");
                 this.Log.LogInformation($"Access key : {contextPath}");
 
@@ -47,22 +47,32 @@ namespace AlarmClockPi
         {
             bool bUsePicoVoice = true;
             PvRecorder recorder = null;
-            PicovoiceEx picovoice = null;
+            Picovoice picovoice = null;
             try
             {
                 int audioDeviceIndex = -1;    
                 List<BuiltInKeyword> wakeWords = new List<BuiltInKeyword>() { BuiltInKeyword.JARVIS, BuiltInKeyword.ALEXA };
 
-                string porcupineModelPath = "./lib/common/porcupine_params.pv";
+                string porcupineModelPath = Directory.GetCurrentDirectory()+"/bin/Debug/net7.0/linux-arm64/lib/common/porcupine_params.pv";
+                Console.WriteLine($"Checking for {porcupineModelPath}");
+                if (!File.Exists(porcupineModelPath)){
+                    Console.WriteLine($"NOT FOUND  {porcupineModelPath}");
+                }
+
                 float porcupineSensitivity = 0.5f;
-                string rhinoModelPath = "./lib/common/rhino_params.pv";
+                string rhinoModelPath = Directory.GetCurrentDirectory()+"/bin/Debug/net7.0/linux-arm64/lib/common/rhino_params.pv";
+                Console.WriteLine($"Checking for {rhinoModelPath}");
+                if (!File.Exists(rhinoModelPath)){
+                    Console.WriteLine($"NOT FOUND  {rhinoModelPath}");
+                }
+
                 float rhinoSensitivity = 0.5f;
                 bool requireEndpoint = true;
                 
                 Console.WriteLine($"PicoVoice Create : {Rhino.DEFAULT_MODEL_PATH}");
-                picovoice = PicovoiceEx.Create(
+                picovoice = Picovoice.Create(
                        accessKey,
-                       wakeWords,
+                       "/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn",
                        wakeWordCallback,
                        contextPath,
                        inferenceCallback,
@@ -70,8 +80,10 @@ namespace AlarmClockPi
                        porcupineSensitivity,
                        rhinoModelPath,
                        rhinoSensitivity,
+                       1,
                        requireEndpoint);
 
+                Console.WriteLine($"Frame length : {picovoice.FrameLength}");
                 Console.WriteLine("PvRecorder Create");
                 recorder = PvRecorder.Create(audioDeviceIndex, picovoice.FrameLength);
 
@@ -87,7 +99,9 @@ namespace AlarmClockPi
                         // Listen for voice and process.
                         try
                         {
-                            if (AlarmClock.ledRing.LedLitCount > 0 && picovoice._isWakeWordDetected == false)
+                            if (AlarmClock.ledRing.LedLitCount > 0 
+                             // && picovoice._isWakeWordDetected == false
+                             )
                             {
                                 Task.Run(() =>
                                 {
@@ -103,7 +117,6 @@ namespace AlarmClockPi
                         {
                             Console.WriteLine(ex.Message);
                         }
-                        // System.Threading.Thread.Yield();
                         System.Threading.Thread.Sleep(10);
                     }
                     while (true);
@@ -121,9 +134,8 @@ namespace AlarmClockPi
                 }
             }
         }
-        static void wakeWordCallback(int rc)
+        static void wakeWordCallback()
         {
-            Console.WriteLine($"[wake word] : {(rc == 0 ? "Jarvis" : "Alexa")}");
             Task.Run(() =>
             {
                 AlarmClock.QuiteVolume();
