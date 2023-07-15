@@ -99,7 +99,7 @@ namespace AlarmClockPi
                         // Listen for voice and process.
                         try
                         {
-                            if (AlarmClock.ledRing.LedLitCount > 0 
+                            if (AlarmClock?.ledRing?.LedLitCount > 0 
                              // && picovoice._isWakeWordDetected == false
                              )
                             {
@@ -116,9 +116,7 @@ namespace AlarmClockPi
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
-                            Console.WriteLine(ex.StackTrace);
-                            if (Debugger.IsAttached())
-                                Debugger.Break();
+                            Console.WriteLine(ex.StackTrace);                            
                         }
                         System.Threading.Thread.Sleep(10);
                     }
