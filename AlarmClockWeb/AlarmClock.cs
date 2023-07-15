@@ -154,7 +154,6 @@ namespace AlarmClockPi
             {
                 Console.WriteLine("Shutdown devices - Clock Display, Touch Driver, LedRing & GPIO");
 
-
                 // Clear LED and LEDRing displays.
                 clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Blank;                
                 ledRing.ClearPixels();
@@ -192,7 +191,7 @@ namespace AlarmClockPi
         public static void ProcessTouch(byte t)
         {
             Console.WriteLine($"Debounced Touch : {t}");
-            if ((t & 129) == 129)
+            if ((t & 128) == 128)
             {
                 Console.WriteLine("Play/Pause Radio");
                 if (mpc.Status().State == MpdState.Play)
@@ -206,6 +205,8 @@ namespace AlarmClockPi
             {
                 Console.WriteLine("Toggle Clock Display");
 
+                this.SayText("Toggle display mode");
+                
                 if (AlarmClock.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Animation)
                     AlarmClock.clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
                 else if (AlarmClock.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Time)

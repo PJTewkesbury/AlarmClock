@@ -99,7 +99,7 @@ namespace AlarmClockPi
                         // Listen for voice and process.
                         try
                         {
-                            if (AlarmClock?.ledRing?.LedLitCount > 0 
+                            if (AlarmClock.ledRing?.LedLitCount > 0 
                              // && picovoice._isWakeWordDetected == false
                              )
                             {
@@ -343,10 +343,19 @@ namespace AlarmClockPi
 
         private static void SayText(string text)
         {
-            Console.WriteLine($"Speaking : {text}");                
-            if (File.Exists("/opt/speak.wav"))
-                File.Delete("/opt/speak.wav");
-            System.Diagnostics.Process.Start($"pico2wave -l=en-GB -w=/opt/speak.wav '{text}' && aplay /opt/speak.wav");
+            try{
+                Console.WriteLine($"Speaking : {text}");                
+                if (File.Exists("/opt/speak.wav"))
+                    File.Delete("/opt/speak.wav");
+                
+                $"pico2wave -l=en-GB -w=/opt/speak.wav '{text}' && aplay /opt/speak.wav".Bash(logger);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Failed to say : {text}");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
         }
 
         private static SpeechSynthesizer GetTTS()

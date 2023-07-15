@@ -53,24 +53,24 @@ namespace AlarmClockPi
             systemTasks.Add(taskWebSite);
 
             // Start the hardware loop
-            var taskHardware = Task.Run(() =>
-            {
-               // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
-               if (Environment.OSVersion.Platform == PlatformID.Unix)
-               {
-                   AlarmClock alarmClock = new AlarmClock(null);
-                   alarmClock.Run(args);
-               }
-            });
-            systemTasks.Add(taskHardware);
+            // var taskHardware = Task.Run(() =>
+            // {
+            //    // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
+            //    if (Environment.OSVersion.Platform == PlatformID.Unix)
+            //    {
+            //        AlarmClock alarmClock = new AlarmClock(null);
+            //        alarmClock.Run(args);
+            //    }
+            // });
+            // systemTasks.Add(taskHardware);
 
             IConfiguration config = new ConfigurationBuilder()
                                         .AddJsonFile("appSettings.json", true)
                                         .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
                                         .Build();
 
-            // AlarmClock alarmClock = new AlarmClock(config);
-            // alarmClock.Init();
+            AlarmClock alarmClock = new AlarmClock(config);
+            alarmClock.Init();
 
             Jarvis jarvis = null;
             try
