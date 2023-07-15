@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
@@ -30,6 +31,26 @@
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
+        },
+        {
+            "name": ".NET Core Launch (remote console)",
+            "type": "coreclr",
+            "request": "launch",            
+            "program": "dotnet",
+            "args": ["run"],
+            "cwd": "/Apps/AlarmClock/AlarmClockWeb",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "pipeTransport": {
+                "pipeCwd": "${workspaceFolder}",
+                "pipeProgram": "${env:ChocolateyInstall}\\bin\\PLINK.EXE",
+                "pipeArgs": [
+                    "-pw",
+                    "DevPIP@ssw0rd",
+                    "root@devpi.lan"
+                ],
+                "debuggerPath": "/root/vsdbg/vsdbg"
+            }
         }
     ]
 }

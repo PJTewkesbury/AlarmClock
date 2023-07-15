@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AlarmClockPi
 {
-    public class AlarmClock
+    public class AlarmClock :IDisposable
     {
         public static GpioController gpio { get; private set; } = null;
         public static LedRing ledRing { get; private set; } = null;
@@ -153,6 +153,12 @@ namespace AlarmClockPi
             finally
             {
                 Console.WriteLine("Shutdown devices - Clock Display, Touch Driver, LedRing & GPIO");
+
+
+                // Clear LED and LEDRing displays.
+                clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Blank;                
+                ledRing.ClearPixels();
+
                 clockDisplay.Dispose();
                 touchDriver.Dispose();
                 ledRing.Dispose();
@@ -384,5 +390,20 @@ namespace AlarmClockPi
 
             Console.WriteLine($"Changing Volume to {volume}");
         }     
+
+        public void Dispose()
+        {
+            clockDisplay.Dispose();
+            clockDisplay=null;
+
+            ledRing.Dispose();
+            ledRing=null;
+
+            touchDriver.Dispose();
+            touchDriver=null;
+
+            gpio.Dispose();
+            gpio=null;
+        }
     }
 }

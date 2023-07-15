@@ -116,6 +116,9 @@ namespace AlarmClockPi
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
+                            Console.WriteLine(ex.StackTrace);
+                            if (Debugger.IsAttached())
+                                Debugger.Break();
                         }
                         System.Threading.Thread.Sleep(10);
                     }
@@ -297,12 +300,12 @@ namespace AlarmClockPi
             return new Task(() =>
             {
                 string text = $"The time is {DateTime.Now.ToString("hh:mm tt")}";
-                Console.WriteLine($"Speaking Time : {text}");
-                SpeechSynthesizer synthesizer = GetTTS();
-                if (synthesizer != null)
-                    synthesizer.SpeakTextAsync(text).Wait();
-                else
-                    Console.WriteLine("No SpeechSynthesizer object created");
+                SayText(text);
+                // SpeechSynthesizer synthesizer = GetTTS();
+                // if (synthesizer != null)
+                //     synthesizer.SpeakTextAsync(text).Wait();
+                // else
+                //     Console.WriteLine("No SpeechSynthesizer object created");
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
         }
@@ -313,12 +316,12 @@ namespace AlarmClockPi
             {
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The date is {DateTime.Now.ToString("dddd, d MMMM yyyy")}";
-                Console.WriteLine($"Speaking Date : {text}");
-                SpeechSynthesizer synthesizer = GetTTS();
-                if (synthesizer != null)
-                    synthesizer.SpeakTextAsync(text).Wait();
-                else
-                    Console.WriteLine("No SpeechSynthesizer object created");
+                SayText(text);
+                // SpeechSynthesizer synthesizer = GetTTS();
+                // if (synthesizer != null)
+                //     synthesizer.SpeakTextAsync(text).Wait();
+                // else
+                //     Console.WriteLine("No SpeechSynthesizer object created");
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
         }
@@ -330,14 +333,22 @@ namespace AlarmClockPi
 
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The weather for today in Marple is still being devloped. Please check back tomorrow";
-                Console.WriteLine($"Speaking Weather : {text}");
-                SpeechSynthesizer synthesizer = GetTTS();
-                if (synthesizer != null)
-                    synthesizer.SpeakTextAsync(text).Wait();
-                else
-                    Console.WriteLine("No SpeechSynthesizer object created");
+                SayText(text);                
+                // SpeechSynthesizer synthesizer = GetTTS();
+                // if (synthesizer != null)
+                //     synthesizer.SpeakTextAsync(text).Wait();
+                // else
+                //     Console.WriteLine("No SpeechSynthesizer object created");
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
+        }
+
+        private static void SayText(string text)
+        {
+            Console.WriteLine($"Speaking : {text}");                
+            if (File.Exists("/opt/speak.wav"))
+                File.Delete("/opt/speak.wav");
+            System.Diagnostics.Process.Start($"pico2wave -l=en-GB -w=/opt/speak.wav '{text}' && aplay /opt/speak.wav");
         }
 
         private static SpeechSynthesizer GetTTS()

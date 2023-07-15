@@ -49,7 +49,7 @@ namespace AlarmClock.Picovoice
                         Console.WriteLine(ex.InnerException.Message);
                         Console.WriteLine(ex.InnerException.StackTrace);
                     }
-                    throw ex;
+                    throw;
                 }
 
                 Console.WriteLine($"Create porcupine : {String.Join(",", wakeWordList)}");

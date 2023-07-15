@@ -69,8 +69,8 @@ namespace AlarmClockPi
                                         .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
                                         .Build();
 
-            AlarmClock alarmClock = new AlarmClock(config);
-            alarmClock.Init();
+            // AlarmClock alarmClock = new AlarmClock(config);
+            // alarmClock.Init();
 
             Jarvis jarvis = null;
             try

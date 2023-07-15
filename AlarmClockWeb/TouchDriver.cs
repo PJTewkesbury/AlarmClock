@@ -41,8 +41,15 @@ namespace AlarmClockPi
             Console.WriteLine($"Touch : {t.ToString("D3")} ");
             if (TouchIRQPinNumber > 0)
             {
-                PinValue pvNew = this.gpio.Read(TouchIRQPinNumber);
-                Console.WriteLine($"GPIO12 Changed to : {(pvNew == PinValue.Low ? "Low" : "High")} ");
+                try
+                {
+                    PinValue pvNew = this.gpio.Read(TouchIRQPinNumber);
+                    Console.WriteLine($"GPIO12 Changed to : {(pvNew == PinValue.Low ? "Low" : "High")} ");   
+                }
+                catch (System.Exception ex)
+                {
+                    Console.WriteLine($"Error reading data from Touch Device : {ex.Message}");   
+                }                
             }
 
             // Debounce touch input and create an observable to allow caller to get debounced events

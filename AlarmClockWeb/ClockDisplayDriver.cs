@@ -16,7 +16,7 @@ namespace AlarmClockPi
 
         public LED7SegAnimation Animation { get; set; } = LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.LEDTest);
 
-        public enum enumShow { Date, Time, IPAddress, NoWifi, Animation };
+        public enum enumShow { Date, Time, IPAddress, NoWifi, Animation, Blank };
 
         public enumShow WhatToDisplay { get; set; } = enumShow.Animation;
 
@@ -88,6 +88,13 @@ namespace AlarmClockPi
                     int Duration = 1000;
                     switch (WhatToDisplay)
                     {
+                        case enumShow.Blank:
+                        {
+                            display.Write("");
+                            display.Dots = Dot.Off;
+                        }
+                        break;
+
                         case enumShow.Date:
                             {
                                 display.Write(DateTime.Now.ToString("ddMM"));
@@ -232,6 +239,11 @@ namespace AlarmClockPi
 
             display?.Dispose();
             display = null;
+        }
+
+        public void ClearDisplay()
+        {            
+            this.WhatToDisplay = enumShow.Blank;
         }
     }
 }
