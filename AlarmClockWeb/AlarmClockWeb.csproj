@@ -22,6 +22,9 @@
 		<SelfContained>true</SelfContained>
 		<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
 		<PublishReadyToRun>true</PublishReadyToRun>
+
+		<DefaultItemExcludes>$(DefaultItemExcludes);bin/**</DefaultItemExcludes>
+		<DefaultItemExcludes>$(DefaultItemExcludes);obj/**</DefaultItemExcludes>
 	</PropertyGroup>
 	<Target Condition="$(BuildingInsideSshDeploy) =='' and '0'=='1'" Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Message Text="Post Build Event - Push to Rpi" />
@@ -52,7 +55,7 @@
 		<PackageReference Include="Rhino" Version="2.2.1" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup>	    
 		<None Update="Picovoice\AlarmClock_en_raspberry-pi_v2_2_0.rhn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

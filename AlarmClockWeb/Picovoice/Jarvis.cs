@@ -354,7 +354,7 @@ namespace AlarmClockPi
                 if (File.Exists("/opt/speak.wav"))
                     File.Delete("/opt/speak.wav");
                 
-                $"pico2wave -l=en-GB -w=/opt/speak.wav '{text}' && aplay /opt/speak.wav".Bash(logger);
+                $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}' && aplay /opt/speak.wav".Bash(logger);
             }
             catch(Exception ex)
             {
