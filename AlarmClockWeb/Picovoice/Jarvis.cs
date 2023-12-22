@@ -34,7 +34,7 @@ namespace AlarmClockPi
                 contextPath = cs.GetValue<string>("IntentFile", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn");
                 
                 porcupineModelPath = cs.GetValue<string>("porcupineModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/porcupine_params.pv");
-                rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/common/rhino_params.pv");
+                rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/rhino_params.pv");
                 this.Log.LogInformation($"Access key : {accessKey}");
                 this.Log.LogInformation($"Access key : {contextPath}");
 
