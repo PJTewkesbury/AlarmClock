@@ -66,6 +66,12 @@
 		<None Update="Picovoice\jarvis_raspberry-pi.ppn">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Picovoice\porcupine_params.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Picovoice\rhino_params.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
