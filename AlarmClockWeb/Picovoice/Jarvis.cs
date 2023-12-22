@@ -304,7 +304,7 @@ namespace AlarmClockPi
             return new Task(() =>
             {
                 string text = $"The time is {DateTime.Now.ToString("hh:mm tt")}";
-                SayText(text, this.log);
+                SayText(text, null);
                 // SpeechSynthesizer synthesizer = GetTTS();
                 // if (synthesizer != null)
                 //     synthesizer.SpeakTextAsync(text).Wait();
@@ -320,7 +320,7 @@ namespace AlarmClockPi
             {
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The date is {DateTime.Now.ToString("dddd, d MMMM yyyy")}";
-                SayText(text, this.log);
+                SayText(text);
                 // SpeechSynthesizer synthesizer = GetTTS();
                 // if (synthesizer != null)
                 //     synthesizer.SpeakTextAsync(text).Wait();
@@ -337,7 +337,7 @@ namespace AlarmClockPi
 
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The weather for today in Marple is still being devloped. Please check back tomorrow";
-                SayText(text, this.log);                
+                SayText(text);                
                 // SpeechSynthesizer synthesizer = GetTTS();
                 // if (synthesizer != null)
                 //     synthesizer.SpeakTextAsync(text).Wait();
@@ -347,7 +347,7 @@ namespace AlarmClockPi
             });
         }
 
-        public static void SayText(string text, ILogger logger)
+        public static void SayText(string text, ILogger logger=null)
         {
             try{
                 Console.WriteLine($"Speaking : {text}");                

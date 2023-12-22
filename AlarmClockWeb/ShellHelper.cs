@@ -30,8 +30,11 @@ namespace AlarmClockPi
                             };
             process.Exited += (sender, args) =>
             {
-                logger.LogWarning(process.StandardError.ReadToEnd());
-                logger.LogInformation(process.StandardOutput.ReadToEnd());
+                if (logger != null)
+                {
+                    logger.LogWarning(process.StandardError.ReadToEnd());
+                    logger.LogInformation(process.StandardOutput.ReadToEnd());
+                }
                 if (process.ExitCode == 0)
                 {
                     source.SetResult(0);
@@ -49,7 +52,8 @@ namespace AlarmClockPi
             }
             catch (Exception e)
             {
-                logger.LogError(e, "Command {} failed", cmd);
+                if (logger != null)
+                    logger.LogError(e, $"Command '{cmd}' failed");
                 source.SetException(e);
             }
 

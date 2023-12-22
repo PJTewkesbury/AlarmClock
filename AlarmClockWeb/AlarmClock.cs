@@ -203,9 +203,8 @@ namespace AlarmClockPi
 
             if ((t & 1) == 1)
             {
-                Console.WriteLine("Toggle Clock Display");
-
-                Jarvis.SayText("Toggle display mode", this.logger);
+                Console.WriteLine("Toggle Clock Display");                
+                Jarvis.SayText("Toggle display mode", null);
 
                 if (AlarmClock.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Animation)
                     AlarmClock.clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
