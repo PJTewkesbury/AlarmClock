@@ -44,7 +44,12 @@ namespace AlarmClockPi
 
             List<Task> systemTasks = new List<Task>();
 
-            // Start the Website
+            IConfiguration config = new ConfigurationBuilder()
+                            .AddJsonFile("appSettings.json", true)
+                            .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
+                            .Build();
+             
+            // Start the Website as a seperate thread (Low Priority)
             var taskWebSite = Task.Run(() =>
             {
                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
@@ -52,26 +57,11 @@ namespace AlarmClockPi
             });
             systemTasks.Add(taskWebSite);
 
-            // Start the hardware loop
-            // var taskHardware = Task.Run(() =>
-            // {
-            //    // Thread.CurrentThread.Priority= ThreadPriority.BelowNormal;
-            //    if (Environment.OSVersion.Platform == PlatformID.Unix)
-            //    {
-            //        AlarmClock alarmClock = new AlarmClock(null);
-            //        alarmClock.Run(args);
-            //    }
-            // });
-            // systemTasks.Add(taskHardware);
-
-            IConfiguration config = new ConfigurationBuilder()
-                                        .AddJsonFile("appSettings.json", true)
-                                        .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
-                                        .Build();
-
+            // Init Alarmclock Hardware
             AlarmClock alarmClock = new AlarmClock(config);
             alarmClock.Init();
-
+            
+            // Init Voice Assistant
             Jarvis jarvis = null;
             try
             {
@@ -83,30 +73,7 @@ namespace AlarmClockPi
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-            }
-
-            //// Start the voice interface
-            //var taskPico = Task.Run(() =>
-            //{
-            //    Thread.CurrentThread.Priority = ThreadPriority.Highest;
-            //    Jarvis jarvis = null;
-            //    try
-            //    {
-            //        LoggerFactory loggerFactory = new LoggerFactory();
-            //        jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(),config);
-            //        jarvis.Run();
-            //    }
-            //    catch(Exception ex) { 
-            //        Console.WriteLine(ex.Message);
-            //        Console.WriteLine(ex.StackTrace);
-            //    }
-            //    do
-            //    {                 
-            //        System.Threading.Thread.Sleep(1000);
-            //    }
-            //    while (true);
-            //});
-            //systemTasks.Add(taskPico);
+            }       
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
             var taskQuit = Task.Run(() =>
@@ -137,8 +104,8 @@ namespace AlarmClockPi
                else
                {
                    do
-                   {
-                       System.Threading.Thread.Yield();
+                   {                        
+                        System.Threading.Thread.Yield();
                    }
                    while (true) ;
                }

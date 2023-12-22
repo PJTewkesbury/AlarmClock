@@ -23,6 +23,8 @@
 		<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
 		<PublishReadyToRun>true</PublishReadyToRun>
 
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 		<DefaultItemExcludes>$(DefaultItemExcludes);bin/**</DefaultItemExcludes>
 		<DefaultItemExcludes>$(DefaultItemExcludes);obj/**</DefaultItemExcludes>
 	</PropertyGroup>
