@@ -63,7 +63,8 @@
 		<None Update="Picovoice\alexa_raspberry-pi.ppn">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Picovoice\jarvis_raspberry-pi.ppn">
+		<None Update="Picovoice\
+			  ">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Picovoice\porcupine_params.pv">

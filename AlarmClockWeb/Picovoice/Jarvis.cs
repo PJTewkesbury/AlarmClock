@@ -19,7 +19,8 @@ namespace AlarmClockPi
         string contextPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn";
         string porcupineModelPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/porcupine_params.pv";
         string rhinoModelPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/rhino_params.pv";
-        
+        string wakeWordPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn";
+
         ILogger<Jarvis> Log;
 
         public Jarvis(ILogger<Jarvis> Log, IConfiguration config)
@@ -35,6 +36,8 @@ namespace AlarmClockPi
                 
                 porcupineModelPath = cs.GetValue<string>("porcupineModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/porcupine_params.pv");
                 rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/rhino_params.pv");
+                wakeWordPath = cs.GetValue<string>("wakeWordPath ", "/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn");
+
                 this.Log.LogInformation($"Access key : {accessKey}");
                 this.Log.LogInformation($"Access key : {contextPath}");
 
@@ -78,7 +81,7 @@ namespace AlarmClockPi
                 Console.WriteLine($"PicoVoice Create : {Rhino.DEFAULT_MODEL_PATH}");
                 picovoice = Picovoice.Create(
                        accessKey,
-                       "/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn",
+                       wakeWordPath,
                        wakeWordCallback,
                        contextPath,
                        inferenceCallback,
