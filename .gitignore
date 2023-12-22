@@ -233,3 +233,12 @@ _Pvt_Extensions
 /AlarmClockWeb/bin/Debug/net5.0
 /pvrecorder/sdk/dotnet/PvRecorder/bin/Debug
 /rhino/binding/dotnet/Rhino/bin/Debug
+/.vs/AlarmClock/v17/.suo
+/AlarmClockWeb/obj/AlarmClockWeb.csproj.nuget.dgspec.json
+/AlarmClockWeb/obj/AlarmClockWeb.csproj.nuget.g.props
+/AlarmClockWeb/obj/AlarmClockWeb.csproj.nuget.g.targets
+/AlarmClockWeb/obj/project.assets.json
+/AlarmClockWeb/obj/project.nuget.cache
+/.vs/AlarmClock/DesignTimeBuild/.dtbcache.v2
+/.vs/ProjectEvaluation/alarmclock.metadata.v3
+/.vs/ProjectEvaluation/alarmclock.projects.v3
