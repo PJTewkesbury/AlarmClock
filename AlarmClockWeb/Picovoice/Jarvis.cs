@@ -17,8 +17,8 @@ namespace AlarmClockPi
     {        
         string accessKey = "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==";
         string contextPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v2_2_0.rhn";
-        string porcupineModelPath = @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net7.0/linux-arm64/lib/common/porcupine_params.pv";
-        string rhinoModelPath = @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net7.0/linux-arm64/lib/common/rhino_params.pv";
+        string porcupineModelPath = @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net8.0/linux-arm64/lib/common/porcupine_params.pv";
+        string rhinoModelPath = @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net8.0/linux-arm64/lib/common/rhino_params.pv";
         
         ILogger<Jarvis> Log;
 
@@ -33,8 +33,8 @@ namespace AlarmClockPi
                 accessKey = cs.GetValue<string>("AccessKey", "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==");
                 contextPath = cs.GetValue<string>("IntentFile", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v2_2_0.rhn");
                 
-                porcupineModelPath = cs.GetValue<string>("porcupineModelPath", @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net7.0/linux-arm64/lib/common/porcupine_params.pv");
-                rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net7.0/linux-arm64/lib/common/rhino_params.pv");
+                porcupineModelPath = cs.GetValue<string>("porcupineModelPath", @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net8.0/linux-arm64/lib/common/porcupine_params.pv");
+                rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/AlarmClockWeb/bin/Debug/net8.0/linux-arm64/lib/common/rhino_params.pv");
                 this.Log.LogInformation($"Access key : {accessKey}");
                 this.Log.LogInformation($"Access key : {contextPath}");
 
@@ -82,9 +82,9 @@ namespace AlarmClockPi
                        wakeWordCallback,
                        contextPath,
                        inferenceCallback,
-                       porcupineModelPath,
+                       null, // porcupineModelPath,
                        porcupineSensitivity,
-                       rhinoModelPath,
+                       null, // rhinoModelPath,
                        rhinoSensitivity,
                        1,
                        requireEndpoint);
