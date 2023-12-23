@@ -47,7 +47,6 @@
 		<PackageReference Include="MP3Sharp" Version="1.0.5" />
 		<PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.3.952" />
 		<PackageReference Include="OpenTK" Version="4.8.2" />
-		<PackageReference Include="Picovoice" Version="3.0.1" />
 		<PackageReference Include="Porcupine" Version="3.0.1" />
 		<PackageReference Include="Rhino" Version="3.0.1" />
 		<PackageReference Include="SolarCalculator" Version="3.3.0" />
@@ -63,8 +62,7 @@
 		<None Update="Picovoice\alexa_raspberry-pi.ppn">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Picovoice\
-			  ">
+		<None Update="Picovoice\&#xD;&#xA;			  ">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Picovoice\porcupine_params.pv">

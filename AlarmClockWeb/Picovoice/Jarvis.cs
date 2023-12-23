@@ -9,12 +9,13 @@ using Pv;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AlarmClockPi
 {
-    public class Jarvis
-    {        
+    public class Jarvis : IDisposable
+    {
         string accessKey = "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==";
         string contextPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn";
         string porcupineModelPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/porcupine_params.pv";
@@ -22,8 +23,13 @@ namespace AlarmClockPi
         string wakeWordPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn";
 
         ILogger<Jarvis> Log;
+        PvRecorder recorder = null;
+        float rhinoSensitivity = 0.5f;
+        bool requireEndpoint = true;
+        Porcupine porcupine = null;
+        Rhino rhino = null;
 
-        public Jarvis(ILogger<Jarvis> Log, IConfiguration config)
+        public Jarvis(ILogger<Jarvis> Log, IConfiguration config) 
         {
             this.Log = Log;
 
@@ -33,7 +39,7 @@ namespace AlarmClockPi
             {
                 accessKey = cs.GetValue<string>("AccessKey", "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==");
                 contextPath = cs.GetValue<string>("IntentFile", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn");
-                
+
                 porcupineModelPath = cs.GetValue<string>("porcupineModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/porcupine_params.pv");
                 rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/rhino_params.pv");
                 wakeWordPath = cs.GetValue<string>("wakeWordPath ", "/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn");
@@ -54,61 +60,96 @@ namespace AlarmClockPi
 
         public void Run()
         {
-            bool bUsePicoVoice = true;
-            PvRecorder recorder = null;
-            Picovoice picovoice = null;
+            bool bUsePicoVoice = true;            
+            // Picovoice picovoice = null;
             try
             {
-                int audioDeviceIndex = -1;    
+                int audioDeviceIndex = -1;
                 List<BuiltInKeyword> wakeWords = new List<BuiltInKeyword>() { BuiltInKeyword.JARVIS, BuiltInKeyword.ALEXA };
 
                 // string porcupineModelPath = Directory.GetCurrentDirectory()+"/bin/Debug/net7.0/linux-arm64/lib/common/porcupine_params.pv";
                 Console.WriteLine($"Checking for {porcupineModelPath}");
-                if (!File.Exists(porcupineModelPath)){
+                if (!File.Exists(porcupineModelPath))
+                {
                     Console.WriteLine($"NOT FOUND  {porcupineModelPath}");
                 }
 
                 float porcupineSensitivity = 0.5f;
                 // string rhinoModelPath = Directory.GetCurrentDirectory()+"/bin/Debug/net7.0/linux-arm64/lib/common/rhino_params.pv";
                 Console.WriteLine($"Checking for {rhinoModelPath}");
-                if (!File.Exists(rhinoModelPath)){
+                if (!File.Exists(rhinoModelPath))
+                {
                     Console.WriteLine($"NOT FOUND  {rhinoModelPath}");
                 }
 
-                float rhinoSensitivity = 0.5f;
-                bool requireEndpoint = true;
-                
-                Console.WriteLine($"PicoVoice Create : {Rhino.DEFAULT_MODEL_PATH}");
-                picovoice = Picovoice.Create(
-                       accessKey,
-                       wakeWordPath,
-                       wakeWordCallback,
-                       contextPath,
-                       inferenceCallback,
-                       porcupineModelPath,
-                       porcupineSensitivity,
-                       rhinoModelPath,
-                       rhinoSensitivity,
-                       1,
-                       requireEndpoint);
+                //Console.WriteLine($"PicoVoice Create : {Rhino.DEFAULT_MODEL_PATH}");
+                //picovoice = Picovoice.Create(
+                //       accessKey,
+                //       wakeWordPath,
+                //       wakeWordCallback,
+                //       contextPath,
+                //       inferenceCallback,
+                //       porcupineModelPath,
+                //       porcupineSensitivity,
+                //       rhinoModelPath,
+                //       rhinoSensitivity,
+                //       1,
+                //       requireEndpoint);
 
-                Console.WriteLine($"Frame length : {picovoice.FrameLength}");
-                Console.WriteLine("PvRecorder Create");
-                recorder = PvRecorder.Create(picovoice.FrameLength,audioDeviceIndex );
+                try
+                {
+                    var wakeWordList = new List<BuiltInKeyword>();
+                    wakeWordList.Add(BuiltInKeyword.JARVIS);
+                    Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey, wakeWordList.AsEnumerable<BuiltInKeyword>());
 
-                Console.WriteLine("PvRecorder Start");
-                recorder.Start();
-                Console.WriteLine($"Using device: {recorder.SelectedDevice}");
-                Console.WriteLine("Listening...");
+                    porcupine = Porcupine.FromKeywordPaths(
+                        accessKey,
+                        new List<string> { "jarvis"},
+                        modelPath: porcupineModelPath,
+                        sensitivities: new List<float> { porcupineSensitivity });
 
+                    rhino = Rhino.Create(
+                        accessKey,
+                        contextPath,
+                        modelPath: rhinoModelPath,
+                        sensitivity: rhinoSensitivity,
+                        endpointDurationSec: 1.0f,
+                        requireEndpoint: requireEndpoint);
+
+                    if (porcupine.FrameLength != rhino.FrameLength)
+                    {
+                        throw new ArgumentException($"Porcupine frame length ({porcupine.FrameLength}) and Rhino frame length ({rhino.FrameLength}) are different");
+                    }
+
+                    if (porcupine.SampleRate != rhino.SampleRate)
+                    {
+                        throw new ArgumentException($"Porcupine sample rate ({porcupine.SampleRate}) and Rhino sample rate ({rhino.SampleRate}) are different");
+                    }
+
+                    Console.WriteLine($"Frame length : {porcupine.FrameLength}");
+                    Console.WriteLine("PvRecorder Create");
+                    recorder = PvRecorder.Create(porcupine.FrameLength, audioDeviceIndex);
+
+                    Console.WriteLine("PvRecorder Start");
+                    recorder.Start();
+                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+                    Console.WriteLine("Listening...");
+                }
+                catch (Exception ex)
+                {
+                    bUsePicoVoice = false;
+                    Console.WriteLine(ex.Message);
+                    // throw;
+                }
                 if (bUsePicoVoice)
                 {
+                    bool _isWakeWordDetected = false;
                     do
                     {
                         // Listen for voice and process.
                         try
                         {
-                            if (AlarmClock.ledRing?.LedLitCount > 0 
+                            if (AlarmClock.ledRing?.LedLitCount > 0
                              // && picovoice._isWakeWordDetected == false
                              )
                             {
@@ -119,13 +160,38 @@ namespace AlarmClockPi
                             }
 
                             short[] pcm = recorder.Read();
-                            if (pcm != null)
-                                picovoice.Process(pcm);
+
+                            try
+                            {
+                                if (!_isWakeWordDetected)
+                                {                                    
+                                    _isWakeWordDetected = porcupine.Process(pcm) == 0;
+                                    if (_isWakeWordDetected)
+                                        wakeWordCallback();
+                                }
+                                else
+                                {
+                                    bool isFinalized = rhino.Process(pcm);
+                                    if (isFinalized)
+                                    {
+                                        _isWakeWordDetected = false;
+                                        Inference inference = rhino.GetInference();
+                                        inferenceCallback(inference);
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                                Console.WriteLine(ex.StackTrace);
+                                // throw MapToPicovoiceException(ex);
+                            }
+
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
-                            Console.WriteLine(ex.StackTrace);                            
+                            Console.WriteLine(ex.StackTrace);
                         }
                         System.Threading.Thread.Sleep(10);
                     }
@@ -144,6 +210,24 @@ namespace AlarmClockPi
                 }
             }
         }
+
+        public void Dispose()
+        {
+            if (this.porcupine != null)
+            {
+                this.porcupine.Dispose();
+                this.porcupine = (Porcupine)null;
+            }
+            if (this.rhino != null)
+            {
+                this.rhino.Dispose();
+                this.rhino = (Rhino)null;
+            }
+            GC.SuppressFinalize((object)this);
+        }
+
+        ~Jarvis() => this.Dispose();
+
         static void wakeWordCallback()
         {
             Task.Run(() =>
@@ -340,7 +424,7 @@ namespace AlarmClockPi
 
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The weather for today in Marple is still being devloped. Please check back tomorrow";
-                SayText(text);                
+                SayText(text);
                 // SpeechSynthesizer synthesizer = GetTTS();
                 // if (synthesizer != null)
                 //     synthesizer.SpeakTextAsync(text).Wait();
@@ -350,16 +434,17 @@ namespace AlarmClockPi
             });
         }
 
-        public static void SayText(string text, ILogger logger=null)
+        public static void SayText(string text, ILogger logger = null)
         {
-            try{
-                Console.WriteLine($"Speaking : {text}");                
+            try
+            {
+                Console.WriteLine($"Speaking : {text}");
                 if (File.Exists("/opt/speak.wav"))
                     File.Delete("/opt/speak.wav");
-                
+
                 $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}' && aplay /opt/speak.wav".Bash(logger);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Failed to say : {text}");
                 Console.WriteLine(ex.Message);
