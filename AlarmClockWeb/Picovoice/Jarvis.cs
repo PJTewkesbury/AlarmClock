@@ -95,7 +95,7 @@ namespace AlarmClockPi
                 //       rhinoSensitivity,
                 //       1,
                 //       requireEndpoint);
-
+                    
                 try
                 {
                     var wakeWordList = new List<BuiltInKeyword>();
@@ -139,6 +139,12 @@ namespace AlarmClockPi
                 {
                     bUsePicoVoice = false;
                     Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine(ex.InnerException.Message);
+                        Console.WriteLine(ex.InnerException.StackTrace);
+                    }                    
                     // throw;
                 }
                 if (bUsePicoVoice)
