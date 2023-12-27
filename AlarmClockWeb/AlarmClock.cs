@@ -32,6 +32,9 @@ namespace AlarmClockPi
         public static IDisposable touchObservable;
 
         public static Libmpc.Mpc mpc;
+
+        public Stack<int> volumeStack = new Stack<int>();
+        
         // public static MQTT mqtt;
 
         public static ISoundDevice alsaDevice = null;
@@ -48,13 +51,30 @@ namespace AlarmClockPi
                 return Convert.ToInt64(v);
             }
             set
-            {
-                double v = (long)((double)value * (double)655.35);
+            {                
+                double v = (long)((double)value * (double)655.35);                
                 alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);
+                volumeStack.Push(alsaDevice.PlaybackVolume);
                 Console.WriteLine($"Set Current Volume to = {value}% {v} (Raw = {alsaDevice.PlaybackVolume})");
                 Console.WriteLine($"Current Volume = {value}%");
             }
         }
+
+        public int CurrentVolume
+        {
+            get
+            {
+                if (volumeStack==null || volumeStack.Count<1)
+                {
+                    double v = Convert.ToDouble(alsaDevice.PlaybackVolume) / 655.35;   
+                    if (volumeChange==null)
+                        volumeChange=new Stack<int>();
+                    volumeChange.Push(Convert.ToInt32(v));                
+                }
+                return volumeChange.Peek();
+            }            
+        }
+
 
         public static string Topic = "AlarmClock";
 
@@ -67,8 +87,9 @@ namespace AlarmClockPi
         public void Init()
         {
             Console.WriteLine("Init Volume");
-            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());
-            CurrentVolume = volume;            
+            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());            
+            volumeStack.Push(volume);
+            
             Console.WriteLine($"CurrentVolume Raw = {alsaDevice.PlaybackVolume}");
             Console.WriteLine($"CurrentVolume = {volume}");
             volume = 60;            
@@ -350,17 +371,16 @@ namespace AlarmClockPi
         public static void QuiteVolume()
         {
             Console.WriteLine($"Making volume quite");
-            if (volume > 20)
+            if (CurrentVolume> 20)
             {
-                CurrentVolume = volume;
                 volume = 20;
             }
         }
 
         public static void NormalVolume()
         {
-            Console.WriteLine($"Restore volume to previous level of {volume}");
-            volume = CurrentVolume;
+            volume = volumeStack.Pop();
+            Console.WriteLine($"Restore volume to previous level of {volume}");            
         }
 
         internal static void ChangeVolume(int Direction, Dictionary<string, string> slots = null)

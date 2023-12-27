@@ -68,11 +68,11 @@ namespace Pv
         static Rhino()
         {
 
-#if NETCOREAPP3_0_OR_GREATER
+// #if NETCOREAPP3_0_OR_GREATER
 
-            NativeLibrary.SetDllImportResolver(typeof(Rhino).Assembly, ImportResolver);
+//             NativeLibrary.SetDllImportResolver(typeof(Rhino).Assembly, ImportResolver);
 
-#endif
+// #endif
 
             DEFAULT_MODEL_PATH = Utils.PvModelPath();
         }
@@ -82,6 +82,7 @@ namespace Pv
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
             IntPtr libHandle = IntPtr.Zero;
+            Console.WriteLine("Load library "+Utils.PvLibraryPath(libraryName));
             NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
             return libHandle;
         }
