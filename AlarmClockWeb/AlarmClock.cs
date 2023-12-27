@@ -68,9 +68,11 @@ namespace AlarmClockPi
         {
             Console.WriteLine("Init Volume");
             alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());
-            CurrentVolume = volume;
+            CurrentVolume = volume;            
             Console.WriteLine($"CurrentVolume Raw = {alsaDevice.PlaybackVolume}");
             Console.WriteLine($"CurrentVolume = {volume}");
+            volume = 60;            
+            Console.WriteLine($"CurrentVolume now  = {volume}");
 
             // Init GPIO - We use Pin12 for Touch Sensor IRQ and pin 5 to power the LED Ring on Respeaker
             Console.WriteLine("Init GPIO Controller");
