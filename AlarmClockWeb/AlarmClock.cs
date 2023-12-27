@@ -33,12 +33,12 @@ namespace AlarmClockPi
 
         public static Libmpc.Mpc mpc;
 
-        public Stack<int> volumeStack = new Stack<int>();
+        public static Stack<long> volumeStack = new Stack<long>();
         
         // public static MQTT mqtt;
 
         public static ISoundDevice alsaDevice = null;
-        public static long CurrentVolume = 0;
+        // public static long CurrentVolume = 0;
         /// <summary>
         /// Volume as percentage
         /// </summary>
@@ -53,25 +53,25 @@ namespace AlarmClockPi
             set
             {                
                 double v = (long)((double)value * (double)655.35);                
-                alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);
+                alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);                
                 volumeStack.Push(alsaDevice.PlaybackVolume);
                 Console.WriteLine($"Set Current Volume to = {value}% {v} (Raw = {alsaDevice.PlaybackVolume})");
                 Console.WriteLine($"Current Volume = {value}%");
             }
         }
 
-        public int CurrentVolume
+        public static long CurrentVolume
         {
             get
             {
                 if (volumeStack==null || volumeStack.Count<1)
                 {
                     double v = Convert.ToDouble(alsaDevice.PlaybackVolume) / 655.35;   
-                    if (volumeChange==null)
-                        volumeChange=new Stack<int>();
-                    volumeChange.Push(Convert.ToInt32(v));                
+                    if (volumeStack==null)
+                        volumeStack = new Stack<long>();
+                    volumeStack.Push(Convert.ToInt32(v));                
                 }
-                return volumeChange.Peek();
+                return volumeStack.Peek();
             }            
         }
 
@@ -408,7 +408,7 @@ namespace AlarmClockPi
             if (volume > 100)
                 volume = 100;
 
-            CurrentVolume = volume;
+            // CurrentVolume = volume;
 
             Console.WriteLine($"Changing Volume to {volume}");
         }     
