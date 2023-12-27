@@ -154,10 +154,8 @@ namespace AlarmClockPi
                             try
                             {
                                 if (!_isWakeWordDetected)
-                                {                                       
-                                    var wakeWordRC = porcupine.Process(pcm);
-                                    Console.WriteLine("wakeWordRC = "+wakeWordRC.ToString());
-                                    _isWakeWordDetected = wakeWordRC == 0;
+                                {                                                                           
+                                    _isWakeWordDetected = (porcupine.Process(pcm) == 0);
                                     if (_isWakeWordDetected)
                                         wakeWordCallback();
                                 }
