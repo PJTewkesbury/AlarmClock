@@ -102,6 +102,7 @@ namespace AlarmClockPi
                     wakeWordList.Add(BuiltInKeyword.JARVIS);
                     Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey, wakeWordList.AsEnumerable<BuiltInKeyword>());
 
+                    
                     porcupine = Porcupine.FromKeywordPaths(
                         accessKey,
                         new List<string> { "jarvis"},
