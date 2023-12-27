@@ -54,6 +54,162 @@
 	</ItemGroup>
 
 	<ItemGroup>	    
+		<None Update="lib\common\porcupine_params.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_ar.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_de.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_es.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_fa.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_fr.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_hi.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_it.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_ja.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_ko.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_nl.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_pl.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_pt.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_ru.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_sv.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_vn.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\porcupine_params_zh.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_ar.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_de.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_es.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_fa.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_fr.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_hi.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_it.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_ja.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_ko.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_nl.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_pl.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_pt.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_ru.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_sv.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_vn.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\common\rhino_params_zh.pv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\arm11\libpv_porcupine.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\arm11\libpv_recorder.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\arm11\libpv_rhino.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_porcupine.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_recorder.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_rhino.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a53\libpv_porcupine.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a53\libpv_recorder.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a53\libpv_rhino.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_porcupine.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_recorder.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_rhino.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a72\libpv_porcupine.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a72\libpv_recorder.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a72\libpv_rhino.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a7\libpv_porcupine.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a7\libpv_recorder.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
+		<None Update="lib\raspberry-pi\cortex-a7\libpv_rhino.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>	    
 		<None Update="Picovoice\AlarmClock_en_raspberry-pi_v2_2_0.rhn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
