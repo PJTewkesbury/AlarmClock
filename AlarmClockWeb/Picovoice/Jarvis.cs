@@ -154,10 +154,11 @@ namespace AlarmClockPi
                             try
                             {
                                 if (!_isWakeWordDetected)
-                                {                                                                           
-                                    _isWakeWordDetected = (porcupine.Process(pcm) == 0);
+                                {
+                                    int rc = porcupine.Process(pcm);
+                                    _isWakeWordDetected = (rc >= 0);
                                     if (_isWakeWordDetected)
-                                        wakeWordCallback();
+                                        wakeWordCallback(rc);
                                 }
                                 else
                                 {
@@ -217,8 +218,16 @@ namespace AlarmClockPi
 
         ~Jarvis() => this.Dispose();
 
-        static void wakeWordCallback()
+        static void wakeWordCallback(int wakeWordIndex)
         {
+            string s = "Unknown";
+            switch(wakeWordIndex)
+            {
+                case 0: s="Jarvis"; break;
+                case 1: s="Alexa"; break;                    
+            }
+            Console.WriteLine($"WakeWord Detected : {s}");
+
             Task.Run(() =>
             {
                 AlarmClock.QuiteVolume();

@@ -278,4 +278,7 @@
 	<ItemGroup>
 		<Folder Include="MPD\" />
 	</ItemGroup>	
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">		
+	</Target>
 </Project>

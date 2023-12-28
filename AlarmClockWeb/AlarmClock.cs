@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AlarmClockPi
 {
-    public class AlarmClock :IDisposable
+    public class AlarmClock : IDisposable
     {
         public static GpioController gpio { get; private set; } = null;
         public static LedRing ledRing { get; private set; } = null;
@@ -34,7 +34,7 @@ namespace AlarmClockPi
         public static Libmpc.Mpc mpc;
 
         public static Stack<long> volumeStack = new Stack<long>();
-        
+
         // public static MQTT mqtt;
 
         public static ISoundDevice alsaDevice = null;
@@ -51,9 +51,9 @@ namespace AlarmClockPi
                 return Convert.ToInt64(v);
             }
             set
-            {                
-                double v = (long)((double)value * (double)655.35);                
-                alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);                
+            {
+                double v = (long)((double)value * (double)655.35);
+                alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);
                 volumeStack.Push(alsaDevice.PlaybackVolume);
                 Console.WriteLine($"Set Current Volume to = {value}% {v} (Raw = {alsaDevice.PlaybackVolume})");
                 Console.WriteLine($"Current Volume = {value}%");
@@ -64,15 +64,15 @@ namespace AlarmClockPi
         {
             get
             {
-                if (volumeStack==null || volumeStack.Count<1)
+                if (volumeStack == null || volumeStack.Count < 1)
                 {
-                    double v = Convert.ToDouble(alsaDevice.PlaybackVolume) / 655.35;   
-                    if (volumeStack==null)
+                    double v = Convert.ToDouble(alsaDevice.PlaybackVolume) / 655.35;
+                    if (volumeStack == null)
                         volumeStack = new Stack<long>();
-                    volumeStack.Push(Convert.ToInt32(v));                
+                    volumeStack.Push(Convert.ToInt32(v));
                 }
                 return volumeStack.Peek();
-            }            
+            }
         }
 
 
@@ -87,12 +87,12 @@ namespace AlarmClockPi
         public void Init()
         {
             Console.WriteLine("Init Volume");
-            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());            
+            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());
             volumeStack.Push(volume);
-            
+
             Console.WriteLine($"CurrentVolume Raw = {alsaDevice.PlaybackVolume}");
             Console.WriteLine($"CurrentVolume = {volume}");
-            volume = 60;            
+            volume = 60;
             Console.WriteLine($"CurrentVolume now  = {volume}");
 
             // Init GPIO - We use Pin12 for Touch Sensor IRQ and pin 5 to power the LED Ring on Respeaker
@@ -132,7 +132,7 @@ namespace AlarmClockPi
             mpc.OnConnected += Mpc_OnConnected;
             mpc.OnDisconnected += Mpc_OnDisconnected;
             mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
-            mpc.Connection.AutoConnect = true;                    
+            mpc.Connection.AutoConnect = true;
 
             Console.WriteLine("Show Alexa wait and end");
             Task.Run(() =>
@@ -178,7 +178,7 @@ namespace AlarmClockPi
                 Console.WriteLine("Shutdown devices - Clock Display, Touch Driver, LedRing & GPIO");
 
                 // Clear LED and LEDRing displays.
-                clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Blank;                
+                clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Blank;
                 ledRing.ClearPixels();
 
                 clockDisplay.Dispose();
@@ -226,7 +226,7 @@ namespace AlarmClockPi
 
             if ((t & 1) == 1)
             {
-                Console.WriteLine("Toggle Clock Display");                
+                Console.WriteLine("Toggle Clock Display");
                 Jarvis.SayText("Toggle display mode", null);
 
                 if (AlarmClock.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Animation)
@@ -340,38 +340,58 @@ namespace AlarmClockPi
             Console.WriteLine("Play Radio");
             Task.Run(() =>
             {
-                if (mpc.Connected == false)
-                    mpc.Connection.Connect();
-
-                if (mpc.Status().State != MpdState.Play)
+                try
                 {
-                    // Remove old playlist
-                    mpc.Clear();
+                    if (mpc.Connected == false)
+                        mpc.Connection.Connect();
 
-                    // Add UCB1        
-                    mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
-                    mpc.Play();
+                    if (mpc.Status().State != MpdState.Play)
+                    {
+                        // Remove old playlist
+                        mpc.Clear();
+
+                        // Add UCB1        
+                        mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
+                        mpc.Play();
+                    }
+                    mpc.Connection.Disconnect();
                 }
-                mpc.Connection.Disconnect();
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
             });
         }
 
         public static void StopRadio()
         {
-            Task.Run(() => { 
+            Task.Run(() =>
+            {
                 Console.WriteLine("Stop Radio");
-            if (mpc.Connected == false)
-                mpc.Connection.Connect();
-            if (mpc.Status().State != MpdState.Stop)
-                mpc.Stop();
-                mpc.Connection.Disconnect();
-            }); 
+                if (mpc != null)
+                {
+                    try
+                    {
+                        if (mpc.Connected == false)
+                            mpc.Connection.Connect();
+                        if (mpc.Status().State != MpdState.Stop)
+                            mpc.Stop();
+                        mpc.Connection.Disconnect();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.WriteLine(ex.StackTrace);
+                    }
+                }
+            });
         }
 
         public static void QuiteVolume()
         {
             Console.WriteLine($"Making volume quite");
-            if (CurrentVolume> 20)
+            if (CurrentVolume > 20)
             {
                 volume = 20;
             }
@@ -380,7 +400,7 @@ namespace AlarmClockPi
         public static void NormalVolume()
         {
             volume = volumeStack.Pop();
-            Console.WriteLine($"Restore volume to previous level of {volume}");            
+            Console.WriteLine($"Restore volume to previous level of {volume}");
         }
 
         internal static void ChangeVolume(int Direction, Dictionary<string, string> slots = null)
@@ -391,7 +411,7 @@ namespace AlarmClockPi
 
             if (slots != null && slots.ContainsKey("volumeChange"))
             {
-                volumeChange = Convert.ToInt32(slots["volumeChange"].Replace("%",""));
+                volumeChange = Convert.ToInt32(slots["volumeChange"].Replace("%", ""));
             }
             Console.WriteLine($"Change Volume by {volumeChange}");
 
@@ -411,21 +431,21 @@ namespace AlarmClockPi
             // CurrentVolume = volume;
 
             Console.WriteLine($"Changing Volume to {volume}");
-        }     
+        }
 
         public void Dispose()
         {
             clockDisplay.Dispose();
-            clockDisplay=null;
+            clockDisplay = null;
 
             ledRing.Dispose();
-            ledRing=null;
+            ledRing = null;
 
             touchDriver.Dispose();
-            touchDriver=null;
+            touchDriver = null;
 
             gpio.Dispose();
-            gpio=null;
+            gpio = null;
         }
     }
 }
