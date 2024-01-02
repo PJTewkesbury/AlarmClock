@@ -26,6 +26,7 @@ namespace AlarmClockPi
 
         public static LEDRingAnimation JarvisWake = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisWake, "JarvisWake");
         public static LEDRingAnimation JarvisEnd = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisEnd, "JarvisEnd");
+        public static LEDRingAnimation JarvisListen = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisListen, "JarvisListen");                
 
         public static ClockDisplayDriver clockDisplay;
         public static TouchDriver touchDriver;
@@ -280,6 +281,10 @@ namespace AlarmClockPi
             {
                 ledRing.PlayAnimation(JarvisEnd);
             }
+            if (s.StartsWith("JarvisListen", StringComparison.CurrentCultureIgnoreCase))
+            {
+                ledRing.PlayAnimation(JarvisListen);
+            }
 
             if (s.StartsWith("PicoEnd", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -293,7 +298,7 @@ namespace AlarmClockPi
             }
             if (s.StartsWith("AlexaListen", StringComparison.CurrentCultureIgnoreCase))
             {
-                ledRing.PlayAnimation(alexaWake);
+                ledRing.PlayAnimation(JarvisListen);
             }
             if (s.StartsWith("AlexaThinking", StringComparison.CurrentCultureIgnoreCase))
             {
