@@ -233,11 +233,11 @@ namespace AlarmClockPi
                 AlarmClock.QuiteVolume();
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
 
-                AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking); // Should be listening            
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisListen); // Should be listening            
 
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(15));
-                if (AlarmClock.ledRing.LedLitCount > 0)
-                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+                // System.Threading.Thread.Sleep(TimeSpan.FromSeconds(15));
+                // if (AlarmClock.ledRing.LedLitCount > 0)
+                //     AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
             });
         }
 

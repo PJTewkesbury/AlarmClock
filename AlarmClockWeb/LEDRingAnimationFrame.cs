@@ -117,10 +117,10 @@ namespace AlarmClockPi
             "22:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,FDF,FDF" + Environment.NewLine +
             "22:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,FAF,FAF" + Environment.NewLine +
             "loop" + Environment.NewLine +
-            "1000:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,FFF,FFF";
+            "1000:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F";
 
         public static string JarvisEnd =
-         "22:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,FFF,FFF" + Environment.NewLine +
+         "22:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F" + Environment.NewLine +
          "21:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,FFF,FFF" + Environment.NewLine +
          "20:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,000000,000000" + Environment.NewLine +
          "20:F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,F0F,000000,000000" + Environment.NewLine +
@@ -136,6 +136,14 @@ namespace AlarmClockPi
          "15:000000,000000,000000,000000,FFF,FFF,000000,000000,000000,000000,000000,000000" + Environment.NewLine +
          "loop" + Environment.NewLine +
          "1000:000000,000000,000000,000000,000000,000000,000000,000000,000000,000000,000000,000000";
+
+
+     public static string JarvisListen =
+         "22:F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F" + Environment.NewLine +
+         "22:F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F" + Environment.NewLine +
+         "loop" + Environment.NewLine +
+         "22:F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F" + Environment.NewLine +
+         "22:F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F,F8F,F0F";         
 
         public static string AlexaWake =
             "11:000000,000000,000000,000000,0FF,0FF,000000,000000,000000,000000,000000,000000" + Environment.NewLine +
