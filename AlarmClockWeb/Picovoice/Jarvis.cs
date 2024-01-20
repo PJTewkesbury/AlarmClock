@@ -17,11 +17,11 @@ namespace AlarmClockPi
     public class Jarvis : IDisposable
     {
         string accessKey = "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==";
-        string contextPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn";
-        string porcupineModelPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/porcupine_params.pv";
-        string rhinoModelPath = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/rhino_params.pv";
-        string wakeWordPath1 = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn";
-        string wakeWordPath2 = @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/alexa_raspberry-pi.ppn";
+        string contextPath = @"/Apps/AlarmClock/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn";
+        string porcupineModelPath = @"/Apps/AlarmClock/Picovoice/porcupine_params.pv";
+        string rhinoModelPath = @"/Apps/AlarmClock/Picovoice/rhino_params.pv";
+        string wakeWordPath1 = @"/Apps/AlarmClock/Picovoice/jarvis_raspberry-pi.ppn";
+        string wakeWordPath2 = @"/Apps/AlarmClock/Picovoice/alexa_raspberry-pi.ppn";
 
         ILogger<Jarvis> Log;
         PvRecorder recorder = null;
@@ -39,12 +39,12 @@ namespace AlarmClockPi
             if (cs != null)
             {
                 accessKey = cs.GetValue<string>("AccessKey", "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==");
-                contextPath = cs.GetValue<string>("IntentFile", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn");
+                contextPath = cs.GetValue<string>("IntentFile", @"/Apps/AlarmClock/Picovoice/AlarmClock_en_raspberry-pi_v3_0_0.rhn");
 
-                porcupineModelPath = cs.GetValue<string>("porcupineModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/porcupine_params.pv");
-                rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/AlarmClockWeb/Picovoice/rhino_params.pv");
-                wakeWordPath1 = cs.GetValue<string>("wakeWordPath1", "/Apps/AlarmClock/AlarmClockWeb/Picovoice/jarvis_raspberry-pi.ppn");
-                wakeWordPath2 = cs.GetValue<string>("wakeWordPath2", "/Apps/AlarmClock/AlarmClockWeb/Picovoice/alexa_raspberry-pi.ppn");
+                porcupineModelPath = cs.GetValue<string>("porcupineModelPath", @"/Apps/AlarmClock/Picovoice/porcupine_params.pv");
+                rhinoModelPath = cs.GetValue<string>("rhinoModelPath", @"/Apps/AlarmClock/Picovoice/rhino_params.pv");
+                wakeWordPath1 = cs.GetValue<string>("wakeWordPath1", "/Apps/AlarmClock/Picovoice/jarvis_raspberry-pi.ppn");
+                wakeWordPath2 = cs.GetValue<string>("wakeWordPath2", "/Apps/AlarmClock/Picovoice/alexa_raspberry-pi.ppn");
 
                 this.Log.LogInformation($"Access key : {accessKey}");
                 this.Log.LogInformation($"Access key : {contextPath}");

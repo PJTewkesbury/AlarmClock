@@ -5,12 +5,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using AlarmClock;
 using System.Net;
-using Libmpc;
+// using Libmpc;
 using System.Collections.Generic;
 using Alsa.Net;
 using System.Net.Http;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+
+// ALSA.NET
+// https://github.com/Omegaframe/alsa.net
+// sudo apt-get install libasound2-dev
 
 namespace AlarmClockPi
 {
@@ -31,7 +35,7 @@ namespace AlarmClockPi
         public static TouchDriver touchDriver;
         public static IDisposable touchObservable;
 
-        public static Libmpc.Mpc mpc;
+        // public static Libmpc.Mpc mpc;
 
         public static Stack<long> volumeStack = new Stack<long>();
 
@@ -127,12 +131,12 @@ namespace AlarmClockPi
             });
 
             // Init the music player so we can play music when it is time for the alarm to go off.
-            var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
-            mpc = new Libmpc.Mpc();
-            mpc.OnConnected += Mpc_OnConnected;
-            mpc.OnDisconnected += Mpc_OnDisconnected;
-            mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
-            mpc.Connection.AutoConnect = true;
+            //var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
+            //mpc = new Libmpc.Mpc();
+            //mpc.OnConnected += Mpc_OnConnected;
+            //mpc.OnDisconnected += Mpc_OnDisconnected;
+            //mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
+            //mpc.Connection.AutoConnect = true;
 
             Console.WriteLine("Show Alexa wait and end");
             Task.Run(() =>
@@ -141,9 +145,9 @@ namespace AlarmClockPi
                 volume = 50;
 
                 // Set MPD Vol to 50%
-                mpc.Connection.Connect();
-                mpc.SetVol(50);
-                mpc.Connection.Disconnect();
+                //mpc.Connection.Connect();
+                //mpc.SetVol(50);
+                //mpc.Connection.Disconnect();
 
                 // Play Animaition
                 ledRing.PlayAnimation(alexaWake);
@@ -193,7 +197,7 @@ namespace AlarmClockPi
 
         private static void KeepAliveCallback(object state)
         {
-            var mpdStatus = AlarmClock.mpc.Status();
+            // var mpdStatus = AlarmClock.mpc.Status();
             // Console.WriteLine($"{mpdStatus.ToString()}");
             // AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
         }
@@ -217,10 +221,10 @@ namespace AlarmClockPi
             if ((t & 128) == 128)
             {
                 Console.WriteLine("Play/Pause Radio");
-                if (mpc.Status().State == MpdState.Play)
-                    StopRadio();
-                else
-                    PlayRadio();
+                //if (mpc.Status().State == MpdState.Play)
+                //    StopRadio();
+                //else
+                //    PlayRadio();
                 return;
             }
 
@@ -319,13 +323,13 @@ namespace AlarmClockPi
             }
             if (s.StartsWith("Pause", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (mpc.Connected == false)
-                    mpc.Connection.Connect();
+                //if (mpc.Connected == false)
+                //    mpc.Connection.Connect();
 
-                if (mpc.Status().State != MpdState.Pause)
-                    mpc.Pause(true);
+                //if (mpc.Status().State != MpdState.Pause)
+                //    mpc.Pause(true);
 
-                mpc.Connection.Disconnect();
+                //mpc.Connection.Disconnect();
                 return;
             }
             if (s.StartsWith("Stop", StringComparison.CurrentCultureIgnoreCase))
@@ -342,19 +346,19 @@ namespace AlarmClockPi
             {
                 try
                 {
-                    if (mpc.Connected == false)
-                        mpc.Connection.Connect();
+                    //if (mpc.Connected == false)
+                    //    mpc.Connection.Connect();
 
-                    if (mpc.Status().State != MpdState.Play)
-                    {
-                        // Remove old playlist
-                        mpc.Clear();
+                    //if (mpc.Status().State != MpdState.Play)
+                    //{
+                    //    // Remove old playlist
+                    //    mpc.Clear();
 
-                        // Add UCB1        
-                        mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
-                        mpc.Play();
-                    }
-                    mpc.Connection.Disconnect();
+                    //    // Add UCB1        
+                    //    mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
+                    //    mpc.Play();
+                    //}
+                    //mpc.Connection.Disconnect();
                 }
                 catch (Exception ex)
                 {
@@ -369,22 +373,22 @@ namespace AlarmClockPi
             Task.Run(() =>
             {
                 Console.WriteLine("Stop Radio");
-                if (mpc != null)
-                {
-                    try
-                    {
-                        if (mpc.Connected == false)
-                            mpc.Connection.Connect();
-                        if (mpc.Status().State != MpdState.Stop)
-                            mpc.Stop();
-                        mpc.Connection.Disconnect();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine(ex.StackTrace);
-                    }
-                }
+                //if (mpc != null)
+                //{
+                //    try
+                //    {
+                //        if (mpc.Connected == false)
+                //            mpc.Connection.Connect();
+                //        if (mpc.Status().State != MpdState.Stop)
+                //            mpc.Stop();
+                //        mpc.Connection.Disconnect();
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Console.WriteLine(ex.Message);
+                //        Console.WriteLine(ex.StackTrace);
+                //    }
+                //}
             });
         }
 

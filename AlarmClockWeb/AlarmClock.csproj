@@ -225,6 +225,63 @@
 		<None Update="Picovoice\rhino_params.pv">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="resources\keyword_files\linux\alexa_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\americano_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\blueberry_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\bumblebee_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\computer_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\grapefruit_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\grasshopper_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\hey barista_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\hey google_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\hey siri_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\jarvis_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\ok google_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\pico clock_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\picovoice_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\porcupine_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\smart mirror_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\snowboy_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\terminator_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\linux\view glass_linux.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -244,6 +301,9 @@
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="resources\keyword_files\raspberry-pi\grasshopper_raspberry-pi.ppn">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="resources\keyword_files\raspberry-pi\hey barista_linux.ppn">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="resources\keyword_files\raspberry-pi\hey barista_raspberry-pi.ppn">
@@ -279,6 +339,7 @@
 		<Folder Include="MPD\" />
 	</ItemGroup>	
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">		
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="scp -rp C:\Projects\Repos\AlarmClock\AlarmClockWeb\bin\Debug\net8.0\linux-arm64\*.* pi@devpi.local:/Apps/AlarmClock" />
 	</Target>
 </Project>
