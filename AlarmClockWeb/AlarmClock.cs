@@ -30,8 +30,6 @@ namespace AlarmClock
         public static IDisposable touchObservable;
         public static Audio audio;
 
-        public static string Topic = "AlarmClock";
-
         IConfiguration config;
         public AlarmClock(IConfiguration config)
         {
