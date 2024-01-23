@@ -1,5 +1,4 @@
-using AlarmClock.Picovoice;
-
+using AlarmClock.Voice;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -12,13 +11,13 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AlarmClockPi
+namespace AlarmClock
 {
     public class Program
     {        
         public static void Main(string[] args)
         {
-            Console.WriteLine("AlarmClockPI V1.2");
+            Console.WriteLine("AlarmClockPI V1.3");
             Console.WriteLine("");
 
             if (SystemdHelpers.IsSystemdService()==false && args.Length > 0 && args[0].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))

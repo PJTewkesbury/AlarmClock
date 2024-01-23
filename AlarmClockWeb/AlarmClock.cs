@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Device.Gpio;
-using System.Device.I2c;
 using System.Threading;
 using System.Threading.Tasks;
-using AlarmClock;
-using System.Net;
-// using Libmpc;
 using System.Collections.Generic;
-using Alsa.Net;
-using System.Net.Http;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using AlarmClock.Voice;
+using AlarmClock.Hardware;
+using System.Device.Gpio;
+using System.Device.I2c;
 
-// ALSA.NET
-// https://github.com/Omegaframe/alsa.net
-// sudo apt-get install libasound2-dev
-
-namespace AlarmClockPi
+namespace AlarmClock
 {
     public class AlarmClock : IDisposable
     {
@@ -30,56 +23,12 @@ namespace AlarmClockPi
 
         public static LEDRingAnimation JarvisWake = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisWake, "JarvisWake");
         public static LEDRingAnimation JarvisEnd = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisEnd, "JarvisEnd");
-        public static LEDRingAnimation JarvisListen = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisListen, "JarvisListen");                
+        public static LEDRingAnimation JarvisListen = LEDRingAnimation.LoadAnimationFile(12, Animations.JarvisListen, "JarvisListen");
 
         public static ClockDisplayDriver clockDisplay;
         public static TouchDriver touchDriver;
         public static IDisposable touchObservable;
-
-        // public static Libmpc.Mpc mpc;
-
-        public static Stack<long> volumeStack = new Stack<long>();
-
-        // public static MQTT mqtt;
-
-        public static ISoundDevice alsaDevice = null;
-        // public static long CurrentVolume = 0;
-        /// <summary>
-        /// Volume as percentage
-        /// </summary>
-        public static long volume
-        {
-            get
-            {
-                double v = Convert.ToDouble(alsaDevice.PlaybackVolume) / 655.35;
-                Console.WriteLine($"Current Volume = {v}% (Raw = {alsaDevice.PlaybackVolume})");
-                return Convert.ToInt64(v);
-            }
-            set
-            {
-                double v = (long)((double)value * (double)655.35);
-                alsaDevice.PlaybackVolume = (long)((double)value * (double)655.35);
-                volumeStack.Push(alsaDevice.PlaybackVolume);
-                Console.WriteLine($"Set Current Volume to = {value}% {v} (Raw = {alsaDevice.PlaybackVolume})");
-                Console.WriteLine($"Current Volume = {value}%");
-            }
-        }
-
-        public static long CurrentVolume
-        {
-            get
-            {
-                if (volumeStack == null || volumeStack.Count < 1)
-                {
-                    double v = Convert.ToDouble(alsaDevice.PlaybackVolume) / 655.35;
-                    if (volumeStack == null)
-                        volumeStack = new Stack<long>();
-                    volumeStack.Push(Convert.ToInt32(v));
-                }
-                return volumeStack.Peek();
-            }
-        }
-
+        public static Audio audio;
 
         public static string Topic = "AlarmClock";
 
@@ -92,14 +41,7 @@ namespace AlarmClockPi
         public void Init()
         {
             Console.WriteLine("Init Volume");
-            alsaDevice = AlsaDeviceBuilder.Create(new SoundDeviceSettings());
-            volumeStack.Push(volume);
-
-            Console.WriteLine($"CurrentVolume Raw = {alsaDevice.PlaybackVolume}");
-            Console.WriteLine($"CurrentVolume = {volume}");
-            volume = 60;
-            Console.WriteLine($"CurrentVolume now  = {volume}");
-
+          
             // Init GPIO - We use Pin12 for Touch Sensor IRQ and pin 5 to power the LED Ring on Respeaker
             Console.WriteLine("Init GPIO Controller");
             gpio = new GpioController();
@@ -131,28 +73,16 @@ namespace AlarmClockPi
                 ProcessTouch(r);
             });
 
-            // Init the music player so we can play music when it is time for the alarm to go off.
-            //var mpdEndpoint = new IPEndPoint(IPAddress.Loopback, 6600);
-            //mpc = new Libmpc.Mpc();
-            //mpc.OnConnected += Mpc_OnConnected;
-            //mpc.OnDisconnected += Mpc_OnDisconnected;
-            //mpc.Connection = new Libmpc.MpcConnection(mpdEndpoint);
-            //mpc.Connection.AutoConnect = true;
+            audio = new Audio();
 
             Console.WriteLine("Show Alexa wait and end");
             Task.Run(() =>
-            {
-                // Set Master Vol to 50
-                volume = 50;
-
-                // Set MPD Vol to 50%
-                //mpc.Connection.Connect();
-                //mpc.SetVol(50);
-                //mpc.Connection.Disconnect();
-
+            {            
                 // Play Animaition
                 ledRing.PlayAnimation(alexaWake);
                 ledRing.PlayAnimation(alexaEnd);
+
+                audio.PlayMP3("/Apps/music.mp3");
             });
         }
 
@@ -203,16 +133,16 @@ namespace AlarmClockPi
             // AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
         }
 
-        private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
-        {
-            Console.WriteLine("MPC Disconnected");
-            //mpc.Connection.Connect();
-        }
+        //private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
+        //{
+        //    Console.WriteLine("MPC Disconnected");
+        //    //mpc.Connection.Connect();
+        //}
 
-        private static void Mpc_OnConnected(Libmpc.Mpc connection)
-        {
-            Console.WriteLine("MPC Connected");
-        }
+        //private static void Mpc_OnConnected(Libmpc.Mpc connection)
+        //{
+        //    Console.WriteLine("MPC Connected");
+        //}
 
         static int aniCount = 0;
         public static object RingLock = new object();
@@ -234,20 +164,20 @@ namespace AlarmClockPi
                 Console.WriteLine("Toggle Clock Display");
                 Jarvis.SayText("Toggle display mode", null);
 
-                if (AlarmClock.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Animation)
-                    AlarmClock.clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
-                else if (AlarmClock.clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Time)
+                if (clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Animation)
+                    clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
+                else if (clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Time)
                 {
                     switch (aniCount)
                     {
                         case 0:
-                            AlarmClock.clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.LEDTest));
+                            clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.LEDTest));
                             break;
                         case 1:
-                            AlarmClock.clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.Scanning));
+                            clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.Scanning));
                             break;
                         case 2:
-                            AlarmClock.clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.Scanning2));
+                            clockDisplay.PlayAnimation(LED7SegAnimation.LoadAnimationFile(4, LED4x7SegAnimations.Scanning2));
                             break;
                     }
                     aniCount++;
@@ -264,8 +194,8 @@ namespace AlarmClockPi
                 {
                     lock (RingLock)
                     {
-                        AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaWake);
-                        AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaEnd);
+                        ledRing.PlayAnimation(alexaWake);
+                        ledRing.PlayAnimation(alexaEnd);
                     }
                 });
                 return;
@@ -400,21 +330,21 @@ namespace AlarmClockPi
         public static void QuiteVolume()
         {
             Console.WriteLine($"Making volume quite");
-            if (CurrentVolume > 20)
-            {
-                volume = 20;
-            }
+            //if (CurrentVolume > 20)
+            //{
+            //    volume = 20;
+            //}
         }
 
         public static void NormalVolume()
         {
-            volume = volumeStack.Pop();
-            Console.WriteLine($"Restore volume to previous level of {volume}");
+            // volume = volumeStack.Pop();
+            // Console.WriteLine($"Restore volume to previous level of {volume}");
         }
 
         internal static void ChangeVolume(int Direction, Dictionary<string, string> slots = null)
         {
-            Console.WriteLine($"Changing Volume from {volume}");
+            // Console.WriteLine($"Changing Volume from {volume}");
 
             int volumeChange = 10;
 
@@ -424,22 +354,22 @@ namespace AlarmClockPi
             }
             Console.WriteLine($"Change Volume by {volumeChange}");
 
-            if (Direction == 0)
-                volume = volumeChange;
-            if (Direction > 0)
-                volume += volumeChange;
-            if (Direction < 0)
-                volume -= volumeChange;
+            //if (Direction == 0)
+            //    volume = volumeChange;
+            //if (Direction > 0)
+            //    volume += volumeChange;
+            //if (Direction < 0)
+            //    volume -= volumeChange;
 
-            if (volume < 0)
-                volume = 0;
+            //if (volume < 0)
+            //    volume = 0;
 
-            if (volume > 100)
-                volume = 100;
+            //if (volume > 100)
+            //    volume = 100;
 
-            // CurrentVolume = volume;
+            //// CurrentVolume = volume;
 
-            Console.WriteLine($"Changing Volume to {volume}");
+            //Console.WriteLine($"Changing Volume to {volume}");
         }
 
         public void Dispose()

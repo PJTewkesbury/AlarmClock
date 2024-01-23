@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace AlarmClockPi
+namespace AlarmClock
 {
     // https://jackma.com/2019/04/20/execute-a-bash-script-via-c-net-core/
     public static class ShellHelper

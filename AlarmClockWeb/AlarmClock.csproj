@@ -6,20 +6,14 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<SshDeployHost>devpi.lan</SshDeployHost>
-		<SshDeployTargetPath>/Apps/AlarmClock/</SshDeployTargetPath>
-		<SshDeployUsername>root</SshDeployUsername>
-		<SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
-		<!--<SshDeployClean />-->
 		<RunPostBuildEvent>Always</RunPostBuildEvent>
-		<SshDeployExecutePermission>true</SshDeployExecutePermission>
-		<IsPublishable>False</IsPublishable>
+		<IsPublishable>true</IsPublishable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<StartupObject>AlarmClockPi.Program</StartupObject>
+		<StartupObject>AlarmClock.Program</StartupObject>
 		<Nullable>disable</Nullable>
 		<PublishSingleFile>true</PublishSingleFile>
-		<SelfContained>true</SelfContained>
+		<SelfContained>false</SelfContained>
 		<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
 		<PublishReadyToRun>true</PublishReadyToRun>
 
@@ -28,15 +22,24 @@
 		<DefaultItemExcludes>$(DefaultItemExcludes);bin/**</DefaultItemExcludes>
 		<DefaultItemExcludes>$(DefaultItemExcludes);obj/**</DefaultItemExcludes>
 	</PropertyGroup>
-	<Target Condition="$(BuildingInsideSshDeploy) =='' and '0'=='1'" Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Message Text="Post Build Event - Push to Rpi" />
+
+	<PropertyGroup>
+		<SshDeployHost>192.168.0.19</SshDeployHost>
+		<!--<SshDeployClean />-->
+		<SshDeployTargetPath>/Apps/AlarmClock/</SshDeployTargetPath>
+		<SshDeployUsername>pi</SshDeployUsername>
+		<SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+	</PropertyGroup>
+
+	<Target Condition="$(BuildingInsideSshDeploy) =='' and '0'='1' " Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Message Text="Post Build Event - Push to Rpi" Importance="high" />
 		<Exec Command="cd $(ProjectDir)&#xD;&#xA;echo %25DATE%25 %25TIME%25 &gt;&gt; &quot;$(TargetDir)sshdeploy.ready&quot;&#xD;&#xA;" />
 		<Exec Command="dotnet-sshdeploy push" />
 		<Message Text="Post Build Event - Push to Rpi - Complete" />
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="Alsa.Net" Version="1.0.8" />
 		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
 		<PackageReference Include="Iot.Device.Bindings" Version="3.1.0" />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.34.0" />
@@ -44,302 +47,289 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="8.0.0" />
-		<PackageReference Include="MP3Sharp" Version="1.0.5" />
-		<PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.3.952" />
 		<PackageReference Include="OpenTK" Version="4.8.2" />
 		<PackageReference Include="SolarCalculator" Version="3.3.0" />
 		<PackageReference Include="System.Device.Gpio" Version="3.1.0" />
 		<PackageReference Include="System.Reactive" Version="6.0.0" />
-        <PackageReference Include="PvRecorder" Version="1.2.4" />
-	</ItemGroup>
-
-	<ItemGroup>	    
-		<None Update="lib\common\porcupine_params.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_ar.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_de.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_es.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_fa.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_fr.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_hi.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_it.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_ja.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_ko.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_nl.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_pl.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_pt.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_ru.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_sv.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_vn.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\porcupine_params_zh.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_ar.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_de.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_es.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_fa.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_fr.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_hi.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_it.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_ja.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_ko.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_nl.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_pl.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_pt.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_ru.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_sv.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_vn.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\common\rhino_params_zh.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\arm11\libpv_porcupine.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\arm11\libpv_recorder.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\arm11\libpv_rhino.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_porcupine.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_recorder.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_rhino.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a53\libpv_porcupine.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a53\libpv_recorder.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a53\libpv_rhino.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_porcupine.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_recorder.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_rhino.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a72\libpv_porcupine.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a72\libpv_recorder.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a72\libpv_rhino.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a7\libpv_porcupine.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a7\libpv_recorder.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="lib\raspberry-pi\cortex-a7\libpv_rhino.so">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>	    
-		<None Update="Picovoice\AlarmClock_en_raspberry-pi_v2_2_0.rhn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Picovoice\alexa_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Picovoice\&#xD;&#xA;			  ">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Picovoice\porcupine_params.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Picovoice\rhino_params.pv">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\alexa_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\americano_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\blueberry_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\bumblebee_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\computer_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\grapefruit_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\grasshopper_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\hey barista_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\hey google_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\hey siri_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\jarvis_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\ok google_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\pico clock_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\picovoice_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\porcupine_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\smart mirror_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\snowboy_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\terminator_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\linux\view glass_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\americano_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\blueberry_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\bumblebee_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\computer_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\grapefruit_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\grasshopper_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\hey barista_linux.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\hey barista_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\hey google_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\hey siri_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\jarvis_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\ok google_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\pico clock_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\picovoice_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\porcupine_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="resources\keyword_files\raspberry-pi\terminator_raspberry-pi.ppn">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		<PackageReference Include="PvRecorder" Version="1.2.4" />
+		<PackageReference Include="radio42.Bass.Net.core" Version="2.4.17.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="MPD\" />
-	</ItemGroup>	
+		<None Update="lib\common\porcupine_params.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_ar.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_de.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_es.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_fa.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_fr.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_hi.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_it.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_ja.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_ko.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_nl.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_pl.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_pt.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_ru.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_sv.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_vn.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\porcupine_params_zh.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_ar.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_de.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_es.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_fa.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_fr.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_hi.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_it.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_ja.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_ko.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_nl.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_pl.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_pt.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_ru.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_sv.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_vn.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\common\rhino_params_zh.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\arm11\libpv_porcupine.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\arm11\libpv_recorder.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\arm11\libpv_rhino.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_porcupine.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_recorder.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a53-aarch64\libpv_rhino.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a53\libpv_porcupine.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a53\libpv_recorder.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a53\libpv_rhino.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_porcupine.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_recorder.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a72-aarch64\libpv_rhino.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a72\libpv_porcupine.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a72\libpv_recorder.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a72\libpv_rhino.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a7\libpv_porcupine.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a7\libpv_recorder.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\raspberry-pi\cortex-a7\libpv_rhino.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\AlarmClock_en_raspberry-pi_v2_2_0.rhn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\alexa_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\porcupine_params.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\rhino_params.pv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\alexa_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\americano_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\blueberry_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\bumblebee_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\computer_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\grapefruit_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\grasshopper_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\hey barista_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\hey google_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\hey siri_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\jarvis_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\ok google_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\pico clock_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\picovoice_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\porcupine_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\smart mirror_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\snowboy_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\terminator_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\linux\view glass_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\americano_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\blueberry_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\bumblebee_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\computer_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\grapefruit_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\grasshopper_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\hey barista_linux.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\hey google_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\hey siri_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\jarvis_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\ok google_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\picovoice_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\porcupine_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Voice\resources\keyword_files\raspberry-pi\terminator_raspberry-pi.ppn">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="scp -rp C:\Projects\Repos\AlarmClock\AlarmClockWeb\bin\Debug\net8.0\linux-arm64\*.* pi@devpi.local:/Apps/AlarmClock" />
+		<Message Text="Post Build Event - SCP files to DevPI" Importance="high" />
+		<Exec Command="scp $(ProjectDir)bin\Debug\net8.0\linux-arm64\*.* pi@192.168.0.19:/Apps/AlarmClock" />
 	</Target>
 </Project>
