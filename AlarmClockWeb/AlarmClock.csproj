@@ -40,6 +40,16 @@
 	</Target>
 
 	<ItemGroup>
+	  <None Remove="scripts\platform.sh" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="scripts\platform.sh">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
 		<PackageReference Include="Iot.Device.Bindings" Version="3.1.0" />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.34.0" />
@@ -158,7 +168,7 @@
 		<None Update="lib\common\rhino_params_zh.pv">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="lib\libbass.so">
+		<None Update="libbass.so">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="lib\raspberry-pi\arm11\libpv_porcupine.so">
@@ -215,118 +225,28 @@
 		<None Update="lib\raspberry-pi\cortex-a7\libpv_rhino.so">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\AlarmClock_en_raspberry-pi_v2_2_0.rhn">
+		<None Update="resources\AlarmClock_en_raspberry-pi_v2_2_0.rhn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\alexa_raspberry-pi.ppn">
+		<None Update="resources\alexa_raspberry-pi.ppn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\porcupine_params.pv">
+		<None Update="resources\porcupine_params.pv">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\rhino_params.pv">
+		<None Update="resources\rhino_params.pv">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\keyword_files\linux\alexa_linux.ppn">
+		<None Update="resources\keyword_files\linux\alexa_linux.ppn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\keyword_files\linux\americano_linux.ppn">
+		<None Update="resources\keyword_files\linux\jarvis_linux.ppn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\keyword_files\linux\blueberry_linux.ppn">
+		<None Update="resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Voice\resources\keyword_files\linux\bumblebee_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\computer_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\grapefruit_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\grasshopper_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\hey barista_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\hey google_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\hey siri_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\jarvis_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\ok google_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\pico clock_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\picovoice_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\porcupine_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\smart mirror_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\snowboy_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\terminator_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\linux\view glass_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\americano_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\blueberry_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\bumblebee_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\computer_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\grapefruit_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\grasshopper_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\hey barista_linux.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\hey google_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\hey siri_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\jarvis_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\ok google_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\picovoice_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\porcupine_raspberry-pi.ppn">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Voice\resources\keyword_files\raspberry-pi\terminator_raspberry-pi.ppn">
+		<None Update="resources\keyword_files\raspberry-pi\jarvis_raspberry-pi.ppn">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

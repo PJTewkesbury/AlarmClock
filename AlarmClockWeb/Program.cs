@@ -17,7 +17,7 @@ namespace AlarmClock
     {        
         public static void Main(string[] args)
         {
-            Console.WriteLine("AlarmClockPI V1.3");
+            Console.WriteLine("AlarmClockPI V1.31");
             Console.WriteLine("");
 
             if (SystemdHelpers.IsSystemdService()==false && args.Length > 0 && args[0].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))

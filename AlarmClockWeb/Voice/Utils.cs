@@ -42,6 +42,7 @@ namespace AlarmClock.Voice
             foreach (string keywordFile in Directory.GetFiles(keywordFilesDir))
             {
                 string enumName = Path.GetFileName(keywordFile).Split('_')[0].Replace(" ", "_").ToUpper();
+                Console.WriteLine($"Found : {keywordFile}");
                 BuiltInKeyword builtin = (BuiltInKeyword)Enum.Parse(typeof(BuiltInKeyword), enumName);
                 keywordPaths.Add(builtin, Path.Combine(keywordFilesDir, keywordFile));
             }

@@ -82,7 +82,7 @@ namespace AlarmClock
                 ledRing.PlayAnimation(alexaWake);
                 ledRing.PlayAnimation(alexaEnd);
 
-                audio.PlayMP3("/Apps/music.mp3");
+                // audio.PlayMP3("/Apps/music.mp3", 0.9f);
             });
         }
 

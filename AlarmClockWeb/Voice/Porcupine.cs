@@ -16,7 +16,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-
 namespace AlarmClock.Voice
 {
     /// <summary>
@@ -201,12 +200,15 @@ namespace AlarmClock.Voice
             string modelPath = null,
             IEnumerable<float> sensitivities = null)
         {
+            Console.WriteLine("Porcupine INit");
+
             if (string.IsNullOrEmpty(accessKey))
             {
                 throw new PorcupineInvalidArgumentException("No AccessKey provided to Porcupine");
             }
-
+            
             modelPath = modelPath ?? DEFAULT_MODEL_PATH;
+            Console.WriteLine($"Model Path : {modelPath}");
             if (!File.Exists(modelPath))
             {
                 throw new PorcupineIOException($"Couldn't find model file at '{modelPath}'");
@@ -214,11 +216,13 @@ namespace AlarmClock.Voice
 
             if (keywordPaths == null || keywordPaths.Count() == 0)
             {
+                Console.WriteLine($"No Keywork file paths specified");
                 throw new PorcupineInvalidArgumentException("No keyword file paths were provided to Porcupine");
             }
 
             foreach (string path in keywordPaths)
             {
+                Console.WriteLine($"Model Path : {path}");
                 if (!File.Exists(path))
                 {
                     throw new PorcupineIOException($"Couldn't find keyword file at '{path}'");
@@ -327,7 +331,6 @@ namespace AlarmClock.Voice
         /// </summary>
         /// <returns>Version of Porcupine</returns>
         public string Version { get; private set; }
-
 
         /// <summary>
         /// Coverts status codes to relevant .NET exceptions

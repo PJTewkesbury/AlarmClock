@@ -1,5 +1,18 @@
 context:
   expressions:
+    Lights:
+      - light
+      - lights
+    LightOn:
+      - turn (the) light on
+      - turn (the) lights on
+      - light on
+      - lights on      
+    LightOff:
+      - turn (the) light off
+      - turn (the) lights off
+      - light off
+      - lights off      
     TurnAlarmOn:
       - turn (the) alarm on
       - set (the) alarm

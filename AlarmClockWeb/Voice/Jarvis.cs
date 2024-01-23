@@ -14,11 +14,11 @@ namespace AlarmClock.Voice
     public class Jarvis : IDisposable
     {
         string accessKey = "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==";
-        string contextPath = @"/Apps/AlarmClock/voice/resources/AlarmClock_en_raspberry-pi_v3_0_0.rhn";
-        string porcupineModelPath = @"/Apps/AlarmClock/voice/resources/porcupine_params.pv";
-        string rhinoModelPath = @"/Apps/AlarmClock/voice/resources/rhino_params.pv";
-        string wakeWordPath1 = @"/Apps/AlarmClock/voice/resources/jarvis_raspberry-pi.ppn";
-        string wakeWordPath2 = @"/Apps/AlarmClock/voice/resources/alexa_raspberry-pi.ppn";
+        string contextPath = @"resources/AlarmClock_en_raspberry-pi_v3_0_0.rhn";
+        string porcupineModelPath = @"resources/porcupine_params.pv";
+        string rhinoModelPath = @"resources/rhino_params.pv";
+        string wakeWordPath1 = @"resources/jarvis_raspberry-pi.ppn";
+        string wakeWordPath2 = @"resources/alexa_raspberry-pi.ppn";
 
         ILogger<Jarvis> Log;
         PvRecorder recorder = null;
@@ -36,11 +36,11 @@ namespace AlarmClock.Voice
             if (cs != null)
             {
                 accessKey = cs.GetValue("AccessKey", "+qiP3GMh/Jc4x9KY2H5s/I42H4xFi1t/0jAQjs8Jx8ABzwOWzJz46w==");
-                contextPath = cs.GetValue("IntentFile", @"/Apps/AlarmClock/voice/resources/AlarmClock_en_raspberry-pi_v3_0_0.rhn");
-                porcupineModelPath = cs.GetValue("porcupineModelPath", @"/Apps/AlarmClock/voice/resources/porcupine_params.pv");
-                rhinoModelPath = cs.GetValue("rhinoModelPath", @"/Apps/AlarmClock/voice/resources/rhino_params.pv");
-                wakeWordPath1 = cs.GetValue("wakeWordPath1", "/Apps/AlarmClock/voice/resources/jarvis_raspberry-pi.ppn");
-                wakeWordPath2 = cs.GetValue("wakeWordPath2", "/Apps/AlarmClock/voice/resources/alexa_raspberry-pi.ppn");
+                contextPath = cs.GetValue("IntentFile", @"resources/AlarmClock_en_raspberry-pi_v3_0_0.rhn");
+                porcupineModelPath = cs.GetValue("porcupineModelPath", @"resources/porcupine_params.pv");
+                rhinoModelPath = cs.GetValue("rhinoModelPath", @"resources/rhino_params.pv");
+                wakeWordPath1 = cs.GetValue("wakeWordPath1", "resources/jarvis_raspberry-pi.ppn");
+                wakeWordPath2 = cs.GetValue("wakeWordPath2", "resources/alexa_raspberry-pi.ppn");
 
                 this.Log.LogInformation($"Access key : {accessKey}");
                 this.Log.LogInformation($"Access key : {contextPath}");
@@ -58,8 +58,7 @@ namespace AlarmClock.Voice
 
         public void Run()
         {
-            bool bUsePicoVoice = true;
-            // Picovoice picovoice = null;
+            bool bUsePicoVoice = true;            
             try
             {
                 int audioDeviceIndex = -1;
@@ -78,11 +77,12 @@ namespace AlarmClock.Voice
                 }
 
                 try
-                {
+                {                    
+                    //porcupine = Porcupine.FromBuiltInKeywords(accessKey, wakeWords);
+
                     var keywordPaths = new List<string>();
                     keywordPaths.Add(wakeWordPath1);
                     keywordPaths.Add(wakeWordPath2);
-
                     porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, porcupineModelPath);
 
                     rhino = Rhino.Create(
