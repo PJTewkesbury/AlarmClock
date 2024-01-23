@@ -158,6 +158,9 @@
 		<None Update="lib\common\rhino_params_zh.pv">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="lib\libbass.so">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="lib\raspberry-pi\arm11\libpv_porcupine.so">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
