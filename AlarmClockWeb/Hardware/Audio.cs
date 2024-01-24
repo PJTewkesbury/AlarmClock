@@ -2,10 +2,14 @@
 using System.IO;
 using Un4seen.Bass;
 
+using UnitsNet;
+
 namespace AlarmClock.Hardware
 {
     public class Audio : IDisposable
     {
+        public const string DefaultRadioUrl = "https://edge-audio-03-gos2.sharp-stream.com/ucbuk.mp3?device=ukradioplayer&=&&___cb=479109455";
+
         public Audio()
         {
             BassNet.Registration("pjtewkesbury@live.com", "2X2519342152922");
@@ -33,6 +37,20 @@ namespace AlarmClock.Hardware
             Bass.BASS_Free();
         }
 
+        public void SetVolume(float vol=0.8f)
+        {
+            if (vol < 0.0f)
+                vol = 0.0f;
+            if (vol > 1.0f)
+                vol = 1.0f;
+            Bass.BASS_SetVolume(vol);
+        }
+
+        public float GetVolume()
+        {
+            return Bass.BASS_GetVolume();
+        }
+
         public void PlayMP3(String file, float volume=-1.0f)
         {
             if (!File.Exists(file))
@@ -49,7 +67,7 @@ namespace AlarmClock.Hardware
         }
 
         private int RadioStreamId = -1;
-        public void PlayUrl(String url, float volume = -1.0f)
+        public void PlayRadio(String url= DefaultRadioUrl, float volume = -1.0f)
         {
             if (String.IsNullOrWhiteSpace(url))
             {
@@ -57,7 +75,7 @@ namespace AlarmClock.Hardware
                 return;
             }
 
-            StopUrl();
+            StopRadio();
 
             RadioStreamId = Bass.BASS_StreamCreateURL(url, 0, BASSFlag.BASS_STREAM_STATUS | BASSFlag.BASS_STREAM_AUTOFREE | BASSFlag.BASS_SAMPLE_FLOAT, null, IntPtr.Zero);
             
@@ -67,12 +85,30 @@ namespace AlarmClock.Hardware
             Console.WriteLine($"Now Playing {url}");
         }
 
-        public void StopUrl()
+        public void StopRadio()
         {        
             if (RadioStreamId > 0)
                 Bass.BASS_ChannelStop(RadioStreamId);
             RadioStreamId = 0;
             Console.WriteLine($"Radio Stopped");
-        }        
+        }
+
+        public bool RadioIsPlaying()
+        {
+            return RadioStreamId > 0;
+        }
+
+        public void SetRadioVolume(float vol = 0.8f)
+        {
+            if (RadioStreamId <= 0)
+                return;
+
+            if (vol < 0.0f)
+                vol = 0.0f;
+            if (vol > 1.0f)
+                vol = 1.0f;
+
+            Bass.BASS_ChannelSetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, vol);
+        }
     }
 }

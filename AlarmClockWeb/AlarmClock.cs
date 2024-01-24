@@ -8,6 +8,7 @@ using AlarmClock.Voice;
 using AlarmClock.Hardware;
 using System.Device.Gpio;
 using System.Device.I2c;
+using System.Diagnostics.Eventing.Reader;
 
 namespace AlarmClock
 {
@@ -71,16 +72,15 @@ namespace AlarmClock
                 ProcessTouch(r);
             });
 
-            audio = new Audio();
-
-            Console.WriteLine("Show Alexa wait and end");
+            Console.WriteLine("Show User init completed");
+            audio = new Audio();                        
             Task.Run(() =>
-            {            
+            {
+                audio.PlayMP3("./Sounds/ful/ful_system_alerts_melodic_01_short.wav", 1.0f);
+
                 // Play Animaition
                 ledRing.PlayAnimation(alexaWake);
-                ledRing.PlayAnimation(alexaEnd);
-
-                // audio.PlayMP3("/Apps/music.mp3", 0.9f);
+                ledRing.PlayAnimation(alexaEnd);                
             });
         }
 
@@ -94,8 +94,7 @@ namespace AlarmClock
                 ledRing.PlayAnimation(alexaEnd);
 
                 do
-                {
-                    // Thread.Yield();                    
+                {                  
                     Thread.Sleep(10);
                 }
                 while (true);
@@ -117,30 +116,13 @@ namespace AlarmClock
                 clockDisplay.Dispose();
                 touchDriver.Dispose();
                 ledRing.Dispose();
-                gpio.Dispose();
+                gpio.Dispose();                
                 touchObservable.Dispose();
+                audio.Dispose();
             }
 
             Console.WriteLine("All Done");
         }
-
-        private static void KeepAliveCallback(object state)
-        {
-            // var mpdStatus = AlarmClock.mpc.Status();
-            // Console.WriteLine($"{mpdStatus.ToString()}");
-            // AlarmClock.mqtt.SendMessage(AlarmClock.Topic, "MPD StillAlive");
-        }
-
-        //private static void Mpc_OnDisconnected(Libmpc.Mpc connection)
-        //{
-        //    Console.WriteLine("MPC Disconnected");
-        //    //mpc.Connection.Connect();
-        //}
-
-        //private static void Mpc_OnConnected(Libmpc.Mpc connection)
-        //{
-        //    Console.WriteLine("MPC Connected");
-        //}
 
         static int aniCount = 0;
         public static object RingLock = new object();
@@ -150,10 +132,10 @@ namespace AlarmClock
             if ((t & 128) == 128)
             {
                 Console.WriteLine("Play/Pause Radio");
-                //if (mpc.Status().State == MpdState.Play)
-                //    StopRadio();
-                //else
-                //    PlayRadio();
+                if (audio.RadioIsPlaying())
+                    audio.StopRadio();
+                else 
+                    audio.PlayRadio();
                 return;
             }
 
@@ -250,19 +232,13 @@ namespace AlarmClock
             }
 
             if (s.StartsWith("Play", StringComparison.CurrentCultureIgnoreCase))
-            {
+            {                
                 PlayRadio();
                 return;
             }
             if (s.StartsWith("Pause", StringComparison.CurrentCultureIgnoreCase))
             {
-                //if (mpc.Connected == false)
-                //    mpc.Connection.Connect();
-
-                //if (mpc.Status().State != MpdState.Pause)
-                //    mpc.Pause(true);
-
-                //mpc.Connection.Disconnect();
+                PauseRadio();
                 return;
             }
             if (s.StartsWith("Stop", StringComparison.CurrentCultureIgnoreCase))
@@ -279,19 +255,28 @@ namespace AlarmClock
             {
                 try
                 {
-                    //if (mpc.Connected == false)
-                    //    mpc.Connection.Connect();
+                    if (audio.RadioIsPlaying())
+                        audio.SetRadioVolume(0.8f);
+                    else
+                        audio.PlayRadio();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+            });
+        }
 
-                    //if (mpc.Status().State != MpdState.Play)
-                    //{
-                    //    // Remove old playlist
-                    //    mpc.Clear();
-
-                    //    // Add UCB1        
-                    //    mpc.Add("https://edge-audio-04-thn.sharp-stream.com/ucbuk.mp3?device=ukradioplayer");
-                    //    mpc.Play();
-                    //}
-                    //mpc.Connection.Disconnect();
+        public static void PauseRadio()
+        {
+            Console.WriteLine("Pause Radio");
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (audio.RadioIsPlaying())
+                        audio.SetRadioVolume(0.0f);
                 }
                 catch (Exception ex)
                 {
@@ -306,45 +291,29 @@ namespace AlarmClock
             Task.Run(() =>
             {
                 Console.WriteLine("Stop Radio");
-                //if (mpc != null)
-                //{
-                //    try
-                //    {
-                //        if (mpc.Connected == false)
-                //            mpc.Connection.Connect();
-                //        if (mpc.Status().State != MpdState.Stop)
-                //            mpc.Stop();
-                //        mpc.Connection.Disconnect();
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Console.WriteLine(ex.Message);
-                //        Console.WriteLine(ex.StackTrace);
-                //    }
-                //}
+                audio.StopRadio();
             });
         }
 
         public static void QuiteVolume()
         {
             Console.WriteLine($"Making volume quite");
-            //if (CurrentVolume > 20)
-            //{
-            //    volume = 20;
-            //}
+            if (audio.RadioIsPlaying())
+            {
+                audio.SetRadioVolume(0.3f);
+            }            
         }
 
         public static void NormalVolume()
-        {
-            // volume = volumeStack.Pop();
-            // Console.WriteLine($"Restore volume to previous level of {volume}");
+        {            
+            audio.SetRadioVolume(0.8f);
         }
 
         internal static void ChangeVolume(int Direction, Dictionary<string, string> slots = null)
-        {
-            // Console.WriteLine($"Changing Volume from {volume}");
-
-            int volumeChange = 10;
+        {            
+            float volume = audio.GetVolume();
+            float volumeChange = 0.1f;
+            Console.WriteLine($"Changing Volume from {volume}");
 
             if (slots != null && slots.ContainsKey("volumeChange"))
             {
@@ -352,22 +321,21 @@ namespace AlarmClock
             }
             Console.WriteLine($"Change Volume by {volumeChange}");
 
-            //if (Direction == 0)
-            //    volume = volumeChange;
-            //if (Direction > 0)
-            //    volume += volumeChange;
-            //if (Direction < 0)
-            //    volume -= volumeChange;
+            if (Direction == 0)
+                volume = volumeChange;
+            if (Direction > 0)
+                volume += volumeChange;
+            if (Direction < 0)
+                volume -= volumeChange;
 
-            //if (volume < 0)
-            //    volume = 0;
+            if (volume < 0.0f)
+                volume = 0.0f;
 
-            //if (volume > 100)
-            //    volume = 100;
-
-            //// CurrentVolume = volume;
-
-            //Console.WriteLine($"Changing Volume to {volume}");
+            if (volume > 1.0f)
+                volume = 1.0f;
+            
+            audio.SetVolume(volume);
+            Console.WriteLine($"Changing Volume to {volume}");
         }
 
         public void Dispose()

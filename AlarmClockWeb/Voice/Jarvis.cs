@@ -138,6 +138,7 @@ namespace AlarmClock.Voice
                             {
                                 Task.Run(() =>
                                 {
+                                    AlarmClock.audio.SetRadioVolume(0.2f);
                                     AlarmClock.ledRing.ClearPixels();
                                 });
                             }
@@ -248,7 +249,7 @@ namespace AlarmClock.Voice
                 Console.WriteLine("  }");
                 Console.WriteLine("}\n");
 
-                AlarmClock.NormalVolume();
+                // AlarmClock.NormalVolume();
 
                 switch (inference.Intent.ToLower())
                 {
@@ -359,6 +360,8 @@ namespace AlarmClock.Voice
             {
                 if (AlarmClock.ledRing != null)
                     AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+
+                AlarmClock.audio.SetRadioVolume(0.7f);
             }));
 
             // Run Tasks
