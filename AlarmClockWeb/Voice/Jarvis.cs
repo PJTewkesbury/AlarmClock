@@ -137,8 +137,7 @@ namespace AlarmClock.Voice
                              )
                             {
                                 Task.Run(() =>
-                                {
-                                    AlarmClock.audio.SetRadioVolume(0.2f);
+                                {                                    
                                     AlarmClock.ledRing.ClearPixels();
                                 });
                             }
@@ -224,9 +223,9 @@ namespace AlarmClock.Voice
 
             Task.Run(() =>
             {
-                AlarmClock.QuiteVolume();
+                AlarmClock.QuiteVolume();                
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
-                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisListen); // Should be listening            
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisListen); // Should be listening 
             });
         }
 

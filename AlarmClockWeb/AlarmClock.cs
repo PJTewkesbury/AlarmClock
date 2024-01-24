@@ -300,7 +300,7 @@ namespace AlarmClock
             Console.WriteLine($"Making volume quite");
             if (audio.RadioIsPlaying())
             {
-                audio.SetRadioVolume(0.3f);
+                audio.SetRadioVolume(0.2f);
             }            
         }
 
@@ -317,7 +317,7 @@ namespace AlarmClock
 
             if (slots != null && slots.ContainsKey("volumeChange"))
             {
-                volumeChange = Convert.ToInt32(slots["volumeChange"].Replace("%", ""));
+                volumeChange = Convert.ToInt32(slots["volumeChange"].Replace("%", ""))/100.0f;
             }
             Console.WriteLine($"Change Volume by {volumeChange}");
 

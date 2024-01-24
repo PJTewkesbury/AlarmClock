@@ -37,7 +37,7 @@ namespace AlarmClock.Hardware
             Bass.BASS_Free();
         }
 
-        public void SetVolume(float vol=0.8f)
+        public void SetVolume(float vol=0.7f)
         {
             if (vol < 0.0f)
                 vol = 0.0f;
@@ -66,8 +66,8 @@ namespace AlarmClock.Hardware
             Console.WriteLine($"Now Playing {file}");
         }
 
-        private int RadioStreamId = -1;
-        public void PlayRadio(String url= DefaultRadioUrl, float volume = -1.0f)
+        private int RadioStreamId = 0;
+        public void PlayRadio(String url= DefaultRadioUrl, float volume = 0.6f)
         {
             if (String.IsNullOrWhiteSpace(url))
             {
@@ -82,25 +82,29 @@ namespace AlarmClock.Hardware
             if (volume >= 0.0f && volume <= 1.0f)
                 Bass.BASS_ChannelSetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, volume);
             Bass.BASS_ChannelPlay(RadioStreamId, false);
-            Console.WriteLine($"Now Playing {url}");
+            Console.WriteLine($"Now Playing {url} ");
+            Console.WriteLine($"Now RadioStreamId = {RadioStreamId}");
         }
 
         public void StopRadio()
-        {        
-            if (RadioStreamId > 0)
+        {
+            if (RadioStreamId != 0)
+            {                
+                Bass.BASS_ChannelSetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, 0.0f);
                 Bass.BASS_ChannelStop(RadioStreamId);
+            }
             RadioStreamId = 0;
             Console.WriteLine($"Radio Stopped");
         }
 
         public bool RadioIsPlaying()
         {
-            return RadioStreamId > 0;
+            return RadioStreamId != 0;
         }
 
-        public void SetRadioVolume(float vol = 0.8f)
+        public void SetRadioVolume(float vol = 0.7f)
         {
-            if (RadioStreamId <= 0)
+            if (RadioStreamId != 0)
                 return;
 
             if (vol < 0.0f)
@@ -109,6 +113,16 @@ namespace AlarmClock.Hardware
                 vol = 1.0f;
 
             Bass.BASS_ChannelSetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, vol);
+        }
+
+        public float GetRadioVolume()
+        {
+            float vol = -1.0f;
+            if (RadioStreamId != 0)
+                return -1.0f;            
+
+            Bass.BASS_ChannelGetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, ref vol);
+            return vol;
         }
     }
 }
