@@ -223,7 +223,7 @@ namespace AlarmClock.Voice
 
             Task.Run(() =>
             {
-                AlarmClock.QuiteVolume();                
+                AlarmClock.QuiteVolume();
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisListen); // Should be listening 
             });
@@ -232,6 +232,9 @@ namespace AlarmClock.Voice
         static async void inferenceCallback(Inference inference)
         {
             List<Task> taskList = new List<Task>();
+
+            AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaThinking);
+            bool AddAlexaEnd = true;
 
             if (inference.IsUnderstood)
             {
@@ -247,11 +250,39 @@ namespace AlarmClock.Voice
                     Console.WriteLine($"    {slot.Key} : '{slot.Value}'");
                 Console.WriteLine("  }");
                 Console.WriteLine("}\n");
-
-                // AlarmClock.NormalVolume();
-
+                
                 switch (inference.Intent.ToLower())
                 {
+                    case "lights":
+                        {
+                            taskList.Add(new Task(() =>
+                            {                                
+                                if (AlarmClock.ledRing.LedLitCount==0)
+                                    AlarmClock.ledRing.SetAllLEDsToColor(System.Drawing.Color.FromArgb(255, 255, 255));
+                                else
+                                    AlarmClock.ledRing.SetAllLEDsToColor(System.Drawing.Color.FromArgb(0, 0, 0));
+                            }));
+                            AddAlexaEnd = false;
+                        }
+                        break;
+                    case "lightson":
+                        {
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.ledRing.SetAllLEDsToColor(System.Drawing.Color.FromArgb(255, 255, 255));
+                            }));
+                            AddAlexaEnd = false;
+                        }
+                        break;
+                    case "lightsoff":
+                        {
+                            taskList.Add(new Task(() =>
+                            {
+                                AlarmClock.ledRing.SetAllLEDsToColor(System.Drawing.Color.FromArgb(0, 0, 0));
+                            }));
+                            AddAlexaEnd = false;
+                        }
+                        break;
                     case "turnradioon":
                         {
                             taskList.Add(new Task(() =>
@@ -320,29 +351,17 @@ namespace AlarmClock.Voice
                         }
                         break;
                     case "whatisthetime":
-                        {
-                            taskList.Add(new Task(() =>
-                            {
-                                AlarmClock.NormalVolume();
-                            }));
+                        {                            
                             taskList.Add(SpeakTime());
                         }
                         break;
                     case "whatisthedate":
                         {
-                            taskList.Add(new Task(() =>
-                            {
-                                AlarmClock.NormalVolume();
-                            }));
                             taskList.Add(SpeakDate());
                         }
                         break;
                     case "weather":
-                        {
-                            taskList.Add(new Task(() =>
-                            {
-                                AlarmClock.NormalVolume();
-                            }));
+                        {                         
                             taskList.Add(SpeakWeather());
                         }
                         break;
@@ -352,15 +371,18 @@ namespace AlarmClock.Voice
             }
             else
             {
-                Console.WriteLine("Didn't understand the command\n");
+                Console.WriteLine("Didn't understand the command");
+                taskList.Add( new Task(() => {
+                    SayText("Sorry, I didn't understand that.");
+                }));                
             }
-
+            
             taskList.Add(new Task(() =>
             {
-                if (AlarmClock.ledRing != null)
+                if (AddAlexaEnd)
                     AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
 
-                AlarmClock.audio.SetRadioVolume(0.7f);
+                AlarmClock.NormalVolume();
             }));
 
             // Run Tasks
@@ -379,8 +401,7 @@ namespace AlarmClock.Voice
             return new Task(() =>
             {
                 string text = $"The time is {DateTime.Now.ToString("hh:mm tt")}";
-                SayText(text, null);
-                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+                SayText(text, null);                
             });
         }
 
@@ -390,8 +411,7 @@ namespace AlarmClock.Voice
             {
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The date is {DateTime.Now.ToString("dddd, d MMMM yyyy")}";
-                SayText(text);
-                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+                SayText(text);                
             });
         }
         private static Task SpeakWeather()
@@ -402,8 +422,7 @@ namespace AlarmClock.Voice
 
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The weather for today in Marple is still being devloped. Please check back tomorrow";
-                SayText(text);
-                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+                SayText(text);                
             });
         }
 
@@ -412,10 +431,13 @@ namespace AlarmClock.Voice
             try
             {
                 Console.WriteLine($"Speaking : {text}");
+
                 if (File.Exists("/opt/speak.wav"))
                     File.Delete("/opt/speak.wav");
 
-                $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}' && aplay /opt/speak.wav".Bash(logger);
+                $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}'".Bash(logger);
+
+                AlarmClock.audio.PlayMP3("/opt/speak.wav");
             }
             catch (Exception ex)
             {

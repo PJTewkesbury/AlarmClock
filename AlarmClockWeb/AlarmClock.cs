@@ -76,10 +76,13 @@ namespace AlarmClock
             audio = new Audio();                        
             Task.Run(() =>
             {
-                audio.PlayMP3("./Sounds/ful/ful_system_alerts_melodic_01_short.wav", 1.0f);
-
                 // Play Animaition
                 ledRing.PlayAnimation(alexaWake);
+                audio.PlayMP3("./Sounds/ful/ful_system_alerts_melodic_01_short.wav");
+                while (audio.IsMusicFilePlaying())
+                {
+                    Thread.Sleep(10);
+                }
                 ledRing.PlayAnimation(alexaEnd);                
             });
         }
@@ -89,10 +92,6 @@ namespace AlarmClock
             // Main loop
             try
             {
-                Console.WriteLine("Show Alexa wait and end");
-                ledRing.PlayAnimation(alexaWake);
-                ledRing.PlayAnimation(alexaEnd);
-
                 do
                 {                  
                     Thread.Sleep(10);
@@ -181,73 +180,7 @@ namespace AlarmClock
                 return;
             }
         }
-
-        private static void ProcessMQTTMessages(string s)
-        {
-            Console.WriteLine(s);
-
-            if (s.StartsWith("PicoListen", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(JarvisWake);
-                QuiteVolume();
-            }
-            if (s.StartsWith("PicoEnd", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(JarvisEnd);
-            }
-            if (s.StartsWith("JarvisListen", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(JarvisListen);
-            }
-
-            if (s.StartsWith("PicoEnd", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(alexaEnd);
-                NormalVolume();
-            }
-
-            if (s.StartsWith("AlexaWakeup", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(alexaWake);
-            }
-            if (s.StartsWith("AlexaListen", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(JarvisListen);
-            }
-            if (s.StartsWith("AlexaThinking", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(alexaThinking);
-            }
-            if (s.StartsWith("AlexaSpeaking", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(alexaSpeaking);
-            }
-            if (s.StartsWith("AlexaEnd", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(alexaEnd);
-            }
-            if (s.StartsWith("Startup", StringComparison.CurrentCultureIgnoreCase))
-            {
-                ledRing.PlayAnimation(alexaWake);
-            }
-
-            if (s.StartsWith("Play", StringComparison.CurrentCultureIgnoreCase))
-            {                
-                PlayRadio();
-                return;
-            }
-            if (s.StartsWith("Pause", StringComparison.CurrentCultureIgnoreCase))
-            {
-                PauseRadio();
-                return;
-            }
-            if (s.StartsWith("Stop", StringComparison.CurrentCultureIgnoreCase))
-            {
-                StopRadio();
-                return;
-            }
-        }
-
+      
         public static void PlayRadio()
         {
             Console.WriteLine("Play Radio");
@@ -256,7 +189,7 @@ namespace AlarmClock
                 try
                 {
                     if (audio.RadioIsPlaying())
-                        audio.SetRadioVolume(0.8f);
+                        audio.SetRadioVolume();
                     else
                         audio.PlayRadio();
                 }
@@ -300,13 +233,13 @@ namespace AlarmClock
             Console.WriteLine($"Making volume quite");
             if (audio.RadioIsPlaying())
             {
-                audio.SetRadioVolume(0.2f);
+                audio.MutePlayback();
             }            
         }
 
         public static void NormalVolume()
-        {            
-            audio.SetRadioVolume(0.8f);
+        {
+            audio.UnmutePlayback();
         }
 
         internal static void ChangeVolume(int Direction, Dictionary<string, string> slots = null)
@@ -351,6 +284,9 @@ namespace AlarmClock
 
             gpio.Dispose();
             gpio = null;
+
+            audio.Dispose();
+            audio = null;
         }
     }
 }

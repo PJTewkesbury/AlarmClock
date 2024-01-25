@@ -23,7 +23,6 @@ namespace AlarmClock.Hardware
         public int StartLedIndex { get; set; } = 0;
         public Color[] Pixels { get; set; } = null;
 
-
         /// <summary>
         /// Initializes a new instance of the APA102 device.
         /// </summary>
@@ -142,6 +141,16 @@ namespace AlarmClock.Hardware
                 Render();
                 System.Threading.Thread.Sleep(f.Duration);
             }
+        }
+
+        public void SetAllLEDsToColor(Color color)
+        {
+            Console.WriteLine($"Set ALl LEDs to color");
+            for (int i = 0; i < LedCount; i++)
+            {
+                Pixels[i] = color;
+            }
+            Render();
         }
     }
 }

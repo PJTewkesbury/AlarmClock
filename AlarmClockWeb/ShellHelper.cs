@@ -26,7 +26,7 @@ namespace AlarmClock
                                             UseShellExecute = false,
                                             CreateNoWindow = true
                                             },
-                            EnableRaisingEvents = true
+                            EnableRaisingEvents = true,
                             };
             process.Exited += (sender, args) =>
             {
@@ -49,6 +49,9 @@ namespace AlarmClock
             try
             {
                 process.Start();
+
+                // Wait upto 3 seconds to complete.
+                process.WaitForExit(TimeSpan.FromSeconds(5));
             }
             catch (Exception e)
             {

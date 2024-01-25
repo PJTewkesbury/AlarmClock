@@ -1,18 +1,5 @@
 context:
   expressions:
-    Lights:
-      - light
-      - lights
-    LightOn:
-      - turn (the) light on
-      - turn (the) lights on
-      - light on
-      - lights on      
-    LightOff:
-      - turn (the) light off
-      - turn (the) lights off
-      - light off
-      - lights off      
     TurnAlarmOn:
       - turn (the) alarm on
       - set (the) alarm
@@ -24,6 +11,7 @@ context:
       - Cancel alarm
     Snooze:
       - Snooze (alarm)
+      - Pause alarm
     TurnRadioOn:
       - play radio
       - (turn) (the) radio on
@@ -65,5 +53,20 @@ context:
       - date
       - what is the date
       - what is the current date
+    Weather:
+      - is snow forecast
+      - (what) (is) (the) weather (like)
+      - what is the weather forecast
+      - (what is the) weather (going to be) (like)
+      - (it is) going to rain
+      - is there a frost
+    LightsOn:
+      - (turn) lights on
+      - (turn the) Lights On
+    LightsOff:
+      - (turn) lights off
+      - (turn the) lights off
+    ToggleLights:
+      - lights
   slots: {}
   macros: {}

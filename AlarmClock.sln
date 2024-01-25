@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlarmClock", "AlarmClockWeb\AlarmClock.csproj", "{7E536E62-B1DE-4F4F-AA70-193235DD1AFD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MIsc", "MIsc", "{AA6253F0-7DCE-4BAD-8DEC-EC9895164F08}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{AA6253F0-7DCE-4BAD-8DEC-EC9895164F08}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection

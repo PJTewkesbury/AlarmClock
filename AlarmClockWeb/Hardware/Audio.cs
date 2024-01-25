@@ -27,7 +27,7 @@ namespace AlarmClock.Hardware
             }
             Console.WriteLine("BASS Audio Init");
             Console.WriteLine($"CurrentVolume = {Bass.BASS_GetVolume()}");
-            Bass.BASS_SetVolume(0.8f);
+            Bass.BASS_SetVolume(0.5f);
             Console.WriteLine($"New Volume = {Bass.BASS_GetVolume()}");
         }
 
@@ -37,7 +37,7 @@ namespace AlarmClock.Hardware
             Bass.BASS_Free();
         }
 
-        public void SetVolume(float vol=0.7f)
+        public void SetVolume(float vol=0.5f)
         {
             if (vol < 0.0f)
                 vol = 0.0f;
@@ -51,23 +51,36 @@ namespace AlarmClock.Hardware
             return Bass.BASS_GetVolume();
         }
 
-        public void PlayMP3(String file, float volume=-1.0f)
+        int MP3StreamId = 0;
+        public void PlayMP3(String file, float volume=0.75f)
         {
             if (!File.Exists(file))
             {
                 Console.WriteLine($"{file} not found.");
                 return;
             }
-            int mp3Stream = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_AUTOFREE | BASSFlag.BASS_SAMPLE_FLOAT);
+            MP3StreamId = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_AUTOFREE | BASSFlag.BASS_SAMPLE_FLOAT);
             if (volume>=0.0f && volume<=1.0f)
-                Bass.BASS_ChannelSetAttribute(mp3Stream, BASSAttribute.BASS_ATTRIB_VOL, volume);
-            Bass.BASS_ChannelPlay(mp3Stream, false);
+                Bass.BASS_ChannelSetAttribute(MP3StreamId, BASSAttribute.BASS_ATTRIB_VOL, volume);
+            Bass.BASS_ChannelPlay(MP3StreamId, false);
 
             Console.WriteLine($"Now Playing {file}");
         }
 
+        public bool IsMusicFilePlaying()
+        {
+            if (MP3StreamId == 0)
+                return false;
+
+            var r = Bass.BASS_ChannelIsActive(MP3StreamId);
+            if (r == BASSActive.BASS_ACTIVE_PLAYING)
+                return true;
+            else 
+                return false;
+        }
+
         private int RadioStreamId = 0;
-        public void PlayRadio(String url= DefaultRadioUrl, float volume = 0.6f)
+        public void PlayRadio(String url= DefaultRadioUrl, float volume = 0.75f)
         {
             if (String.IsNullOrWhiteSpace(url))
             {
@@ -102,7 +115,7 @@ namespace AlarmClock.Hardware
             return RadioStreamId != 0;
         }
 
-        public void SetRadioVolume(float vol = 0.7f)
+        public void SetRadioVolume(float vol = 0.75f)
         {
             if (RadioStreamId != 0)
                 return;
@@ -123,6 +136,24 @@ namespace AlarmClock.Hardware
 
             Bass.BASS_ChannelGetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, ref vol);
             return vol;
+        }
+
+        float UnmutedRadioVol = -1.0f;
+        public void MutePlayback()
+        {
+            UnmutedRadioVol = -1.0f;
+            if (RadioIsPlaying())
+            {
+                UnmutedRadioVol = GetRadioVolume();
+                SetRadioVolume(0.15f);
+            }
+        }
+        public void UnmutePlayback()
+        {            
+            if (RadioIsPlaying() && UnmutedRadioVol>0.0f)
+            {                
+                SetRadioVolume(UnmutedRadioVol);
+            }
         }
     }
 }
