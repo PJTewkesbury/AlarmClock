@@ -112,13 +112,16 @@ namespace AlarmClock.Hardware
 
         public bool RadioIsPlaying()
         {
-            return RadioStreamId != 0;
+            return (RadioStreamId != 0);
         }
 
         public void SetRadioVolume(float vol = 0.75f)
         {
             if (RadioStreamId != 0)
+            {
+                Console.WriteLine("No Radio Stream playing");
                 return;
+            }
 
             if (vol < 0.0f)
                 vol = 0.0f;
@@ -141,17 +144,20 @@ namespace AlarmClock.Hardware
         float UnmutedRadioVol = -1.0f;
         public void MutePlayback()
         {
+            Console.WriteLine("Mute Radio volume");
             UnmutedRadioVol = -1.0f;
             if (RadioIsPlaying())
-            {
+            {                
                 UnmutedRadioVol = GetRadioVolume();
-                SetRadioVolume(0.15f);
+                Console.WriteLine($"Radio volume is {UnmutedRadioVol}");
+                SetRadioVolume(0.1f);
             }
         }
         public void UnmutePlayback()
         {            
             if (RadioIsPlaying() && UnmutedRadioVol>0.0f)
-            {                
+            {
+                Console.WriteLine($"Unmute Radio volume = {UnmutedRadioVol}");
                 SetRadioVolume(UnmutedRadioVol);
             }
         }
