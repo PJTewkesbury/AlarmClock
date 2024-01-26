@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AlarmClock.Voice
@@ -26,10 +27,12 @@ namespace AlarmClock.Voice
         bool requireEndpoint = true;
         Porcupine porcupine = null;
         Rhino rhino = null;
+        static CancellationToken cancellationToken;
 
-        public Jarvis(ILogger<Jarvis> Log, IConfiguration config)
+        public Jarvis(ILogger<Jarvis> Log, IConfiguration config, CancellationToken cancellationToken)
         {
             this.Log = Log;
+            Jarvis.cancellationToken = cancellationToken;
 
             this.Log.LogInformation("Jarvis CTOR");
             var cs = config.GetSection("PicoVoice");
@@ -142,6 +145,9 @@ namespace AlarmClock.Voice
                                 });
                             }
 
+                            // Check for cancellation
+                            Jarvis.cancellationToken.ThrowIfCancellationRequested();
+
                             short[] pcm = recorder.Read();
 
                             try
@@ -180,6 +186,13 @@ namespace AlarmClock.Voice
                     }
                     while (true);
                 }
+            }
+
+            catch (OperationCanceledException ex)
+            {
+                Console.WriteLine("Operation Cancellation Exception thrown - Quitting");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
             catch (Exception ex)
             {
@@ -390,6 +403,7 @@ namespace AlarmClock.Voice
             {
                 foreach (var t in taskList)
                 {
+                    Jarvis.cancellationToken.ThrowIfCancellationRequested();
                     t.Start();
                     t.Wait();
                 }
@@ -435,8 +449,7 @@ namespace AlarmClock.Voice
                 if (File.Exists("/opt/speak.wav"))
                     File.Delete("/opt/speak.wav");
 
-                $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}'".Bash(logger);
-
+                $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}'".Bash(logger);                
                 AlarmClock.audio.PlayMP3("/opt/speak.wav");
             }
             catch (Exception ex)

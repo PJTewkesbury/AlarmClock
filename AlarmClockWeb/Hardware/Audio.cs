@@ -117,27 +117,35 @@ namespace AlarmClock.Hardware
 
         public void SetRadioVolume(float vol = 0.75f)
         {
+            Console.WriteLine($"Setting radio volume = {vol}");
+
             if (RadioStreamId != 0)
             {
-                Console.WriteLine("No Radio Stream playing");
-                return;
+                if (vol < 0.0f)
+                    vol = 0.0f;
+                if (vol > 1.0f)
+                    vol = 1.0f;
+
+                if (!Bass.BASS_ChannelSetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, vol))
+                {
+                    Console.WriteLine($"Failed to set radio volume to {vol}");
+                }
             }
-
-            if (vol < 0.0f)
-                vol = 0.0f;
-            if (vol > 1.0f)
-                vol = 1.0f;
-
-            Bass.BASS_ChannelSetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, vol);
+            else
+                Console.WriteLine("> No Radio Stream playing");         
         }
 
         public float GetRadioVolume()
         {
             float vol = -1.0f;
             if (RadioStreamId != 0)
-                return -1.0f;            
-
-            Bass.BASS_ChannelGetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, ref vol);
+            {
+                if (!Bass.BASS_ChannelGetAttribute(RadioStreamId, BASSAttribute.BASS_ATTRIB_VOL, ref vol))
+                {
+                    Console.WriteLine($"Failed to get radio volume to {vol}");
+                }
+                Console.WriteLine($"Getting radio volume = {vol}");
+            }
             return vol;
         }
 
@@ -149,7 +157,6 @@ namespace AlarmClock.Hardware
             if (RadioIsPlaying())
             {                
                 UnmutedRadioVol = GetRadioVolume();
-                Console.WriteLine($"Radio volume is {UnmutedRadioVol}");
                 SetRadioVolume(0.1f);
             }
         }

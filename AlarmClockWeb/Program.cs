@@ -56,16 +56,19 @@ namespace AlarmClock
             });
             systemTasks.Add(taskWebSite);
 
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            CancellationToken cancellationToken = cancellationTokenSource.Token;
+
             // Init Alarmclock Hardware
-            AlarmClock alarmClock = new AlarmClock(config);
+            AlarmClock alarmClock = new AlarmClock(config, cancellationToken);
             alarmClock.Init();
             
             // Init Voice Assistant
-            Jarvis jarvis = null;
+            Jarvis jarvis = null;            
             try
             {
                 LoggerFactory loggerFactory = new LoggerFactory();
-                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
+                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config, cancellationToken);
                 jarvis.Run();
             }
             catch (Exception ex)
@@ -96,6 +99,10 @@ namespace AlarmClock
                            if (key == ConsoleKey.X)
                                AlarmClock.ChangeVolume(-1);
                        }
+                       if (quit)
+                        {
+                            cancellationTokenSource.Cancel();
+                        }
                        System.Threading.Thread.Yield();
                    }
                    while (quit == false);

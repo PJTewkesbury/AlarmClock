@@ -30,11 +30,13 @@ namespace AlarmClock
         public static TouchDriver touchDriver;
         public static IDisposable touchObservable;
         public static Audio audio;
+        public static CancellationToken cancellationToken;
 
         IConfiguration config;
-        public AlarmClock(IConfiguration config)
+        public AlarmClock(IConfiguration config, CancellationToken cancellationToken)
         {
             this.config = config;
+            AlarmClock.cancellationToken = cancellationToken;
         }
 
         public void Init()
@@ -95,9 +97,15 @@ namespace AlarmClock
                 do
                 {                  
                     Thread.Sleep(10);
+                    AlarmClock.cancellationToken.ThrowIfCancellationRequested();
                 }
                 while (true);
 
+            }
+            catch (OperationCanceledException ex)
+            {
+                Console.WriteLine("AlarmClock quitting");
+                Console.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
@@ -141,7 +149,7 @@ namespace AlarmClock
             if ((t & 1) == 1)
             {
                 Console.WriteLine("Toggle Clock Display");
-                Jarvis.SayText("Toggle display mode", null);
+                // Jarvis.SayText("Toggle display mode", null);
 
                 if (clockDisplay.WhatToDisplay == ClockDisplayDriver.enumShow.Animation)
                     clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Time;
