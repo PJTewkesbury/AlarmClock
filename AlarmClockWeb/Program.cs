@@ -1,4 +1,5 @@
 using AlarmClock.Voice;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +30,7 @@ namespace AlarmClock
             Console.WriteLine("AlarmClockPI V1.31");
             Console.WriteLine("");
 
-            if (SystemdHelpers.IsSystemdService()==false && args.Length > 0 && args[0].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))
+            if (SystemdHelpers.IsSystemdService() == false && args.Length > 0 && args[0].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))
             {
                 DateTime dt = DateTime.Now;
                 Console.WriteLine("Waiting for debugger to attach or any key to continue");
@@ -59,21 +60,21 @@ namespace AlarmClock
                             .AddJsonFile("appSettings.json", true)
                             .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
                             .Build();
-             
+
             // Start the Website as a seperate thread (Low Priority)
             var taskWebSite = Task.Run(() =>
             {
-               // Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-               CreateHostBuilder(args).Build().RunAsync(Program.cancellationToken);
+                // Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+                CreateHostBuilder(args).Build().RunAsync(Program.cancellationToken);
             });
-            systemTasks.Add(taskWebSite);            
+            systemTasks.Add(taskWebSite);
 
             // Init Alarmclock Hardware
             AlarmClock alarmClock = new AlarmClock(config);
             alarmClock.Init();
-            
+
             // Init Voice Assistant
-            Jarvis jarvis = null;            
+            Jarvis jarvis = null;
             try
             {
                 LoggerFactory loggerFactory = new LoggerFactory();
@@ -84,46 +85,49 @@ namespace AlarmClock
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-            }       
+            }
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
             var taskQuit = Task.Run(() =>
-            {
-               // Thread.CurrentThread.Priority = ThreadPriority.Lowest;
-               if (SystemdHelpers.IsSystemdService() == false)
-               {
-                   bool quit = false;
-                   do
-                   {
-                       if (Console.KeyAvailable)
-                       {
-                           var key = Console.ReadKey().Key;
-                           quit = (key == ConsoleKey.Q);
-                           if (key == ConsoleKey.P)
-                               AlarmClock.PlayRadio();
-                           if (key == ConsoleKey.S)
-                               AlarmClock.StopRadio();
-                           if (key == ConsoleKey.Z)
-                               AlarmClock.ChangeVolume(1);
-                           if (key == ConsoleKey.X)
-                               AlarmClock.ChangeVolume(-1);
-                       }
-                       if (quit)
+            {                
+                if (SystemdHelpers.IsSystemdService() == false)
+                {
+                    bool quit = false;
+                    do
+                    {
+                        if (Console.KeyAvailable)
                         {
-                            cancellationTokenSource.Cancel();
+                            var key = Console.ReadKey().Key;
+                            Console.WriteLine($"Key Pressed : {key.ToString()}");
+                            quit = (key == ConsoleKey.Q);
+                            if (key == ConsoleKey.P)
+                                AlarmClock.PlayRadio();
+                            if (key == ConsoleKey.S)
+                                AlarmClock.StopRadio();
+                            if (key == ConsoleKey.UpArrow)
+                                AlarmClock.ChangeVolume(1);
+                            if (key == ConsoleKey.DownArrow)
+                                AlarmClock.ChangeVolume(-1);
                         }
-                       System.Threading.Thread.Yield();
-                   }
-                   while (quit == false);
-               }
-               else
-               {
-                   do
-                   {                        
-                        System.Threading.Thread.Yield();
-                   }
-                   while (true) ;
-               }
+                        if (quit)
+                            cancellationTokenSource.Cancel();
+                        if (cancellationToken.IsCancellationRequested)
+                            break;
+
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    while (quit == false);
+                }
+                else
+                {
+                    do
+                    {
+                        if (cancellationToken.IsCancellationRequested)
+                            break;
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    while (true);
+                }
             });
             systemTasks.Add(taskQuit);
 
@@ -143,9 +147,9 @@ namespace AlarmClock
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();                    
-                })                               
+                    webBuilder.UseStartup<Startup>();
+                })
                .UseSystemd();
-        }      
-    }   
+        }
+    }
 }
