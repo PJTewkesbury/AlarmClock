@@ -63,7 +63,7 @@ namespace AlarmClock
             // Start the Website as a seperate thread (Low Priority)
             var taskWebSite = Task.Run(() =>
             {
-               Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+               // Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                CreateHostBuilder(args).Build().RunAsync(Program.cancellationToken);
             });
             systemTasks.Add(taskWebSite);            
@@ -89,7 +89,7 @@ namespace AlarmClock
             // Look for user pressing 'Q' key to quit if not running as systemd service
             var taskQuit = Task.Run(() =>
             {
-               Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+               // Thread.CurrentThread.Priority = ThreadPriority.Lowest;
                if (SystemdHelpers.IsSystemdService() == false)
                {
                    bool quit = false;

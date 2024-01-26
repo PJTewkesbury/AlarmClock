@@ -76,14 +76,18 @@ namespace AlarmClock
             audio = new Audio();                        
             Task.Run(() =>
             {
-                // Play Animaition
-                ledRing.PlayAnimation(alexaWake);
-                audio.PlayMP3("./Sounds/ful/ful_system_alerts_melodic_01_short.wav");
-                while (audio.IsMusicFilePlaying())
+                // Play Animaition and sound if time is between 6am and 10pm
+                // If we get power outage over night we do not want to play sound or light as it might wake us up.
+                if (DateTime.Now.Hour > 6 && DateTime.Now.Hour < 22)
                 {
-                    Thread.Sleep(10);
+                    ledRing.PlayAnimation(alexaWake);
+                    audio.PlayMP3("./Sounds/ful/ful_system_alerts_melodic_01_short.wav");
+                    while (audio.IsMusicFilePlaying())
+                    {
+                        Thread.Sleep(10);
+                    }
+                    ledRing.PlayAnimation(alexaEnd);
                 }
-                ledRing.PlayAnimation(alexaEnd);                
             });
         }
 
