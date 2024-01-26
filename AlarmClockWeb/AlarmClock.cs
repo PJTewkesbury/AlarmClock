@@ -29,14 +29,12 @@ namespace AlarmClock
         public static ClockDisplayDriver clockDisplay;
         public static TouchDriver touchDriver;
         public static IDisposable touchObservable;
-        public static Audio audio;
-        public static CancellationToken cancellationToken;
+        public static Audio audio;        
 
         IConfiguration config;
-        public AlarmClock(IConfiguration config, CancellationToken cancellationToken)
+        public AlarmClock(IConfiguration config)
         {
-            this.config = config;
-            AlarmClock.cancellationToken = cancellationToken;
+            this.config = config;        
         }
 
         public void Init()
@@ -97,15 +95,11 @@ namespace AlarmClock
                 do
                 {                  
                     Thread.Sleep(10);
-                    AlarmClock.cancellationToken.ThrowIfCancellationRequested();
+                    if (Program.cancellationToken.IsCancellationRequested)
+                        break;
                 }
                 while (true);
 
-            }
-            catch (OperationCanceledException ex)
-            {
-                Console.WriteLine("AlarmClock quitting");
-                Console.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
@@ -281,19 +275,35 @@ namespace AlarmClock
 
         public void Dispose()
         {
-            clockDisplay.Dispose();
+            if (clockDisplay != null)
+            {
+                clockDisplay.ClearDisplay();
+                clockDisplay.Dispose();
+            }
             clockDisplay = null;
 
-            ledRing.Dispose();
+            if (ledRing != null)
+            {
+                ledRing.ClearPixels();
+                ledRing.Dispose();
+            }
             ledRing = null;
 
-            touchDriver.Dispose();
+            if (touchDriver!=null)
+                touchDriver.Dispose();
+
             touchDriver = null;
 
-            gpio.Dispose();
+            if (gpio!=null)
+                gpio.Dispose();
             gpio = null;
 
-            audio.Dispose();
+            if (audio != null)
+            {
+                audio.StopRadio();
+                audio.SetVolume(0.5f);
+                audio.Dispose();
+            }
             audio = null;
         }
     }

@@ -252,5 +252,6 @@
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Message Text="Post Build Event - SCP files to DevPI" Importance="high" />
 		<Exec Command="scp $(ProjectDir)bin\Debug\net8.0\linux-arm64\*.* pi@192.168.0.19:/Apps/AlarmClock" />
+		<Exec Command="scp $(ProjectDir)resources\*.* pi@192.168.0.19:/Apps/AlarmClock/resources" />
 	</Target>
 </Project>

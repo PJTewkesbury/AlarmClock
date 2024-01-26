@@ -14,7 +14,16 @@ using System.Threading.Tasks;
 namespace AlarmClock
 {
     public class Program
-    {        
+    {
+        private static CancellationTokenSource cancellationTokenSource = null;
+        public static CancellationToken cancellationToken;
+
+        public static void Shutdown()
+        {
+            if (Program.cancellationTokenSource != null)
+                Program.cancellationTokenSource.Cancel();
+        }
+
         public static void Main(string[] args)
         {
             Console.WriteLine("AlarmClockPI V1.31");
@@ -41,6 +50,9 @@ namespace AlarmClock
                 }
             }
 
+            cancellationTokenSource = new CancellationTokenSource();
+            cancellationToken = cancellationTokenSource.Token;
+
             List<Task> systemTasks = new List<Task>();
 
             IConfiguration config = new ConfigurationBuilder()
@@ -52,15 +64,12 @@ namespace AlarmClock
             var taskWebSite = Task.Run(() =>
             {
                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-               CreateHostBuilder(args).Build().Run();
+               CreateHostBuilder(args).Build().RunAsync(Program.cancellationToken);
             });
-            systemTasks.Add(taskWebSite);
-
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            CancellationToken cancellationToken = cancellationTokenSource.Token;
+            systemTasks.Add(taskWebSite);            
 
             // Init Alarmclock Hardware
-            AlarmClock alarmClock = new AlarmClock(config, cancellationToken);
+            AlarmClock alarmClock = new AlarmClock(config);
             alarmClock.Init();
             
             // Init Voice Assistant
@@ -68,7 +77,7 @@ namespace AlarmClock
             try
             {
                 LoggerFactory loggerFactory = new LoggerFactory();
-                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config, cancellationToken);
+                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
                 jarvis.Run();
             }
             catch (Exception ex)
@@ -120,6 +129,13 @@ namespace AlarmClock
 
             // Wait for one of the tasks to complete then quit.
             Task.WaitAny(systemTasks.ToArray());
+
+            Console.WriteLine("Make sure we turn LED's off etc");
+            alarmClock.Dispose();
+            alarmClock = null;
+
+            jarvis.Dispose();
+            jarvis = null;
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
@@ -127,8 +143,8 @@ namespace AlarmClock
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
-                })               
+                    webBuilder.UseStartup<Startup>();                    
+                })                               
                .UseSystemd();
         }      
     }   

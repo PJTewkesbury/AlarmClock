@@ -26,13 +26,11 @@ namespace AlarmClock.Voice
         float rhinoSensitivity = 0.5f;
         bool requireEndpoint = true;
         Porcupine porcupine = null;
-        Rhino rhino = null;
-        static CancellationToken cancellationToken;
+        Rhino rhino = null;        
 
-        public Jarvis(ILogger<Jarvis> Log, IConfiguration config, CancellationToken cancellationToken)
+        public Jarvis(ILogger<Jarvis> Log, IConfiguration config)
         {
-            this.Log = Log;
-            Jarvis.cancellationToken = cancellationToken;
+            this.Log = Log;            
 
             this.Log.LogInformation("Jarvis CTOR");
             var cs = config.GetSection("PicoVoice");
@@ -146,7 +144,9 @@ namespace AlarmClock.Voice
                             }
 
                             // Check for cancellation
-                            Jarvis.cancellationToken.ThrowIfCancellationRequested();
+                            // Program.cancellationToken.ThrowIfCancellationRequested();
+                            if (Program.cancellationToken.IsCancellationRequested)
+                                return;
 
                             short[] pcm = recorder.Read();
 
@@ -176,7 +176,7 @@ namespace AlarmClock.Voice
                                 Console.WriteLine(ex.StackTrace);
                             }
 
-                        }
+                        }                    
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
@@ -186,14 +186,7 @@ namespace AlarmClock.Voice
                     }
                     while (true);
                 }
-            }
-
-            catch (OperationCanceledException ex)
-            {
-                Console.WriteLine("Operation Cancellation Exception thrown - Quitting");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-            }
+            }            
             catch (Exception ex)
             {
                 Console.WriteLine("Error while configuring PicoVoice - Disabling Pico Voice functions");
@@ -378,6 +371,11 @@ namespace AlarmClock.Voice
                             taskList.Add(SpeakWeather());
                         }
                         break;
+                    case "quit":
+                        {
+                            Program.Shutdown();
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -403,7 +401,9 @@ namespace AlarmClock.Voice
             {
                 foreach (var t in taskList)
                 {
-                    Jarvis.cancellationToken.ThrowIfCancellationRequested();
+                    if (Program.cancellationToken.IsCancellationRequested)
+                        return;
+
                     t.Start();
                     t.Wait();
                 }
@@ -449,8 +449,23 @@ namespace AlarmClock.Voice
                 if (File.Exists("/opt/speak.wav"))
                     File.Delete("/opt/speak.wav");
 
+                // Create speech file
                 $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}'".Bash(logger);                
+
+                // Play speech file
                 AlarmClock.audio.PlayMP3("/opt/speak.wav");
+
+                if (Program.cancellationToken.IsCancellationRequested)
+                    return;
+
+                // Wait for speech file to finish before task completes.
+                while (AlarmClock.audio.IsMusicFilePlaying())
+                {
+                    if (Program.cancellationToken.IsCancellationRequested)
+                        return;
+
+                    System.Threading.Thread.Sleep(50);
+                }
             }
             catch (Exception ex)
             {

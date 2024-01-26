@@ -68,5 +68,9 @@ context:
       - (turn the) lights off
     ToggleLights:
       - lights
+    quit:
+      - Stop Alarm Clock
+      - Quit Alarm Clock
+      - Shutdown Alarm Clock
   slots: {}
   macros: {}
