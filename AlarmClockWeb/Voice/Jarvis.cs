@@ -18,6 +18,7 @@ namespace AlarmClock.Voice
         string contextPath = @"resources/AlarmClock_en_raspberry-pi_v3_0_0.rhn";
         string porcupineModelPath = @"resources/porcupine_params.pv";
         string rhinoModelPath = @"resources/rhino_params.pv";
+        string cheetahModelPath = @"resources/cheetah_params.pv";
         string wakeWordPath1 = @"resources/jarvis_raspberry-pi.ppn";
         string wakeWordPath2 = @"resources/alexa_raspberry-pi.ppn";
 
@@ -26,7 +27,8 @@ namespace AlarmClock.Voice
         float rhinoSensitivity = 0.5f;
         bool requireEndpoint = true;
         Porcupine porcupine = null;
-        Rhino rhino = null;        
+        Rhino rhino = null;
+        Cheetah cheetah = null;
 
         public Jarvis(ILogger<Jarvis> Log, IConfiguration config)
         {
@@ -40,6 +42,7 @@ namespace AlarmClock.Voice
                 contextPath = cs.GetValue("IntentFile", @"resources/AlarmClock_en_raspberry-pi_v3_0_0.rhn");
                 porcupineModelPath = cs.GetValue("porcupineModelPath", @"resources/porcupine_params.pv");
                 rhinoModelPath = cs.GetValue("rhinoModelPath", @"resources/rhino_params.pv");
+                cheetahModelPath = cs.GetValue("cheetahModelPath", @"resources/cheetah_params.pv");
                 wakeWordPath1 = cs.GetValue("wakeWordPath1", "resources/jarvis_raspberry-pi.ppn");
                 wakeWordPath2 = cs.GetValue("wakeWordPath2", "resources/alexa_raspberry-pi.ppn");
 
@@ -103,6 +106,8 @@ namespace AlarmClock.Voice
                     {
                         throw new ArgumentException($"Porcupine sample rate ({porcupine.SampleRate}) and Rhino sample rate ({rhino.SampleRate}) are different");
                     }
+                    
+                    cheetah = Cheetah.Create(accessKey, cheetahModelPath, 2, true);
 
                     Console.WriteLine($"Frame length : {porcupine.FrameLength}");
                     Console.WriteLine("PvRecorder Create");
@@ -128,6 +133,8 @@ namespace AlarmClock.Voice
                 if (bUsePicoVoice)
                 {
                     bool _isWakeWordDetected = false;
+                    int WakeWordUsed = -1;
+                    string transcript = "";
                     do
                     {
                         // Listen for voice and process.
@@ -157,16 +164,51 @@ namespace AlarmClock.Voice
                                     int rc = porcupine.Process(pcm);
                                     _isWakeWordDetected = rc >= 0;
                                     if (_isWakeWordDetected)
+                                    {
                                         wakeWordCallback(rc);
+                                        WakeWordUsed = rc;
+                                        transcript = "";
+                                    }
                                 }
                                 else
                                 {
-                                    bool isFinalized = rhino.Process(pcm);
-                                    if (isFinalized)
+                                    if (WakeWordUsed == 0)
                                     {
-                                        _isWakeWordDetected = false;
-                                        Inference inference = rhino.GetInference();
-                                        inferenceCallback(inference);
+                                        bool isFinalized = rhino.Process(pcm);
+                                        if (isFinalized)
+                                        {
+                                            _isWakeWordDetected = false;
+                                            Inference inference = rhino.GetInference();
+                                            inferenceCallback(inference);
+                                        }
+                                    } 
+                                    else if (WakeWordUsed == 1) 
+                                    {
+                                        CheetahTranscript result = cheetah.Process(pcm);
+                                        if (!string.IsNullOrEmpty(result.Transcript))
+                                        {
+                                            transcript += result.Transcript;
+                                            Console.WriteLine(" Transcript part :" + result.Transcript);
+                                        }
+                                        if (result.IsEndpoint)
+                                        {
+                                            CheetahTranscript finalTranscriptObj = cheetah.Flush();
+                                            _isWakeWordDetected = false;
+                                            transcript += finalTranscriptObj.Transcript;
+
+                                            Console.WriteLine(" Transcript :" + finalTranscriptObj.Transcript);
+                                            
+                                            Task.Run(() =>
+                                            {
+                                                AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking);
+
+                                                SayText("I heard the following : "+ transcript);
+
+                                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+                                                AlarmClock.NormalVolume();
+                                            });
+
+                                        }
                                     }
                                 }
                             }
@@ -232,7 +274,7 @@ namespace AlarmClock.Voice
                 AlarmClock.QuiteVolume();
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisWake);
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisListen); // Should be listening 
-            });
+            });         
         }
 
         static async void inferenceCallback(Inference inference)
@@ -422,7 +464,7 @@ namespace AlarmClock.Voice
         private static Task SpeakDate()
         {
             return new Task(() =>
-            {
+            {            
                 // Check for special dates like Bank Holiday Monday
                 string text = $"The date is {DateTime.Now.ToString("dddd, d MMMM yyyy")}";
                 SayText(text);                
@@ -457,6 +499,8 @@ namespace AlarmClock.Voice
 
                 if (Program.cancellationToken.IsCancellationRequested)
                     return;
+
+                AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking);
 
                 // Wait for speech file to finish before task completes.
                 while (AlarmClock.audio.IsMusicFilePlaying())
