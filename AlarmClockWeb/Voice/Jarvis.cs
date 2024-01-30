@@ -175,9 +175,10 @@ namespace AlarmClock.Voice
                                 }
                                 else
                                 {
-                                    if (WakeWordUsed == 0)
+                                    bool isFinalized=false;
+                                    // if (WakeWordUsed == 0)
                                     {
-                                        bool isFinalized = rhino.Process(pcm);
+                                        isFinalized = rhino.Process(pcm);
                                         if (isFinalized)
                                         {
                                             _isWakeWordDetected = false;
@@ -185,7 +186,7 @@ namespace AlarmClock.Voice
                                             inferenceCallback(inference);
                                         }
                                     } 
-                                    else if (WakeWordUsed == 1) 
+                                    // else if (WakeWordUsed == 1) 
                                     {
                                         if (String.IsNullOrEmpty(transcript))
                                             transcriptionStartTime = DateTime.Now;
@@ -194,35 +195,27 @@ namespace AlarmClock.Voice
                                         if (!string.IsNullOrEmpty(result.Transcript))
                                         {
                                             transcript += result.Transcript;
-                                            Console.WriteLine(" Transcript part :" + result.Transcript);
+                                            // Console.WriteLine(" Transcript part :" + result.Transcript);
                                         }
 
-                                        if (!String.IsNullOrEmpty(transcript))
-                                        {
-                                            if (DateTime.Now.Subtract(transcriptionStartTime).TotalSeconds > 5)
-                                            {
-                                                result.IsEndpoint = true;
-                                            }
-                                        }
+                                        result.IsEndpoint = (!String.IsNullOrEmpty(transcript) && DateTime.Now.Subtract(transcriptionStartTime).TotalSeconds > 5);                                        
 
-                                        if (result.IsEndpoint)
+                                        if (result.IsEndpoint || isFinalized)
                                         {
                                             CheetahTranscript finalTranscriptObj = cheetah.Flush();
                                             _isWakeWordDetected = false;
                                             transcript += finalTranscriptObj.Transcript;
-
-                                            Console.WriteLine(" Transcript :" + finalTranscriptObj.Transcript);
                                             
-                                            Task.Run(() =>
+                                            Console.WriteLine(" Transcript :" + finalTranscriptObj.Transcript);
+
+                                            if (isFinalized == false)
                                             {
-                                                AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking);
-
-                                                SayText("I heard the following : "+ transcript);
-
-                                                AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
-                                                AlarmClock.NormalVolume();
-                                            });
-
+                                                Task.Run(() =>
+                                                {
+                                                    AlarmClock.ledRing.PlayAnimation(AlarmClock.JarvisEnd);
+                                                    AlarmClock.NormalVolume();
+                                                });
+                                            };
                                         }
                                     }
                                 }
@@ -365,11 +358,18 @@ namespace AlarmClock.Voice
                     case "turnalarmon":
                         {
                             ClockDisplayDriver.AlarmOn = true;
+                            taskList.Add(new Task(() => {
+                                AlarmClock.audio.PlayMP3("Sounds/ful/ful_ui_wakesound_touch.wav", WaitUntilComplete: true);
+                            
+                            }));
                         }
                         break;
                     case "turnalarmoff":
                         {
                             ClockDisplayDriver.AlarmOn = false;
+                            taskList.Add(new Task(() => {
+                                AlarmClock.audio.PlayMP3("Sounds/ful/ful_ui_wakesound_touch.wav",WaitUntilComplete:true);
+                            }));
                         }
                         break;
 

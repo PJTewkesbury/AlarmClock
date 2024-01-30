@@ -27,7 +27,7 @@ namespace AlarmClock.Hardware
             }
             Console.WriteLine("BASS Audio Init");
             Console.WriteLine($"CurrentVolume = {Bass.BASS_GetVolume()}");
-            Bass.BASS_SetVolume(0.5f);
+            Bass.BASS_SetVolume(0.75f);
             Console.WriteLine($"New Volume = {Bass.BASS_GetVolume()}");
         }
 
@@ -52,7 +52,7 @@ namespace AlarmClock.Hardware
         }
 
         int MP3StreamId = 0;
-        public void PlayMP3(String file, float volume=0.75f)
+        public void PlayMP3(String file, float volume = 0.75f, bool WaitUntilComplete = false)
         {
             if (!File.Exists(file))
             {
@@ -65,6 +65,14 @@ namespace AlarmClock.Hardware
             Bass.BASS_ChannelPlay(MP3StreamId, false);
 
             Console.WriteLine($"Now Playing {file}");
+
+            if (WaitUntilComplete)
+            {
+                while (IsMusicFilePlaying())
+                {
+                    System.Threading.Thread.Sleep(10);
+                }
+            }
         }
 
         public bool IsMusicFilePlaying()

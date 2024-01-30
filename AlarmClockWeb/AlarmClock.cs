@@ -53,7 +53,7 @@ namespace AlarmClock
             Console.WriteLine("Init Amplifier");
             I2cConnectionSettings ampSettings = new I2cConnectionSettings(1, 0x58);
             I2cDevice ampDevice = I2cDevice.Create(ampSettings);
-            AmpDriver amp = new AmpDriver(ampDevice, 20);
+            AmpDriver amp = new AmpDriver(ampDevice, 30);
 
             // Init Clock Display
             Console.WriteLine("Init Clock Display");
