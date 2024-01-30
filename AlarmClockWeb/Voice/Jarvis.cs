@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AlarmClock.Hardware;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using Pv;
@@ -60,6 +62,7 @@ namespace AlarmClock.Voice
             }
         }
 
+        DateTime transcriptionStartTime;
         public void Run()
         {
             bool bUsePicoVoice = true;            
@@ -184,12 +187,24 @@ namespace AlarmClock.Voice
                                     } 
                                     else if (WakeWordUsed == 1) 
                                     {
+                                        if (String.IsNullOrEmpty(transcript))
+                                            transcriptionStartTime = DateTime.Now;
+                                        
                                         CheetahTranscript result = cheetah.Process(pcm);
                                         if (!string.IsNullOrEmpty(result.Transcript))
                                         {
                                             transcript += result.Transcript;
                                             Console.WriteLine(" Transcript part :" + result.Transcript);
                                         }
+
+                                        if (!String.IsNullOrEmpty(transcript))
+                                        {
+                                            if (DateTime.Now.Subtract(transcriptionStartTime).TotalSeconds > 5)
+                                            {
+                                                result.IsEndpoint = true;
+                                            }
+                                        }
+
                                         if (result.IsEndpoint)
                                         {
                                             CheetahTranscript finalTranscriptObj = cheetah.Flush();
@@ -349,12 +364,12 @@ namespace AlarmClock.Voice
                         break;
                     case "turnalarmon":
                         {
-
+                            ClockDisplayDriver.AlarmOn = true;
                         }
                         break;
                     case "turnalarmoff":
                         {
-
+                            ClockDisplayDriver.AlarmOn = false;
                         }
                         break;
 

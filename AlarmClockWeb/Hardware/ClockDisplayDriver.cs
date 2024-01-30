@@ -19,7 +19,7 @@ namespace AlarmClock.Hardware
 
         public enumShow WhatToDisplay { get; set; } = enumShow.Animation;
 
-        public bool AlarmOn { get; set; } = true;
+        public static bool AlarmOn { get; set; } = false;
 
         private byte _Brightness = 1;
         public byte Brightness

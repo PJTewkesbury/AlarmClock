@@ -100,7 +100,7 @@ namespace AlarmClock
                 {                  
                     Thread.Sleep(10);
                     if (Program.cancellationToken.IsCancellationRequested)
-                        break;
+                        break;                    
                 }
                 while (true);
 
