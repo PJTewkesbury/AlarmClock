@@ -9,11 +9,14 @@ using AlarmClock.Hardware;
 using System.Device.Gpio;
 using System.Device.I2c;
 using System.Diagnostics.Eventing.Reader;
+using OpenTK.Graphics.OpenGL;
 
 namespace AlarmClock
 {
     public class AlarmClock : IDisposable
     {
+        public static AlarmClockState alarmClockState = new AlarmClockState();
+
         public static GpioController gpio { get; private set; } = null;
         public static LedRing ledRing { get; private set; } = null;
 
@@ -97,7 +100,18 @@ namespace AlarmClock
             try
             {
                 do
-                {                  
+                {
+                    DateTime dt = DateTime.Now;
+                    if(AlarmClock.alarmClockState.AlarmEnabled && AlarmClock.alarmClockState.Hour==dt.Hour && AlarmClock.alarmClockState.Minute== dt.Minute)
+                    {
+                        if (!AlarmClock.audio.RadioIsPlaying())
+                            AlarmClock.PlayRadio();
+                        if (alarmClockState.ShowLights)
+                        {
+                            ledRing.SetAllLEDsToColor(System.Drawing.Color.White);
+                        }
+                    }
+
                     Thread.Sleep(10);
                     if (Program.cancellationToken.IsCancellationRequested)
                         break;                    
@@ -310,5 +324,24 @@ namespace AlarmClock
             }
             audio = null;
         }
+
+        internal static void SetAlarmTime(int hour, int minute)
+        {
+            AlarmClock.alarmClockState.Hour = hour;
+            AlarmClock.alarmClockState.Minute= minute;
+        }
+    }
+
+    public class AlarmClockState
+    {
+        public bool AlarmEnabled { get; set; } = false;
+        public int Hour { get; set; } = 7;
+        public int Minute { get; set; } = 0;
+        public string AlarmPlayList { get; set; } = "https://edge-audio-03-gos2.sharp-stream.com/ucbuk.mp3?device=ukradioplayer&=&&___cb=479109455";
+        public int SnoozeTime { get; set; } = 10;
+        public bool ShowLights{ get; set; } = true;
+
+        public AlarmClockState() { }
+
     }
 }

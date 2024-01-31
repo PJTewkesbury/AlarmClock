@@ -67,7 +67,7 @@ namespace AlarmClock
                 // Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                 CreateHostBuilder(args).Build().RunAsync(Program.cancellationToken);
             });
-            systemTasks.Add(taskWebSite);
+            // systemTasks.Add(taskWebSite);
 
             // Init Alarmclock Hardware
             AlarmClock alarmClock = new AlarmClock(config);

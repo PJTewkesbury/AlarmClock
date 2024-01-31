@@ -19,8 +19,6 @@ namespace AlarmClock.Hardware
 
         public enumShow WhatToDisplay { get; set; } = enumShow.Animation;
 
-        public static bool AlarmOn { get; set; } = false;
-
         private byte _Brightness = 1;
         public byte Brightness
         {
@@ -126,7 +124,7 @@ namespace AlarmClock.Hardware
                                     else
                                         s[i] = GetSegmentForNumber(sTime[i] - 48);
                                 }
-                                if (AlarmOn)
+                                if (AlarmClock.alarmClockState.AlarmEnabled)
                                 {
                                     s[3] = s[3] | Segment.Dot;
                                 }

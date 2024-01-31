@@ -36,10 +36,13 @@ context:
       - increase the volume
       - turn the volume up
     SetVolume:
+      - (change) volume (to) $pv.Percent:volumeChange (percent)
       - Set (the) volume to $pv.Percent:volumeChange (percent)
       - volume (to) $pv.Percent:volumeChange (percent)
     SetAlarmTime:
-      - Set alarm (time) [for,to] $pv.TwoDigitInteger:hour
+      - Set (the) alarm (time) [to,for] $AlarmHour:hour ($AlarmMinute:minute)
+        $AMPM:ampm
+      - Set (the) alarm (time) [for,to] $pv.TwoDigitInteger:hour
         $pv.TwoDigitInteger:minute
     SetRadioStation:
       - Set radio to $pv.Alphabetic:radioStation
@@ -66,11 +69,37 @@ context:
     LightsOff:
       - (turn) lights off
       - (turn the) lights off
-    ToggleLights:
-      - lights
     quit:
       - Stop Alarm Clock
       - Quit Alarm Clock
       - Shutdown Alarm Clock
-  slots: {}
+  slots:
+    AlarmHour:
+      - twelve
+      - eleven
+      - ten
+      - nine
+      - eight
+      - seven
+      - six
+      - five
+      - four
+      - three
+      - two
+      - one
+    AMPM:
+      - PM
+      - AM
+    AlarmMinute:
+      - fifteen
+      - fifty five
+      - fifty
+      - fourty five
+      - fourty
+      - thirty five
+      - thirty
+      - Twenty Five
+      - twenty
+      - ten
+      - five
   macros: {}

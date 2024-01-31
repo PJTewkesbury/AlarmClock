@@ -357,8 +357,9 @@ namespace AlarmClock.Voice
                         break;
                     case "turnalarmon":
                         {
-                            ClockDisplayDriver.AlarmOn = true;
-                            taskList.Add(new Task(() => {
+                            AlarmClock.alarmClockState.AlarmEnabled = true;                            
+                            taskList.Add(new Task(() => {                                
+                                // SayText($"The alarm time is now on", null);
                                 AlarmClock.audio.PlayMP3("Sounds/ful/ful_ui_wakesound_touch.wav", WaitUntilComplete: true);
                             
                             }));
@@ -366,8 +367,9 @@ namespace AlarmClock.Voice
                         break;
                     case "turnalarmoff":
                         {
-                            ClockDisplayDriver.AlarmOn = false;
+                            AlarmClock.alarmClockState.AlarmEnabled = false;
                             taskList.Add(new Task(() => {
+                                // SayText($"The alarm time is now off", null);
                                 AlarmClock.audio.PlayMP3("Sounds/ful/ful_ui_wakesound_touch.wav",WaitUntilComplete:true);
                             }));
                         }
@@ -378,6 +380,7 @@ namespace AlarmClock.Voice
 
                         }
                         break;
+
                     case "decreasevolume":
                         {
                             taskList.Add(new Task(() =>
@@ -405,7 +408,21 @@ namespace AlarmClock.Voice
 
                     case "setalarmtime":
                         {
+                            taskList.Add(new Task(() =>
+                            {
+                                int hour = ParseNumber(inference.Slots["hour"]);
+                                if (inference.Slots.ContainsKey("ampm") && inference.Slots["ampm"] == "PM")
+                                    hour += 12;
+                                int minute = 0;
+                                if (inference.Slots.ContainsKey("minute"))
+                                    minute = ParseNumber(inference.Slots["minute"]);
+                                AlarmClock.SetAlarmTime(hour, minute);
 
+                                string text = $"The alarm time is now set to {hour} {minute}";
+                                SayText(text, null);
+
+                                // AlarmClock.audio.PlayMP3("Sounds/ful/ful_ui_wakesound_touch.wav", WaitUntilComplete: true);
+                            }));
                         }
                         break;
                     case "setradiostation":
@@ -430,6 +447,7 @@ namespace AlarmClock.Voice
                         break;
                     case "quit":
                         {
+                            AlarmClock.audio.PlayMP3("./Sounds/ful/ful_system_alerts_melodic_01_short.wav",WaitUntilComplete:true);
                             Program.Shutdown();
                         }
                         break;
@@ -465,6 +483,37 @@ namespace AlarmClock.Voice
                     t.Wait();
                 }
             });
+        }
+
+        private static int ParseNumber(string text)
+        {
+            switch(text.ToLower().Trim())
+            {
+                case "one": return 1;
+                case "two": return 2;
+                case "three": return 3;
+                case "four": return 4;
+                case "five": return 5;
+                case "six": return 6;                
+                case "seven": return 7;
+                case "eight": return 8;
+                case "nine": return 9;
+                case "ten": return 10;
+                case "eleven": return 11;
+                case "twelve": return 12;
+                case "fifteen": return 15;
+                case "twenty": return 20;
+                case "twenty five": return 25;
+                case "thirty": return 30;
+                case "thirty five": return 35;
+                case "fourty": return 40;
+                case "fourty five": return 45;
+                case "fifty": return 50;
+                case "fifty five": return 55;
+            }
+            int v = -1;
+            int.TryParse(text, out v);
+            return v;
         }
 
         private static Task SpeakTime()
@@ -507,24 +556,18 @@ namespace AlarmClock.Voice
                     File.Delete("/opt/speak.wav");
 
                 // Create speech file
-                $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}'".Bash(logger);                
-
-                // Play speech file
-                AlarmClock.audio.PlayMP3("/opt/speak.wav");
+                $"/usr/bin/pico2wave -l=en-GB -w=/opt/speak.wav '{text}'".Bash(logger);
 
                 if (Program.cancellationToken.IsCancellationRequested)
                     return;
 
                 AlarmClock.ledRing.PlayAnimation(AlarmClock.alexaSpeaking);
 
-                // Wait for speech file to finish before task completes.
-                while (AlarmClock.audio.IsMusicFilePlaying())
-                {
-                    if (Program.cancellationToken.IsCancellationRequested)
-                        return;
+                // Play speech file
+                AlarmClock.audio.PlayMP3("/opt/speak.wav", WaitUntilComplete:true);
 
-                    System.Threading.Thread.Sleep(50);
-                }
+                if (Program.cancellationToken.IsCancellationRequested)
+                    return;
             }
             catch (Exception ex)
             {
