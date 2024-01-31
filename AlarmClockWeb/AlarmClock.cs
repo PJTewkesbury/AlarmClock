@@ -10,6 +10,8 @@ using System.Device.Gpio;
 using System.Device.I2c;
 using System.Diagnostics.Eventing.Reader;
 using OpenTK.Graphics.OpenGL;
+using Iot.Device.Rtc;
+using System.Timers;
 
 namespace AlarmClock
 {
@@ -94,24 +96,34 @@ namespace AlarmClock
             });
         }
 
-        public void Run(string[] args)
+        void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {            
+            if (AlarmClock.alarmClockState.AlarmEnabled && AlarmClock.alarmClockState.Hour == e.SignalTime.Hour && AlarmClock.alarmClockState.Minute == e.SignalTime.Minute && e.SignalTime.Second==0)
+            {
+                Console.WriteLine($"Alarm Time - Playing radio - {AlarmClock.alarmClockState.Hour} {AlarmClock.alarmClockState.Minute}");
+                if (!AlarmClock.audio.RadioIsPlaying())
+                    AlarmClock.PlayRadio();
+                if (alarmClockState.ShowLights)
+                {
+                    Console.WriteLine($"Alarm Time - Showing lights");
+                    ledRing.SetAllLEDsToColor(System.Drawing.Color.White);
+                }
+            }
+        }
+        
+        public void Run()
         {
+            System.Timers.Timer t = new System.Timers.Timer(TimeSpan.FromSeconds(1));
+            t.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            t.AutoReset = true;
+            t.Enabled = true;
+            t.Start();
+
             // Main loop
             try
             {
                 do
-                {
-                    DateTime dt = DateTime.Now;
-                    if(AlarmClock.alarmClockState.AlarmEnabled && AlarmClock.alarmClockState.Hour==dt.Hour && AlarmClock.alarmClockState.Minute== dt.Minute)
-                    {
-                        if (!AlarmClock.audio.RadioIsPlaying())
-                            AlarmClock.PlayRadio();
-                        if (alarmClockState.ShowLights)
-                        {
-                            ledRing.SetAllLEDsToColor(System.Drawing.Color.White);
-                        }
-                    }
-
+                {                   
                     Thread.Sleep(10);
                     if (Program.cancellationToken.IsCancellationRequested)
                         break;                    
@@ -132,12 +144,12 @@ namespace AlarmClock
                 clockDisplay.WhatToDisplay = ClockDisplayDriver.enumShow.Blank;
                 ledRing.ClearPixels();
 
-                clockDisplay.Dispose();
-                touchDriver.Dispose();
-                ledRing.Dispose();
-                gpio.Dispose();                
-                touchObservable.Dispose();
-                audio.Dispose();
+                if (clockDisplay!=null) clockDisplay.Dispose();
+                if (touchDriver!=null) touchDriver.Dispose();
+                if (ledRing!=null)ledRing.Dispose();
+                if (gpio!=null) gpio.Dispose();                
+                if (touchObservable!=null) touchObservable.Dispose();
+                if (audio!=null) audio.Dispose();
             }
 
             Console.WriteLine("All Done");
@@ -342,6 +354,11 @@ namespace AlarmClock
         public bool ShowLights{ get; set; } = true;
 
         public AlarmClockState() { }
+
+        public override string ToString()
+        {
+            return $"AlarmEnabled:{(AlarmEnabled?"Yes":"No")}, Hour:{Hour}, Minute:{Minute}, ShowLights:{ShowLights} - {DateTime.Now.Hour}:{DateTime.Now.Minute}";
+        }
 
     }
 }

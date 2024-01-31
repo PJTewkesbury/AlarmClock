@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,45 +52,56 @@ namespace AlarmClock
                 }
             }
 
-            cancellationTokenSource = new CancellationTokenSource();
-            cancellationToken = cancellationTokenSource.Token;
-
-            List<Task> systemTasks = new List<Task>();
-
             IConfiguration config = new ConfigurationBuilder()
                             .AddJsonFile("appSettings.json", true)
                             .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
                             .Build();
+            
+            List<Task> systemTasks = new List<Task>();
+            cancellationTokenSource = new CancellationTokenSource();
+            cancellationToken = cancellationTokenSource.Token;
 
             // Start the Website as a seperate thread (Low Priority)
-            var taskWebSite = Task.Run(() =>
+            bool bEnableWeb = true;
+            if (bEnableWeb)
             {
-                // Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-                CreateHostBuilder(args).Build().RunAsync(Program.cancellationToken);
-            });
-            // systemTasks.Add(taskWebSite);
-
+                systemTasks.Add(new Task(() =>
+                {
+                    // Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+                    CreateHostBuilder(args).Build().RunAsync(Program.cancellationToken);
+                    do
+                    {
+                        Thread.Sleep(50);
+                    }
+                    while (Program.cancellationToken.IsCancellationRequested == false);
+                }));
+            }
+            
             // Init Alarmclock Hardware
             AlarmClock alarmClock = new AlarmClock(config);
             alarmClock.Init();
+            systemTasks.Add(new Task(()=> {                
+                alarmClock.Run();
+            }));
 
             // Init Voice Assistant
             Jarvis jarvis = null;
-            try
-            {
-                LoggerFactory loggerFactory = new LoggerFactory();
-                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
-                jarvis.Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-            }
+            LoggerFactory loggerFactory = new LoggerFactory();
+            jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
+            systemTasks.Add(new Task(() => {
+                try
+                {
+                    jarvis.Run();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+            }));
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
-            var taskQuit = Task.Run(() =>
-            {                
+            systemTasks.Add(new Task(() => {                
                 if (SystemdHelpers.IsSystemdService() == false)
                 {
                     bool quit = false;
@@ -128,10 +140,14 @@ namespace AlarmClock
                     }
                     while (true);
                 }
-            });
-            systemTasks.Add(taskQuit);
-
-            // Wait for one of the tasks to complete then quit.
+            }));            
+            
+            foreach(Task t in systemTasks) 
+            { 
+                Console.WriteLine($"Starting Task : {t.Id}");
+                t.Start(); 
+            }
+            Console.WriteLine($"Waiting for Tasks to complete");
             Task.WaitAny(systemTasks.ToArray());
 
             Console.WriteLine("Make sure we turn LED's off etc");
