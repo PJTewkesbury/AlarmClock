@@ -1,5 +1,5 @@
 ﻿using AlarmClock.Hardware;
-
+using Humanizer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -411,23 +412,62 @@ namespace AlarmClock.Voice
                             taskList.Add(new Task(() =>
                             {
                                 int hour = ParseNumber(inference.Slots["hour"]);
-                                if (inference.Slots.ContainsKey("ampm") && inference.Slots["ampm"] == "PM")
-                                    hour += 12;
                                 int minute = 0;
                                 if (inference.Slots.ContainsKey("minute"))
                                     minute = ParseNumber(inference.Slots["minute"]);
+
+                                if (inference.Slots.ContainsKey("ampm") && inference.Slots["ampm"] == "PM" && hour<12)
+                                    hour += 12;
+                                
+                                if (inference.Slots.ContainsKey("topast") == true)
+                                {
+                                    if (inference.Slots["topast"] == "to")
+                                    {
+                                        minute = 60 - minute;
+                                    }
+                                }
+
                                 AlarmClock.SetAlarmTime(hour, minute);
-
-                                string text = $"The alarm time is now set to {hour} {minute}";
-                                SayText(text, null);
-
-                                // AlarmClock.audio.PlayMP3("Sounds/ful/ful_ui_wakesound_touch.wav", WaitUntilComplete: true);
+                                SayText(AlarmClock.alarmClockState.GetAlarmTimeAsSpeechText(), null);
+                                
                             }));
                         }
                         break;
                     case "setradiostation":
                         {
 
+                        }
+                        break;
+                    case "currentalarmtime":
+                        {
+                            taskList.Add(new Task(() =>
+                            {
+                                SayText(AlarmClock.alarmClockState.GetAlarmTimeAsSpeechText());
+                            }));
+                        }
+                        break;
+                    case "swversion":
+                        {
+                            taskList.Add(new Task(() =>
+                            {
+                                SayText("The Alarm Clock Software version is 1.0.0");
+                            }));
+                        }
+                        break;
+                    case "serverstatus":
+                        {
+                            taskList.Add(new Task(() =>
+                            {
+                                SayText("All servers are operational");
+                            }));
+                        }
+                        break;
+                    case "internetconnection":
+                        {
+                            taskList.Add(new Task(() =>
+                            {
+                                SayText("the internet is available");
+                            }));
                         }
                         break;
                     case "whatisthetime":
@@ -487,33 +527,7 @@ namespace AlarmClock.Voice
 
         private static int ParseNumber(string text)
         {
-            switch(text.ToLower().Trim())
-            {
-                case "one": return 1;
-                case "two": return 2;
-                case "three": return 3;
-                case "four": return 4;
-                case "five": return 5;
-                case "six": return 6;                
-                case "seven": return 7;
-                case "eight": return 8;
-                case "nine": return 9;
-                case "ten": return 10;
-                case "eleven": return 11;
-                case "twelve": return 12;
-                case "fifteen": return 15;
-                case "twenty": return 20;
-                case "twenty five": return 25;
-                case "thirty": return 30;
-                case "thirty five": return 35;
-                case "fourty": return 40;
-                case "fourty five": return 45;
-                case "fifty": return 50;
-                case "fifty five": return 55;
-            }
-            int v = -1;
-            int.TryParse(text, out v);
-            return v;
+            return Convert.ToInt32(WordsToNumbers.ConvertToNumbers(text));
         }
 
         private static Task SpeakTime()
@@ -575,6 +589,44 @@ namespace AlarmClock.Voice
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+        }
+    }
+
+    class WordsToNumbers
+    {
+        private static Dictionary<string, long> numberTable = new Dictionary<string, long>{
+        {"zero",0},{"one",1},{"two",2},{"three",3},{"four",4},{"five",5},{"six",6},
+        {"seven",7},{"eight",8},{"nine",9},{"ten",10},{"eleven",11},{"twelve",12},
+        {"thirteen",13},{"fourteen",14},{"fifteen",15},{"sixteen",16},{"seventeen",17},
+        {"eighteen",18},{"nineteen",19},{"twenty",20},{"thirty",30},{"forty",40},
+        {"fifty",50},{"sixty",60},{"seventy",70},{"eighty",80},{"ninety",90},
+        {"hundred",100},{"thousand",1000},{"lakh",100000},{"million",1000000},
+        {"billion",1000000000},{"trillion",1000000000000},{"quadrillion",1000000000000000},
+        {"quintillion",1000000000000000000}
+    };
+
+        public static long ConvertToNumbers(string numberString)
+        {
+            var numbers = Regex.Matches(numberString, @"\w+").Cast<Match>()
+                    .Select(m => m.Value.ToLowerInvariant())
+                    .Where(v => numberTable.ContainsKey(v))
+                    .Select(v => numberTable[v]);
+            long acc = 0, total = 0L;
+            foreach (var n in numbers)
+            {
+                if (n >= 1000)
+                {
+                    total += acc * n;
+                    acc = 0;
+                }
+                else if (n >= 100)
+                {
+                    acc *= n;
+                }
+                else acc += n;
+            }
+            return (total + acc) * (numberString.StartsWith("minus",
+                    StringComparison.InvariantCultureIgnoreCase) ? -1 : 1);
         }
     }
 }

@@ -40,10 +40,10 @@ context:
       - Set (the) volume to $pv.Percent:volumeChange (percent)
       - volume (to) $pv.Percent:volumeChange (percent)
     SetAlarmTime:
-      - Set (the) alarm (time) [to,for] $AlarmHour:hour ($AlarmMinute:minute)
-        $AMPM:ampm
-      - Set (the) alarm (time) [for,to] $pv.TwoDigitInteger:hour
-        $pv.TwoDigitInteger:minute
+      - Set (an,the) alarm (time) [to,for] $AlarmHour:hour ($AlarmMinute:minute)
+        ($AMPM:ampm)
+      - Set (an, the) alarm (time) [to,for] $AlarmMinuteToPast:minute
+        $AlarmToPast:ToPast $AlarmHour:Hour ($AMPM:ampm)
     SetRadioStation:
       - Set radio to $pv.Alphabetic:radioStation
     WhatIsTheTime:
@@ -73,6 +73,21 @@ context:
       - Stop Alarm Clock
       - Quit Alarm Clock
       - Shutdown Alarm Clock
+    CurrentAlarmTime:
+      - what is the alarm time
+      - alarm time
+      - tell me the current alarm time
+      - current alarm time
+      - What is the current alarm time
+    SWVersion:
+      - current software version
+      - (what is the) (alarm clock) software version
+    InternetConnectioned:
+      - (what is the) internet status
+      - is the internet connected
+      - internet connection status
+    ServerStatus:
+      - server status
   slots:
     AlarmHour:
       - twelve
@@ -102,4 +117,14 @@ context:
       - twenty
       - ten
       - five
+    AlarmMinuteToPast:
+      - half
+      - twenty five
+      - twenty
+      - quarter
+      - ten
+      - five
+    AlarmToPast:
+      - past
+      - to
   macros: {}

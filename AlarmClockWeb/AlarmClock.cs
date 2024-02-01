@@ -12,6 +12,9 @@ using System.Diagnostics.Eventing.Reader;
 using OpenTK.Graphics.OpenGL;
 using Iot.Device.Rtc;
 using System.Timers;
+using System.Text;
+using Humanizer;
+using OpenTK.Graphics.ES20;
 
 namespace AlarmClock
 {
@@ -358,6 +361,42 @@ namespace AlarmClock
         public override string ToString()
         {
             return $"AlarmEnabled:{(AlarmEnabled?"Yes":"No")}, Hour:{Hour}, Minute:{Minute}, ShowLights:{ShowLights} - {DateTime.Now.Hour}:{DateTime.Now.Minute}";
+        }
+
+        public string GetAlarmTimeAsSpeechText()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            // Mintute To/Past Hour AM/PM
+            int m = Minute;            
+            if (m > 0)
+            {
+                if (m > 30)
+                    m = 60 - m;
+
+                string sm = m.ToString();
+                if (m == 30)
+                    sm = " half ";
+                if (m == 15)
+                    sm = " quarter ";
+                sb.Append(sm);
+                if (m > 30)
+                    sb.Append(" to ");
+                else
+                    sb.Append(" past ");
+            }
+
+            int h = Hour;
+            if (h > 12)
+                h = h - 12;
+            sb.Append(h.ToWords()+" ");
+
+            if (Hour>12)
+                sb.Append(" PM");
+            else 
+                sb.Append(" AM");
+
+            return sb.ToString();
         }
 
     }
