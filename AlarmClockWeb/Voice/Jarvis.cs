@@ -177,7 +177,7 @@ namespace AlarmClock.Voice
                                 else
                                 {
                                     bool isFinalized=false;
-                                    // if (WakeWordUsed == 0)
+                                    if (WakeWordUsed == 0)
                                     {
                                         isFinalized = rhino.Process(pcm);
                                         if (isFinalized)
@@ -187,7 +187,7 @@ namespace AlarmClock.Voice
                                             inferenceCallback(inference);
                                         }
                                     } 
-                                    // else if (WakeWordUsed == 1) 
+                                    else if (WakeWordUsed == 1) 
                                     {
                                         if (String.IsNullOrEmpty(transcript))
                                             transcriptionStartTime = DateTime.Now;
@@ -442,7 +442,7 @@ namespace AlarmClock.Voice
                         {
                             taskList.Add(new Task(() =>
                             {
-                                SayText(AlarmClock.alarmClockState.GetAlarmTimeAsSpeechText());
+                                SayText($"The alarm is set for {AlarmClock.alarmClockState.GetAlarmTimeAsSpeechText()} {(AlarmClock.alarmClockState.AlarmEnabled?" and is on":" but is off")}");
                             }));
                         }
                         break;
