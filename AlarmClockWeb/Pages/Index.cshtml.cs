@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AlarmClock;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
@@ -38,9 +40,9 @@ namespace AlarmClockWeb.Pages
 
         public void OnGet()
         {
-            AlarmTime = DateTime.Now.Date.AddHours(6).AddMinutes(30);
-            AlarmDuration = 60;
-            SnoozeDuration = 10;
+            AlarmTime = DateTime.Now.Date.AddHours(AlarmClock.AlarmClock.alarmClockState.Hour).AddMinutes(AlarmClock.AlarmClock.alarmClockState.Minute);
+            AlarmDuration = AlarmClock.AlarmClock.alarmClockState.DurationTime;
+            SnoozeDuration = AlarmClock.AlarmClock.alarmClockState.SnoozeTime;
             RadioStationUrl = "";
             WifiSSID = "BlueSKY87654";
             WifiPassword = "MDCQXSXH.5";
@@ -48,7 +50,12 @@ namespace AlarmClockWeb.Pages
 
         public void OnPost()
         {
-
+            // Save Changes to file.
+            AlarmClock.AlarmClock.alarmClockState.Hour = AlarmTime.Hour;
+            AlarmClock.AlarmClock.alarmClockState.Minute = AlarmTime.Minute;
+            AlarmClock.AlarmClock.alarmClockState.DurationTime = AlarmDuration;
+            AlarmClock.AlarmClock.alarmClockState.SnoozeTime = SnoozeDuration;
+            AlarmClock.AlarmClock.alarmClockState.Save();
         }
     }
 }

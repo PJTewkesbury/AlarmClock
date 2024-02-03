@@ -14,10 +14,10 @@
 		<Nullable>disable</Nullable>
 		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>false</SelfContained>
-		<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
+		<!--<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>-->
 		<PublishReadyToRun>true</PublishReadyToRun>
 
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 		<DefaultItemExcludes>$(DefaultItemExcludes);bin/**</DefaultItemExcludes>
 		<DefaultItemExcludes>$(DefaultItemExcludes);obj/**</DefaultItemExcludes>
@@ -30,6 +30,10 @@
 		<SshDeployUsername>pi</SshDeployUsername>
 		<SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <Optimize>False</Optimize>
 	</PropertyGroup>
 
 	<Target Condition="$(BuildingInsideSshDeploy) =='' and '0'='1' " Name="PostBuild" AfterTargets="PostBuildEvent">

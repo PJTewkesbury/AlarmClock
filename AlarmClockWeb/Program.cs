@@ -76,29 +76,35 @@ namespace AlarmClock
                     while (Program.cancellationToken.IsCancellationRequested == false);
                 }));
             }
-            
-            // Init Alarmclock Hardware
-            AlarmClock alarmClock = new AlarmClock(config);
-            alarmClock.Init();
-            systemTasks.Add(new Task(()=> {                
-                alarmClock.Run();
-            }));
 
-            // Init Voice Assistant
+            AlarmClock alarmClock = null;
             Jarvis jarvis = null;
-            LoggerFactory loggerFactory = new LoggerFactory();
-            jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
-            systemTasks.Add(new Task(() => {
-                try
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                alarmClock = new AlarmClock(config);
+                // Init Alarmclock Hardware                
+                alarmClock.Init();
+                systemTasks.Add(new Task(() =>
                 {
-                    jarvis.Run();
-                }
-                catch (Exception ex)
+                    alarmClock.Run();
+                }));
+
+                // Init Voice Assistant                
+                LoggerFactory loggerFactory = new LoggerFactory();
+                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
+                systemTasks.Add(new Task(() =>
                 {
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                }
-            }));
+                    try
+                    {
+                        jarvis.Run();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.WriteLine(ex.StackTrace);
+                    }
+                }));
+            }
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
             systemTasks.Add(new Task(() => {                

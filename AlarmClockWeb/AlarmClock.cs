@@ -354,6 +354,7 @@ namespace AlarmClock
         public int Minute { get; set; } = 0;
         public string AlarmPlayList { get; set; } = "https://edge-audio-03-gos2.sharp-stream.com/ucbuk.mp3?device=ukradioplayer&=&&___cb=479109455";
         public int SnoozeTime { get; set; } = 10;
+        public int DurationTime{ get; set; } = 60;
         public bool ShowLights{ get; set; } = true;
 
         public AlarmClockState() { }
@@ -399,5 +400,9 @@ namespace AlarmClock
             return sb.ToString();
         }
 
+        internal void Save()
+        {
+            /// TODO : Save settings to file.
+        }
     }
 }
