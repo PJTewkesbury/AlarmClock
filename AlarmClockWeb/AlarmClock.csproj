@@ -14,7 +14,7 @@
 		<Nullable>disable</Nullable>
 		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>false</SelfContained>
-		<!--<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>-->
+		<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
 		<PublishReadyToRun>true</PublishReadyToRun>
 
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
