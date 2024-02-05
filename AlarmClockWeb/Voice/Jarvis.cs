@@ -418,7 +418,7 @@ namespace AlarmClock.Voice
                                 if (inference.Slots.ContainsKey("minute"))
                                 {
                                     string minuteString = inference.Slots["minute"].ToLower().Trim();
-                                    if (minuteString == "quater")
+                                    if (minuteString == "quarter")
                                         minute = 15;
                                     else if (minuteString == "half")
                                         minute = 30;
