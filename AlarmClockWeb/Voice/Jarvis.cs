@@ -1,5 +1,7 @@
 ﻿using AlarmClock.Hardware;
 using Humanizer;
+
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -414,7 +416,15 @@ namespace AlarmClock.Voice
                                 int hour = ParseNumber(inference.Slots["hour"]);
                                 int minute = 0;
                                 if (inference.Slots.ContainsKey("minute"))
-                                    minute = ParseNumber(inference.Slots["minute"]);
+                                {
+                                    string minuteString = inference.Slots["minute"].ToLower().Trim();
+                                    if (minuteString == "quater")
+                                        minute = 15;
+                                    else if (minuteString == "half")
+                                        minute = 30;
+                                    else 
+                                        minute = ParseNumber(inference.Slots["minute"]);
+                                }                                
 
                                 if (inference.Slots.ContainsKey("ampm") && inference.Slots["ampm"] == "PM" && hour<12)
                                     hour += 12;

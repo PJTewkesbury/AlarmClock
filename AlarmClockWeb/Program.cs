@@ -28,10 +28,21 @@ namespace AlarmClock
 
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Console.WriteLine("AlarmClockPI V1.31");
             Console.WriteLine("");
 
-            if (SystemdHelpers.IsSystemdService() == false && args.Length > 0 && args[0].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))
+            if (args.Length>0)
+            {
+                int idx = 0;
+                foreach (var a in args)
+                {
+                    Console.WriteLine($"Arg[{idx++}] = {a}");
+                }
+            }
+
+            if (SystemdHelpers.IsSystemdService() == false && args.Length > 0 && args[1].Equals("Debug", StringComparison.CurrentCultureIgnoreCase))
             {
                 DateTime dt = DateTime.Now;
                 Console.WriteLine("Waiting for debugger to attach or any key to continue");
@@ -56,13 +67,13 @@ namespace AlarmClock
                             .AddJsonFile("appSettings.json", true)
                             .AddJsonFile($"appSettings.{Environment.MachineName}.json", true)
                             .Build();
-            
+
             List<Task> systemTasks = new List<Task>();
             cancellationTokenSource = new CancellationTokenSource();
             cancellationToken = cancellationTokenSource.Token;
 
             // Start the Website as a seperate thread (Low Priority)
-            bool bEnableWeb = true;
+            bool bEnableWeb = false;
             if (bEnableWeb)
             {
                 systemTasks.Add(new Task(() =>
@@ -78,36 +89,34 @@ namespace AlarmClock
             }
 
             AlarmClock alarmClock = null;
-            Jarvis jarvis = null;
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            alarmClock = new AlarmClock(config);
+            // Init Alarmclock Hardware                
+            alarmClock.Init();
+            systemTasks.Add(new Task(() =>
             {
-                alarmClock = new AlarmClock(config);
-                // Init Alarmclock Hardware                
-                alarmClock.Init();
-                systemTasks.Add(new Task(() =>
-                {
-                    alarmClock.Run();
-                }));
+                alarmClock.Run();
+            }));
 
-                // Init Voice Assistant                
-                LoggerFactory loggerFactory = new LoggerFactory();
-                jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
-                systemTasks.Add(new Task(() =>
+            // Init Voice Assistant                
+            LoggerFactory loggerFactory = new LoggerFactory();
+            Jarvis jarvis = null;
+            jarvis = new Jarvis(loggerFactory.CreateLogger<Jarvis>(), config);
+            systemTasks.Add(new Task(() =>
+            {
+                try
                 {
-                    try
-                    {
-                        jarvis.Run();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine(ex.StackTrace);
-                    }
-                }));
-            }
+                    jarvis.Run();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+            }));
 
             // Look for user pressing 'Q' key to quit if not running as systemd service
-            systemTasks.Add(new Task(() => {                
+            systemTasks.Add(new Task(() =>
+            {
                 if (SystemdHelpers.IsSystemdService() == false)
                 {
                     bool quit = false;
@@ -146,22 +155,40 @@ namespace AlarmClock
                     }
                     while (true);
                 }
-            }));            
-            
-            foreach(Task t in systemTasks) 
-            { 
+            }));
+
+            foreach (Task t in systemTasks)
+            {
                 Console.WriteLine($"Starting Task : {t.Id}");
-                t.Start(); 
+                t.Start();
             }
             Console.WriteLine($"Waiting for Tasks to complete");
             Task.WaitAny(systemTasks.ToArray());
 
             Console.WriteLine("Make sure we turn LED's off etc");
-            alarmClock.Dispose();
+            if (alarmClock!=null)
+                alarmClock.Dispose();
             alarmClock = null;
 
-            jarvis.Dispose();
+            if (jarvis!=null) jarvis.Dispose();
             jarvis = null;
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine("Unhandled Exception");
+            if (e.ExceptionObject != null && e.ExceptionObject is Exception)
+            {
+                Exception ex = (e.ExceptionObject as Exception);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                if (ex.InnerException!=null)
+                {
+                    Console.WriteLine("Inner Exception");
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
