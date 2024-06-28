@@ -23,13 +23,13 @@
 		<DefaultItemExcludes>$(DefaultItemExcludes);obj/**</DefaultItemExcludes>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<SshDeployHost>192.168.0.19</SshDeployHost>
+	<PropertyGroup >
+		<!--<SshDeployHost>192.168.0.19</SshDeployHost>-->
 		<!--<SshDeployClean />-->
-		<SshDeployTargetPath>/Apps/AlarmClock/</SshDeployTargetPath>
+		<!--<SshDeployTargetPath>/Apps/AlarmClock/</SshDeployTargetPath>
 		<SshDeployUsername>pi</SshDeployUsername>
 		<SshDeployPassword>DevPIP@ssw0rd</SshDeployPassword>
-		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>-->
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -254,7 +254,7 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Message Text="Post Build Event - SCP files to DevPI" Importance="high" />
-		<Exec Command="scp -r $(ProjectDir)bin\Debug\net8.0\linux-arm64\*.* pi@192.168.0.19:/Apps/AlarmClock" />		
+		<!--<Message Text="Post Build Event - SCP files to DevPI" Importance="high" />
+		<Exec Command="scp -r $(ProjectDir)bin\Debug\net8.0\linux-arm64\*.* pi@192.168.0.19:/Apps/AlarmClock" />-->		
 	</Target>
 </Project>

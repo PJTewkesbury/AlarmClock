@@ -15,6 +15,7 @@ using System.Timers;
 using System.Text;
 using Humanizer;
 using OpenTK.Graphics.ES20;
+using System.Drawing;
 
 namespace AlarmClock
 {
@@ -56,6 +57,7 @@ namespace AlarmClock
             // Init LED Ring
             Console.WriteLine("Init LEDRing,");
             ledRing = new LedRing(gpio, 12);
+            ledRing.SetAllLEDsToColor(Color.Green);
 
             // Init Amplifier and set gain to 30db
             Console.WriteLine("Init Amplifier");

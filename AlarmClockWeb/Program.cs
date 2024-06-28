@@ -73,7 +73,7 @@ namespace AlarmClock
             cancellationToken = cancellationTokenSource.Token;
 
             // Start the Website as a seperate thread (Low Priority)
-            bool bEnableWeb = false;
+            bool bEnableWeb = true;
             if (bEnableWeb)
             {
                 systemTasks.Add(new Task(() =>
